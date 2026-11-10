@@ -1,20 +1,40 @@
 :root {
-  font-family: Arial, sans-serif;
-  color: #222;
-  background-color: #fff;
+  /* Colors */
+  --color-black: #050505;
+  --color-dark: #1a1a1a;
+  --color-gray: #bfbebe;
+  --color-white: #ffffff;
+  --color-light-gray: #e8e8e8;
+
+  /* Typography */
+  --font-family: "Mulish", sans-serif;
+
+  /* Breakpoints */
+  --mobile: 375px;
+  --tablet: 768px;
+  --desktop: 1440px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html {
+  background-color: var(--color-white);
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  font-family: var(--font-family);
+  color: var(--color-black);
+  background-color: var(--color-white);
 }
 
 button,
@@ -22,6 +42,10 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
@@ -32,4 +56,45 @@ a {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
+}
+
+/* Hero container */
+.hero-container {
+  width: calc(100% - 16px);
+  max-width: 359px;
+  margin-inline: auto;
+}
+
+/* Container for the remaining sections */
+.container {
+  width: calc(100% - 32px);
+  max-width: 343px;
+  margin-inline: auto;
+}
+
+/* Tablet */
+@media screen and (min-width: 768px) {
+  .hero-container {
+    width: calc(100% - 32px);
+    max-width: 736px;
+  }
+
+  .container {
+    width: calc(100% - 64px);
+    max-width: 704px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1440px) {
+  .hero-container {
+    width: calc(100% - 40px);
+    max-width: 1400px;
+  }
+
+  .container {
+    width: calc(100% - 160px);
+    max-width: 1280px;
+  }
 }
