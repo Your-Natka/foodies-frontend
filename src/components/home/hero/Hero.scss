@@ -1,6 +1,7 @@
 .hero-section {
   .hero-container {
     padding: 0;
+    padding-bottom: 60px;
   }
 }
 
@@ -14,7 +15,6 @@
   color: var(--color-white);
   border-radius: 0 0 30px 30px;
   overflow: hidden;
-  margin-bottom: 60px;
 
   &__content {
     width: 100%;
