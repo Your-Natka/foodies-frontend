@@ -1,11 +1,11 @@
-import Header from "../../components/header/Header";
 import Hero from "../../components/home/hero/Hero";
+import Categories from "../../components/home/categories/Categories";
 
 function HomePage() {
   return (
     <main className="home-page">
-      <Header theme="dark" />
       <Hero />
+      <Categories />
     </main>
   );
 }

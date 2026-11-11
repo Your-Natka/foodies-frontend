@@ -225,7 +225,7 @@
     }
 
     &__navigation {
-      display: none;
+      gap: none;
     }
 
     &__auth {
@@ -253,23 +253,28 @@
     }
 
     &__auth {
-      width: auto;
-      height: auto;
+      width: 156px;
+      height: 38px;
+      display: flex;
       margin-left: auto;
       padding: 0;
       gap: 8px;
-      border: 0;
     }
 
     &__auth-button {
       width: auto;
       height: 36px;
-      padding: 0 8px;
+      padding: 8px;
+    }
+
+    &__user {
+      display: flex;
+      margin-left: auto;
     }
 
     &__user-button {
       min-height: 40px;
-      padding: 2px 8px 2px 2px;
+      padding: 2px;
     }
 
     &__avatar,
@@ -283,11 +288,6 @@
       font-size: 10px;
     }
 
-    &__auth,
-    &__user {
-      display: none;
-    }
-
     &__burger {
       width: 32px;
       height: 32px;
@@ -296,6 +296,7 @@
       flex-direction: column;
       justify-content: center;
       gap: 6px;
+      flex-shrink: 0;
       border: 0;
       background: transparent;
 

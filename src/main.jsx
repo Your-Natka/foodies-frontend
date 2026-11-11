@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 
 import "modern-normalize/modern-normalize.css";
 import "react-toastify/dist/ReactToastify.css";
-import "modern-normalize";
 import "./styles/global.scss";
 
 import { store } from "./redux/store";

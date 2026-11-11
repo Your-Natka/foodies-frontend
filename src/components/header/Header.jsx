@@ -103,7 +103,9 @@ function Header({
                   )}
 
                   <span className="header__user-name">{userName}</span>
-                  <span className="header__user-arrow">⌄</span>
+                  <span className="header__user-arrow">
+                    {isUserMenuOpen ? "⌃" : "⌄"}
+                  </span>
                 </button>
 
                 {isUserMenuOpen && (
@@ -131,16 +133,18 @@ function Header({
               </div>
             )}
 
-            <button
-              type="button"
-              className={`header__burger ${isMenuOpen ? "is-open" : ""}`}
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMenuOpen}
-            >
-              <span />
-              <span />
-            </button>
+            {isAuthenticated && (
+              <button
+                type="button"
+                className={`header__burger ${isMenuOpen ? "is-open" : ""}`}
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
+              >
+                <span />
+                <span />
+              </button>
+            )}
           </div>
 
           <div className={`header__mobile-menu ${isMenuOpen ? "is-open" : ""}`}>
