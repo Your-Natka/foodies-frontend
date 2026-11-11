@@ -1,9 +1,12 @@
+import Header from "../../components/header/Header";
+import Hero from "../../components/home/hero/Hero";
+
 function HomePage() {
   return (
-    <section>
-      <h1>Welcome to Foodies!</h1>
-      <p>Discover delicious recipes.</p>
-    </section>
+    <main className="home-page">
+      <Header theme="dark" />
+      <Hero />
+    </main>
   );
 }
 
