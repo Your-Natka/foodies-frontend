@@ -1,0 +1,149 @@
+.user-bar {
+  width: 394px;
+  min-height: 484px;
+  padding: 40px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+  border-radius: 20px;
+
+  &__avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 28px;
+  }
+
+  &__avatar {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: #e8e8e8;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__avatar-button {
+    position: absolute;
+    left: 50%;
+    bottom: -12px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    font-size: 24px;
+    line-height: 1;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+  }
+
+  &__file-input {
+    display: none;
+  }
+
+  &__name {
+    margin: 0 0 24px;
+    color: var(--color-black);
+    font-family: var(--font-family);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  &__details {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+
+    dt {
+      flex-shrink: 0;
+      color: var(--color-gray);
+      font-weight: 500;
+    }
+
+    dd {
+      margin: 0;
+      color: var(--color-black);
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__logout {
+    width: 100%;
+    min-height: 44px;
+    margin-top: auto;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+    transition: opacity 200ms ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .user-bar {
+    width: 343px;
+    min-height: 388px;
+    padding: 24px 20px 20px;
+
+    &__avatar-wrapper {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 24px;
+    }
+
+    &__name {
+      margin-bottom: 20px;
+    }
+
+    &__details {
+      gap: 6px;
+    }
+
+    &__logout {
+      min-height: 40px;
+    }
+  }
+}
