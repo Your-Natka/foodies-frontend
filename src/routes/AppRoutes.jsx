@@ -1,12 +1,20 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import SharedLayout from "../components/shared-layout/SharedLayout";
+import { restoreSessionThunk } from "../redux/slices/auth/authOperations";
 
 const HomePage = lazy(() => import("../pages/home-page/HomePage"));
 const NotFoundPage = lazy(() => import("../pages/not-found-page/NotFoundPage"));
 
 function AppRoutes() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(restoreSessionThunk());
+  }, [dispatch]);
+
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <Routes>
