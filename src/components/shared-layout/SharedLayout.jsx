@@ -51,7 +51,7 @@ function SharedLayout() {
         onLogout={handleLogout}
       />
 
-      <Outlet />
+      <Outlet context={{ onLogout: handleLogout }} />
 
       <Footer theme={theme} />
 
