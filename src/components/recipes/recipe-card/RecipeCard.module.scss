@@ -1,0 +1,218 @@
+
+/* ==============================
+   Mobile first: base styles
+============================== */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  gap: 16px;
+  color: var(--color-black);
+}
+
+.recipeLink {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 343 / 205;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-family);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-black);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.description {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--color-dark);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
+}
+
+.author {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-dark);
+}
+
+.avatar,
+.avatarFallback {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.avatar {
+  object-fit: cover;
+}
+
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-light-gray);
+  color: var(--color-dark);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.authorName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.actionButton {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 11px;
+  border: 1px solid var(--color-gray);
+  border-radius: 50%;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  text-decoration: none;
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.favoriteButton {
+  cursor: pointer;
+}
+
+.icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+}
+
+.favoriteButton.isFavorite .icon {
+  fill: var(--color-black);
+  stroke: var(--color-black);
+}
+
+.detailsLink {
+  color: var(--color-black);
+}
+
+.actionButton:hover {
+  border-color: var(--color-black);
+}
+
+.actionButton:focus-visible,
+.recipeLink:focus-visible {
+  outline: 2px solid var(--color-black);
+  outline-offset: 3px;
+}
+
+/* ==============================
+   Tablet: 768px–1439px
+============================== */
+
+@media screen and (min-width: 768px) {
+  .card {
+    gap: 16px;
+  }
+
+  .recipeLink {
+    gap: 12px;
+  }
+
+  .image {
+    aspect-ratio: 1.67 / 1;
+    border-radius: 30px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .author {
+    font-size: 16px;
+    gap: 4px;
+  }
+
+}
+
+/* ==============================
+   Desktop: 1440px+
+============================== */
+
+@media screen and (min-width: 1440px) {
+  .recipeLink {
+    gap: 16px;
+  }
+
+  .image {
+    aspect-ratio: 290 / 275;
+    border-radius: 30px;
+  }
+}
