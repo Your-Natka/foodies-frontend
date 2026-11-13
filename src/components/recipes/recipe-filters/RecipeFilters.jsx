@@ -30,7 +30,7 @@ const RecipeFilters = ({
           </select>
 
           <svg className={css.chevron} aria-hidden="true">
-            <use href="/images/sprite.svg#icon-chevron-down-food" />
+            <use href="/icons.svg#icon-chevron-down" />
           </svg>
         </div>
       </label>

@@ -11,6 +11,7 @@ const RecipeCard = ({
 
   const authorAvatar = owner?.avatar;
   const authorName = owner?.name || 'Unknown author';
+  const authorId = owner?.id;
   const authorInitial = authorName.charAt(0).toUpperCase();
 
   return (
@@ -30,21 +31,39 @@ const RecipeCard = ({
       </Link>
 
       <div className={css.cardFooter}>
-        <div className={css.author}>
-          {authorAvatar ? (
-            <img
-              className={css.avatar}
-              src={authorAvatar}
-              alt={authorName}
-            />
-          ) : (
-            <span className={css.avatarFallback}>
-              {authorInitial}
-            </span>
-          )}
+        {authorId ? (
+          <Link to={`/user/${authorId}`} className={css.author}>
+            {authorAvatar ? (
+              <img
+                className={css.avatar}
+                src={authorAvatar}
+                alt={authorName}
+              />
+            ) : (
+              <span className={css.avatarFallback}>
+                {authorInitial}
+              </span>
+            )}
 
-          <span className={css.authorName}>{authorName}</span>
-        </div>
+            <span className={css.authorName}>{authorName}</span>
+          </Link>
+        ) : (
+          <div className={css.author}>
+            {authorAvatar ? (
+              <img
+                className={css.avatar}
+                src={authorAvatar}
+                alt={authorName}
+              />
+            ) : (
+              <span className={css.avatarFallback}>
+                {authorInitial}
+              </span>
+            )}
+
+            <span className={css.authorName}>{authorName}</span>
+          </div>
+        )}
 
         <div className={css.actions}>
           <button
@@ -61,7 +80,7 @@ const RecipeCard = ({
             onClick={() => onToggleFavorite?.(id)}
           >
             <svg className={css.icon} aria-hidden="true">
-              <use href="/images/sprite.svg#icon-heart16x16-food" />
+              <use href="/icons.svg#icon-heart" />
             </svg>
           </button>
 
@@ -71,7 +90,7 @@ const RecipeCard = ({
             aria-label={`View ${title} recipe`}
           >
             <svg className={css.icon} aria-hidden="true">
-              <use href="/images/sprite.svg#icon-arrow-up-right-black-food" />
+              <use href="/icons.svg#icon-arrow-up-right" />
             </svg>
           </Link>
         </div>

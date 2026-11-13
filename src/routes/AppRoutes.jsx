@@ -10,6 +10,14 @@ const UserPage = lazy(() => import("../pages/user-page/UserPage"));
 const HomePage = lazy(() => import("../pages/home-page/HomePage"));
 const NotFoundPage = lazy(() => import("../pages/not-found-page/NotFoundPage"));
 
+const CategoryPage = lazy(
+  () => import("../pages/category-page/CategoryPage")
+);
+
+const RecipeDetailsPage = lazy(
+  () => import("../pages/recipe-details-page/RecipeDetailsPage")
+);
+
 function AppRoutes() {
   const dispatch = useDispatch();
 
@@ -23,6 +31,15 @@ function AppRoutes() {
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />
           <Route path="user" element={<UserPage />} />
+
+          <Route path="user/:userId" element={<UserPage />} />
+          {/* Recipes catalog */}
+          <Route path="recipes" element={<CategoryPage />} />
+          <Route path="recipes/:category" element={<CategoryPage />} />
+
+          {/* Recipe details */}
+          <Route path="recipe/:id" element={<RecipeDetailsPage />} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

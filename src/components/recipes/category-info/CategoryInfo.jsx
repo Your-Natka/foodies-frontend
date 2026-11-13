@@ -11,7 +11,7 @@ const CategoryInfo = ({
     <section className={css.categoryInfo}>
       <Link to={backLink} className={css.backLink}>
         <svg className={css.backIcon} aria-hidden="true">
-          <use href="/images/sprite.svg#icon-arrow-back" />
+          <use href="/icons.svg#icon-arrow-back" />
         </svg>
 
         <span>BACK</span>
