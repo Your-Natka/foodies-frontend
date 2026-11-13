@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import recipesReducer from './slices/recipes/recipesSlice';
 import ingredientsReducer from './slices/ingredients/ingredientsSlice';
 import areasReducer from './slices/areas/areasSlice';
+import favoritesReducer from './slices/favorites/favoritesSlice';
 
 import authReducer, {
   setAccessToken,
@@ -17,6 +18,8 @@ export const store = configureStore({
     recipes: recipesReducer,
     ingredients: ingredientsReducer,
     areas: areasReducer,
+    favorites: favoritesReducer,
+
   },
 });
 

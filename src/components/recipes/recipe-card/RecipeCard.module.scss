@@ -135,7 +135,10 @@
   background-color: var(--color-white);
   color: var(--color-black);
   text-decoration: none;
-  transition: border-color 200ms ease, background-color 200ms ease;
+  transition:
+  border-color 200ms ease,
+  background-color 200ms ease,
+  color 200ms ease;
 }
 
 .favoriteButton {
@@ -160,13 +163,19 @@
 }
 
 .actionButton:hover {
-  border-color: var(--color-black);
+  border-color: #050505;
+  background-color: #050505;
+  color: var(--color-white);
 }
 
 .actionButton:focus-visible,
 .recipeLink:focus-visible {
   outline: 2px solid var(--color-black);
   outline-offset: 3px;
+}
+.favoriteButton:hover .icon {
+  fill: none;
+  stroke: var(--color-white);
 }
 
 /* ==============================

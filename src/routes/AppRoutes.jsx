@@ -14,8 +14,8 @@ const CategoryPage = lazy(
   () => import("../pages/category-page/CategoryPage")
 );
 
-const RecipeDetailsPage = lazy(
-  () => import("../pages/recipe-details-page/RecipeDetailsPage")
+const RecipePage = lazy(
+  () => import("../pages/recipe-page/RecipePage")
 );
 
 function AppRoutes() {
@@ -38,7 +38,7 @@ function AppRoutes() {
           <Route path="recipes/:category" element={<CategoryPage />} />
 
           {/* Recipe details */}
-          <Route path="recipe/:id" element={<RecipeDetailsPage />} />
+          <Route path="recipe/:id" element={<RecipePage />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>

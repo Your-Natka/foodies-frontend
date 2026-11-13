@@ -20,7 +20,7 @@ const areasSlice = createSlice({
       })
       .addCase(fetchAreasThunk.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload;
+        state.items = action.payload.data;
       })
       .addCase(fetchAreasThunk.rejected, (state, action) => {
         state.status = 'failed';

@@ -1,12 +1,16 @@
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import CategoryInfo from '../../components/recipes/category-info/CategoryInfo';
 import RecipeFilters from '../../components/recipes/recipe-filters/RecipeFilters';
 import RecipeList from '../../components/recipes/recipe-list/RecipeList';
 import Pagination from '../../components/shared/pagination/Pagination';
+
+import SignInModal from '../../components/auth/sign-in-modal/SignInModal';
+import SignUpModal from '../../components/auth/sign-up-modal/SignUpModal';
 
 import {
   selectIngredients,
@@ -37,11 +41,25 @@ import {
   fetchAreasThunk,
 } from '../../redux/slices/areas/areasOperations';
 
+import {
+  selectIsAuthenticated,
+} from '../../redux/slices/auth/authSlice';
+
+import {
+  selectFavoriteIds,
+  clearFavorites,
+} from '../../redux/slices/favorites/favoritesSlice';
+
+import {
+  fetchFavoritesThunk,
+  addFavoriteThunk,
+  removeFavoriteThunk,
+} from '../../redux/slices/favorites/favoritesOperations';
+
 import css from './CategoryPage.module.scss';
 
 const CategoryPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { category } = useParams();
 
   const recipes = useSelector(selectRecipes);
@@ -53,8 +71,12 @@ const CategoryPage = () => {
   const ingredients = useSelector(selectIngredients);
   const areas = useSelector(selectAreas);
 
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const favoriteIds = useSelector(selectFavoriteIds);
+
   const [selectedIngredient, setSelectedIngredient] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
+  const [authModal, setAuthModal] = useState(null);
 
   // Reset pagination and filters when category changes
   useEffect(() => {
@@ -82,6 +104,15 @@ const CategoryPage = () => {
     );
   }, [dispatch, page, category, selectedIngredient, selectedArea]);
 
+  // Load favorites for authenticated users
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchFavoritesThunk({ page: 1, limit: 100 }));
+    } else {
+      dispatch(clearFavorites());
+    }
+  }, [dispatch, isAuthenticated]);
+
   const handlePageChange = nextPage => {
     dispatch(setRecipesPage(nextPage));
   };
@@ -96,17 +127,30 @@ const CategoryPage = () => {
     dispatch(setRecipesPage(1));
   };
 
-  const handleBack = () => {
-    navigate(-1);
+  const handleToggleFavorite = async recipeId => {
+    if (!isAuthenticated) {
+      setAuthModal('signIn');
+      return;
+    }
+
+    try {
+      if (favoriteIds.includes(recipeId)) {
+        await dispatch(removeFavoriteThunk(recipeId)).unwrap();
+      } else {
+        await dispatch(addFavoriteThunk(recipeId)).unwrap();
+      }
+    } catch (error) {
+      toast.error(
+        typeof error === 'string'
+          ? error
+          : 'Failed to update favorites. Please try again.',
+      );
+    }
   };
 
   return (
     <main className={css.categoryPage}>
       <div className="container">
-        <button type="button" onClick={handleBack}>
-          Back
-        </button>
-
         <CategoryInfo
           title={category || 'All Categories'}
           description="Discover a limitless world of culinary possibilities and enjoy exquisite recipes for every taste."
@@ -140,7 +184,11 @@ const CategoryPage = () => {
             )}
 
             {status === 'succeeded' && recipes.length > 0 && (
-              <RecipeList recipes={recipes} />
+              <RecipeList
+                recipes={recipes}
+                favoriteIds={favoriteIds}
+                onToggleFavorite={handleToggleFavorite}
+              />
             )}
 
             {status === 'succeeded' && totalPages > 1 && (
@@ -153,6 +201,18 @@ const CategoryPage = () => {
           </div>
         </div>
       </div>
+
+      <SignInModal
+        isOpen={authModal === 'signIn'}
+        onClose={() => setAuthModal(null)}
+        onSwitchToSignUp={() => setAuthModal('signUp')}
+      />
+
+      <SignUpModal
+        isOpen={authModal === 'signUp'}
+        onClose={() => setAuthModal(null)}
+        onSwitchToSignIn={() => setAuthModal('signIn')}
+      />
     </main>
   );
 };
