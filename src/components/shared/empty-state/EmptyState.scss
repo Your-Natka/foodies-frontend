@@ -1,0 +1,18 @@
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 180px;
+  padding: 30px 10px;
+
+  &__message {
+    max-width: 350px;
+    margin: 0;
+    color: var(--color-gray);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+  }
+}
