@@ -7,6 +7,9 @@ import PrivateRoute from "./PrivateRoute";
 import { restoreSessionThunk } from "../redux/slices/auth/authOperations";
 
 const UserPage = lazy(() => import("../pages/user-page/UserPage"));
+const AddRecipePage = lazy(() =>
+  import("../pages/add-recipe-page/AddRecipePage"),
+);
 
 const HomePage = lazy(() => import("../pages/home-page/HomePage"));
 const NotFoundPage = lazy(() => import("../pages/not-found-page/NotFoundPage"));
@@ -25,6 +28,7 @@ function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route element={<PrivateRoute />}>
             <Route path="user" element={<UserPage />} />
+            <Route path="recipe/add" element={<AddRecipePage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>

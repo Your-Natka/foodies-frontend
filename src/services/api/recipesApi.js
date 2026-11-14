@@ -24,6 +24,7 @@ export const deleteRecipe = async (id) => {
   await api.delete(`/recipes/${id}`);
 };
 
+// Favorites
 export const getFavoriteRecipes = async (params = {}) => {
   const { data } = await api.get("/recipes/favorites", { params });
   return data;
@@ -36,4 +37,10 @@ export const addFavoriteRecipe = async (id) => {
 
 export const removeFavoriteRecipe = async (id) => {
   await api.delete(`/recipes/${id}/favorite`);
+};
+
+// Create recipe
+export const createRecipe = async (formData) => {
+  const { data } = await api.post("/recipes", formData);
+  return data.data;
 };

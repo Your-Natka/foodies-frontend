@@ -1,0 +1,87 @@
+.add-recipe-page {
+  padding: 32px 0 80px;
+
+  @media (min-width: 768px) {
+    padding: 32px 0 120px;
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 32px;
+
+    @media (min-width: 768px) {
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+  }
+
+  &__breadcrumbs {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-black);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  &__crumb-link,
+  &__crumb-divider {
+    color: var(--color-gray);
+  }
+
+  &__crumb-link {
+    transition: color 200ms ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-black);
+    }
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media (min-width: 768px) {
+      gap: 20px;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    color: var(--color-black);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 32px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+
+    @media (min-width: 768px) {
+      font-size: 40px;
+      line-height: 44px;
+    }
+  }
+
+  &__text {
+    max-width: 443px;
+    margin: 0;
+    color: var(--color-dark);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+
+    @media (min-width: 768px) {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
