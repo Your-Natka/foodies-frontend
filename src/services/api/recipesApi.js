@@ -23,3 +23,17 @@ export const getRecipeById = async (id) => {
 export const deleteRecipe = async (id) => {
   await api.delete(`/recipes/${id}`);
 };
+
+export const getFavoriteRecipes = async (params = {}) => {
+  const { data } = await api.get("/recipes/favorites", { params });
+  return data;
+};
+
+export const addFavoriteRecipe = async (id) => {
+  const { data } = await api.put(`/recipes/${id}/favorite`);
+  return data;
+};
+
+export const removeFavoriteRecipe = async (id) => {
+  await api.delete(`/recipes/${id}/favorite`);
+};

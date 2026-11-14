@@ -7,7 +7,7 @@ import { updateUser } from "../../../redux/slices/auth/authSlice";
 
 import "./UserBar.scss";
 
-function UserBar({ user, onLogout }) {
+function UserBar({ user, onLogout, onProfileUpdate }) {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -40,6 +40,7 @@ function UserBar({ user, onLogout }) {
 
       dispatch(updateUser(updatedUser));
       setAvatarError(false);
+      await onProfileUpdate?.();
       toast.success("Profile photo updated successfully.");
     } catch (error) {
       toast.error(
