@@ -1,27 +1,29 @@
-import api from "../api";
+
+import api from '../api';
 
 export const getRecipes = async (params = {}) => {
-  const { data } = await api.get("/recipes", { params });
+  const { data } = await api.get('/recipes', { params });
   return data;
 };
 
 export const getPopularRecipes = async () => {
-  const { data } = await api.get("/recipes/popular");
+  const { data } = await api.get('/recipes/popular');
   return data;
 };
 
 export const getOwnRecipes = async (params = {}) => {
-  const { data } = await api.get("/recipes/own", { params });
+  const { data } = await api.get('/recipes/own', { params });
   return data;
 };
 
-export const getRecipeById = async (id) => {
+export const getRecipeById = async id => {
   const { data } = await api.get(`/recipes/${id}`);
   return data;
 };
 
-export const deleteRecipe = async (id) => {
-  await api.delete(`/recipes/${id}`);
+export const deleteRecipe = async id => {
+  const { data } = await api.delete(`/recipes/${id}`);
+  return data;
 };
 
 // Favorites

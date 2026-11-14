@@ -68,4 +68,8 @@
 <symbol id="icon-untitled" viewBox="0 0 39 32">
 <path fill="#bfbebe" style="fill: var(--color1, #bfbebe)" d="M0 32v-10.706c0-4 0.704-7.686 2.113-11.059s3.796-6.784 7.162-10.235l6.105 4.824c-1.957 1.961-3.444 3.804-4.462 5.529s-1.683 3.49-1.996 5.294h7.514v16.353h-16.438zM22.896 32v-10.706c0-4 0.704-7.686 2.113-11.059s3.796-6.784 7.162-10.235l6.105 4.824c-1.957 1.961-3.444 3.804-4.462 5.529s-1.683 3.49-1.996 5.294h7.514v16.353h-16.438z"></path>
 </symbol>
+<symbol id="icon-arrow-back" viewBox="0 0 32 32">
+<path fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M25.427 16.001l-18.856-0.002"></path>
+<path fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.6667" d="M15.998 25.428l-9.427-9.429 9.429-9.427"></path>
+</symbol>
 </svg>

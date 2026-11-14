@@ -1,5 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import recipesReducer from './slices/recipes/recipesSlice';
+import ingredientsReducer from './slices/ingredients/ingredientsSlice';
+import areasReducer from './slices/areas/areasSlice';
+import favoritesReducer from './slices/favorites/favoritesSlice';
+
 import authReducer, {
   setAccessToken,
   clearCredentials,
@@ -10,6 +15,11 @@ import { configureApiAuth } from "../services/api";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    recipes: recipesReducer,
+    ingredients: ingredientsReducer,
+    areas: areasReducer,
+    favorites: favoritesReducer,
+
   },
 });
 

@@ -1,52 +1,57 @@
-import "./Pagination.scss";
+import css from "./Pagination.module.scss";
 
-function Pagination({ currentPage = 1, totalPages = 1, onPageChange }) {
-  if (totalPages < 1) return null;
+const getVisiblePages = (page, totalPages) => {
+  const startPage = Math.min(
+    Math.max(page - 1, 1),
+    Math.max(totalPages - 2, 1),
+  );
 
-  const getVisiblePages = () => {
-    const visibleCount = Math.min(3, totalPages);
+  return Array.from(
+    { length: Math.min(3, totalPages) },
+    (_, index) => startPage + index,
+  );
+};
 
-    const startPage = Math.max(1, Math.min(currentPage - 1, totalPages - 2));
+const Pagination = ({ page, totalPages, onPageChange }) => {
+  if (totalPages <= 1) return null;
 
-    return Array.from(
-      { length: visibleCount },
-      (_, index) => startPage + index,
-    );
-  };
+  const pages = getVisiblePages(page, totalPages);
 
   return (
-    <nav className="pagination" aria-label="Pagination">
-      {currentPage > 1 && (
+    <nav className={css.pagination} aria-label="Pagination">
+      {page > 1 && (
         <button
           type="button"
-          className="pagination__button pagination__arrow"
-          onClick={() => onPageChange?.(currentPage - 1)}
+          className={css.pageButton}
+          onClick={() => onPageChange?.(page - 1)}
           aria-label="Previous page"
         >
           &lt;
         </button>
       )}
 
-      {getVisiblePages().map((page) => (
-        <button
-          key={page}
-          type="button"
-          className={`pagination__button ${
-            currentPage === page ? "pagination__button--active" : ""
-          }`}
-          onClick={() => onPageChange?.(page)}
-          aria-label={`Page ${page}`}
-          aria-current={currentPage === page ? "page" : undefined}
-        >
-          {page}
-        </button>
-      ))}
+      {pages.map((pageNumber) => {
+        const isActive = pageNumber === page;
 
-      {currentPage < totalPages && (
+        return (
+          <button
+            key={pageNumber}
+            type="button"
+            className={`${css.pageButton} ${isActive ? css.active : ""}`}
+            aria-current={isActive ? "page" : undefined}
+            disabled={isActive}
+            onClick={() => onPageChange?.(pageNumber)}
+          >
+            {pageNumber}
+          </button>
+        );
+      })}
+
+      {page < totalPages && (
         <button
           type="button"
-          className="pagination__button pagination__arrow"
-          onClick={() => onPageChange?.(currentPage + 1)}
+          className={css.pageButton}
+          onClick={() => onPageChange?.(page + 1)}
           aria-label="Next page"
         >
           &gt;
@@ -54,6 +59,6 @@ function Pagination({ currentPage = 1, totalPages = 1, onPageChange }) {
       )}
     </nav>
   );
-}
+};
 
 export default Pagination;
