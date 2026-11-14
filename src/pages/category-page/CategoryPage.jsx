@@ -164,59 +164,63 @@ const CategoryPage = () => {
   return (
     <main className={css.categoryPage}>
       <Hero />
+      <section className={css.categorySection}>
+              <div className="container">
+                  <CategoryInfo
+                    title={category || 'All Categories'}
+                    description="Discover a limitless world of culinary possibilities and enjoy exquisite recipes for every taste."
+                  />
 
-      <div className="container">
-        <CategoryInfo
-          title={category || 'All Categories'}
-          description="Discover a limitless world of culinary possibilities and enjoy exquisite recipes for every taste."
-        />
+                  <div className={css.catalog}>
+                    <aside className={css.sidebar}>
+                      <RecipeFilters
+                        ingredients={ingredients}
+                        areas={areas}
+                        selectedIngredient={selectedIngredient}
+                        selectedArea={selectedArea}
+                        onIngredientChange={handleIngredientChange}
+                        onAreaChange={handleAreaChange}
+                      />
+                    </aside>
 
-        <div className={css.catalog}>
-          <aside className={css.sidebar}>
-            <RecipeFilters
-              ingredients={ingredients}
-              areas={areas}
-              selectedIngredient={selectedIngredient}
-              selectedArea={selectedArea}
-              onIngredientChange={handleIngredientChange}
-              onAreaChange={handleAreaChange}
-            />
-          </aside>
+                    <div className={css.content}>
+                      {status === 'loading' && (
+                        <p>Loading recipes...</p>
+                      )}
 
-          <div className={css.content}>
-            {status === 'loading' && (
-              <p>Loading recipes...</p>
-            )}
+                      {status === 'failed' && (
+                        <p>
+                          {error || 'Something went wrong. Please try again.'}
+                        </p>
+                      )}
 
-            {status === 'failed' && (
-              <p>
-                {error || 'Something went wrong. Please try again.'}
-              </p>
-            )}
+                      {status === 'succeeded' && recipes.length === 0 && (
+                        <p>No recipes found.</p>
+                      )}
 
-            {status === 'succeeded' && recipes.length === 0 && (
-              <p>No recipes found.</p>
-            )}
+                      {status === 'succeeded' && recipes.length > 0 && (
+                        <RecipeList
+                          recipes={recipes}
+                          favoriteIds={favoriteIds}
+                          onToggleFavorite={handleToggleFavorite}
+                          onAuthorClick={handleAuthorClick}
+                        />
+                      )}
 
-            {status === 'succeeded' && recipes.length > 0 && (
-              <RecipeList
-                recipes={recipes}
-                favoriteIds={favoriteIds}
-                onToggleFavorite={handleToggleFavorite}
-                onAuthorClick={handleAuthorClick}
-              />
-            )}
+                      {status === 'succeeded' && totalPages > 1 && (
+                        <Pagination
+                          page={page}
+                          totalPages={totalPages}
+                          onPageChange={handlePageChange}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-            {status === 'succeeded' && totalPages > 1 && (
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
-          </div>
-        </div>
-      </div>
+      </section>
+
+
 
       <Testimonials />
 
