@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import Modal from "../../shared/modal/Modal";
 import { logoutThunk } from "../../../redux/slices/auth/authOperations";
@@ -8,12 +9,14 @@ import "./LogoutModal.scss";
 
 function LogoutModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await dispatch(logoutThunk());
 
     toast.success("You have been logged out.");
     onClose();
+    navigate("/", { replace: true });
   };
 
   return (

@@ -11,6 +11,7 @@ const initialState = {
   accessToken: null,
   isAuthenticated: false,
   status: "idle",
+  isSessionChecked: false,
   error: null,
 };
 
@@ -96,6 +97,7 @@ const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.isAuthenticated = true;
         state.status = "succeeded";
+        state.isSessionChecked = true;
         state.error = null;
       })
       .addCase(restoreSessionThunk.rejected, (state) => {
@@ -103,6 +105,7 @@ const authSlice = createSlice({
         state.accessToken = null;
         state.isAuthenticated = false;
         state.status = "idle";
+        state.isSessionChecked = true;
       });
   },
 });
@@ -114,5 +117,6 @@ export const selectUser = (state) => state.auth.user;
 export const selectAccessToken = (state) => state.auth.accessToken;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectAuthStatus = (state) => state.auth.status;
+export const selectIsSessionChecked = (state) => state.auth.isSessionChecked;
 
 export default authSlice.reducer;

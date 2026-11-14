@@ -1,33 +1,48 @@
+import { useEffect, useState } from "react";
 import Container from "../../common/Container/Container";
 import TestimonialSlider from "./TestimonialSlider";
-
+import { getTestimonials } from "../../../services/api/testimonialsApi";
 import "./Testimonials.scss";
 
-const testimonials = [
-  {
-    id: "1",
-    text: "Thank you for the wonderful recipe for feta pasta with tomatoes and basil. It turned out to be not only tasty, but also incredibly colorful. This has become a favorite family meal!",
-    name: "Larry Page",
-  },
-  {
-    id: "2",
-    text: "The recipes are easy to follow, delicious and perfect for everyday cooking. I really enjoy trying new dishes!",
-    name: "Test User 2",
-  },
-  {
-    id: "3",
-    text: "I love discovering new recipes here. The instructions are clear and the results are always wonderful!",
-    name: "Test User 3",
-  },
-];
-
 function Testimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const data = await getTestimonials();
+
+        setTestimonials(
+          data.map((item) => ({
+            id: item.id,
+            text: item.testimonial,
+            name: item.owner.name,
+          })),
+        );
+      } catch (error) {
+        setError("Failed to load testimonials.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
   return (
     <Container className="testimonials">
       <div className="testimonials__container">
         <p className="testimonials__subtitle">What our customer say</p>
         <h2 className="testimonials__title">Testimonials</h2>
-        <TestimonialSlider testimonials={testimonials} />
+
+        {loading && <p>Loading testimonials...</p>}
+        {error && <p>{error}</p>}
+
+        {!loading && !error && (
+          <TestimonialSlider testimonials={testimonials} />
+        )}
       </div>
     </Container>
   );

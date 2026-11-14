@@ -1,6 +1,6 @@
-import api from '../api';
+import api from "../api";
 
 export const getIngredients = async () => {
-  const { data } = await api.get('/ingredients');
-  return data;
+  const { data } = await api.get("/ingredients");
+  return data.data;
 };
