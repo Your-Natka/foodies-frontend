@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import Hero from '../../components/home/hero/Hero';
+import Testimonials from '../../components/home/testimonials/Testimonials';
+
 import CategoryInfo from '../../components/recipes/category-info/CategoryInfo';
 import RecipeFilters from '../../components/recipes/recipe-filters/RecipeFilters';
 import RecipeList from '../../components/recipes/recipe-list/RecipeList';
@@ -150,6 +153,8 @@ const CategoryPage = () => {
 
   return (
     <main className={css.categoryPage}>
+      <Hero />
+
       <div className="container">
         <CategoryInfo
           title={category || 'All Categories'}
@@ -201,6 +206,8 @@ const CategoryPage = () => {
           </div>
         </div>
       </div>
+
+      <Testimonials />
 
       <SignInModal
         isOpen={authModal === 'signIn'}
