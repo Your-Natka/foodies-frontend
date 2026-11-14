@@ -6,6 +6,7 @@
   font-family: var(--font-family);
   color: var(--color-white);
   background-color: transparent;
+  box-shadow: none;
 
   transition: color 250ms ease;
 
@@ -26,13 +27,13 @@
     color: var(--color-white);
     border-radius: 30px 30px 0 0;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: none;
   }
 
   &--light &__surface {
     background-color: var(--color-white);
     color: var(--color-black);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
   }
 
   &__container {
