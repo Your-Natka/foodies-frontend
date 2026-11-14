@@ -1,21 +1,23 @@
 function CategoryCard({ category }) {
   const handleCategoryClick = () => {
-    // Пізніше підключимо перехід до категорії через React Router.
     console.log("Selected category:", category.id);
   };
 
   const handleRecipeClick = () => {
-    // Пізніше підключимо перехід до окремого рецепта.
     console.log("Open recipe from:", category.id);
   };
 
   return (
     <article className="category-card">
-      <img
-        className="category-card__image"
-        src={category.image}
-        alt={category.title}
-      />
+      {category.image && (
+        <img
+          className="category-card__image"
+          src={category.image}
+          srcSet={`${category.image2x} 2x`}
+          alt={category.title}
+          loading="lazy"
+        />
+      )}
 
       <div className="category-card__overlay">
         <button

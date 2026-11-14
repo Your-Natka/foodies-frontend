@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import SharedLayout from "../components/shared-layout/SharedLayout";
+import PrivateRoute from "./PrivateRoute";
 import { restoreSessionThunk } from "../redux/slices/auth/authOperations";
 
 const UserPage = lazy(() => import("../pages/user-page/UserPage"));
@@ -22,7 +23,9 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="user" element={<UserPage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="user" element={<UserPage />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

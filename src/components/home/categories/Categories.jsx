@@ -1,36 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Section from "../../common/Section/Section";
 import CategoryCard from "./CategoryCard";
+import { getCategories } from "../../../services/api/categoriesApi";
 import "./Categories.scss";
 
-const categories = [
-  { id: "beef", title: "Beef", image: "/images/categories/beef.webp" },
-  {
-    id: "breakfast",
-    title: "Breakfast",
-    image: "/images/categories/breakfast.webp",
-  },
-  {
-    id: "desserts",
-    title: "Desserts",
-    image: "/images/categories/desserts.webp",
-  },
-  { id: "lamb", title: "Lamb", image: "/images/categories/lamb.webp" },
-  { id: "goat", title: "Goat", image: "/images/categories/goat.webp" },
-  {
-    id: "miscellaneous",
-    title: "Miscellaneous",
-    image: "/images/categories/miscellaneous.webp",
-  },
-  { id: "pasta", title: "Pasta", image: "/images/categories/pasta.webp" },
-  { id: "pork", title: "Pork", image: "/images/categories/pork.webp" },
-  { id: "seafood", title: "Seafood", image: "/images/categories/seafood.webp" },
-  { id: "side", title: "Side", image: "/images/categories/side.webp" },
-  { id: "starter", title: "Starter", image: "/images/categories/starter.webp" },
-];
+const INITIAL_CATEGORIES_COUNT = 11;
+
+const categoryImages = {
+  Beef: "Beef",
+  Breakfast: "Breakfast",
+  Chicken: "Chicken",
+  Dessert: "Desserts",
+  Desserts: "Desserts",
+  Goat: "Goat",
+  Lamb: "Lamb",
+  Miscellaneous: "Miscellaneous",
+  Pasta: "Pasta",
+  Pork: "Pork",
+  Seafood: "Seafood",
+  Side: "Side",
+  Soup: "Soup",
+  Starter: "Starter",
+  Vegan: "Vegan",
+  Vegetarian: "Vegetarian",
+};
 
 function Categories() {
+  const [categories, setCategories] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+
+        console.log("Categories from API:", data);
+        console.log("Image mapping:", categoryImages);
+
+        setCategories(
+          data.map((category) => {
+            const imageName = categoryImages[category.name];
+
+            if (!imageName) {
+              console.warn("Image not found for category:", category.name);
+            }
+
+            return {
+              id: category.id,
+              title: category.name,
+              image: imageName
+                ? `/images/categories/${imageName}@1.webp`
+                : null,
+              image2x: imageName
+                ? `/images/categories/${imageName}@2.webp`
+                : null,
+            };
+          }),
+        );
+      } catch {
+        setError("Failed to load categories. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const visibleCategories = showAll
+    ? categories
+    : categories.slice(0, INITIAL_CATEGORIES_COUNT);
 
   return (
     <Section className="categories-section" id="categories">
@@ -43,24 +84,26 @@ function Categories() {
         </p>
       </div>
 
-      <div
-        className={`categories-grid ${
-          showAll ? "categories-grid--expanded" : ""
-        }`}
-      >
-        {categories.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
+      {loading && <p>Loading categories...</p>}
+      {error && <p>{error}</p>}
 
-        <button
-          type="button"
-          className="categories-grid__all"
-          onClick={() => setShowAll((prev) => !prev)}
-          aria-expanded={showAll}
-        >
-          <span>ALL CATEGORIES</span>
-        </button>
-      </div>
+      {!loading && !error && (
+        <div className="categories-grid">
+          {visibleCategories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
+
+          {!showAll && categories.length > INITIAL_CATEGORIES_COUNT && (
+            <button
+              type="button"
+              className="categories-grid__all"
+              onClick={() => setShowAll(true)}
+            >
+              <span>ALL CATEGORIES</span>
+            </button>
+          )}
+        </div>
+      )}
     </Section>
   );
 }
