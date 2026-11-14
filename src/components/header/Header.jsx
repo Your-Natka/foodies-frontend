@@ -54,7 +54,7 @@ function Header({
               </NavLink>
 
               <NavLink
-                to="/add"
+                to="/recipe/add"
                 className={({ isActive }) =>
                   `header__nav-link ${isActive ? "active" : ""}`
                 }
@@ -156,7 +156,7 @@ function Header({
                 Home
               </NavLink>
 
-              <NavLink to="/add" onClick={closeMenu}>
+              <NavLink to="/recipe/add" onClick={closeMenu}>
                 Add recipe
               </NavLink>
 

@@ -23,3 +23,8 @@ export const getRecipeById = async (id) => {
 export const deleteRecipe = async (id) => {
   await api.delete(`/recipes/${id}`);
 };
+
+export const createRecipe = async (formData) => {
+  const { data } = await api.post("/recipes", formData);
+  return data.data;
+};
