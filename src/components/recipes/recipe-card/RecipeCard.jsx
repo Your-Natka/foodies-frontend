@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import css from './RecipeCard.module.scss';
 
@@ -6,6 +5,7 @@ const RecipeCard = ({
   recipe,
   isFavorite = false,
   onToggleFavorite,
+  onAuthorClick,
 }) => {
   const { id, title, description, thumb, owner } = recipe;
 
@@ -32,7 +32,11 @@ const RecipeCard = ({
 
       <div className={css.cardFooter}>
         {authorId ? (
-          <Link to={`/user/${authorId}`} className={css.author}>
+          <button
+            type="button"
+            className={css.author}
+            onClick={() => onAuthorClick?.(authorId)}
+          >
             {authorAvatar ? (
               <img
                 className={css.avatar}
@@ -46,7 +50,7 @@ const RecipeCard = ({
             )}
 
             <span className={css.authorName}>{authorName}</span>
-          </Link>
+          </button>
         ) : (
           <div className={css.author}>
             {authorAvatar ? (

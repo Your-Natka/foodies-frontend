@@ -20,7 +20,7 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredientsThunk.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload.data;
+        state.items = action.payload;
       })
       .addCase(fetchIngredientsThunk.rejected, (state, action) => {
         state.status = 'failed';

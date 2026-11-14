@@ -1,0 +1,28 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+}
+
+.link {
+  color: var(--color-gray);
+  text-decoration: none;
+  transition: color 250ms ease;
+
+  &:hover {
+    color: var(--color-black);
+  }
+}
+
+.separator {
+  color: var(--color-gray);
+}
+
+.current {
+  color: var(--color-black);
+  font-weight: 700;
+}

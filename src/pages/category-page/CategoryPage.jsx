@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import Hero from '../../components/home/hero/Hero';
@@ -63,6 +63,7 @@ import css from './CategoryPage.module.scss';
 
 const CategoryPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { category } = useParams();
 
   const recipes = useSelector(selectRecipes);
@@ -115,6 +116,15 @@ const CategoryPage = () => {
       dispatch(clearFavorites());
     }
   }, [dispatch, isAuthenticated]);
+
+  const handleAuthorClick = authorId => {
+    if (!isAuthenticated) {
+      setAuthModal('signIn');
+      return;
+    }
+
+    navigate(`/user/${authorId}`);
+  };
 
   const handlePageChange = nextPage => {
     dispatch(setRecipesPage(nextPage));
@@ -193,6 +203,7 @@ const CategoryPage = () => {
                 recipes={recipes}
                 favoriteIds={favoriteIds}
                 onToggleFavorite={handleToggleFavorite}
+                onAuthorClick={handleAuthorClick}
               />
             )}
 
