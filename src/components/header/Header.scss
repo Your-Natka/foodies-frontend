@@ -11,10 +11,12 @@
 
   &--dark {
     color: var(--color-white);
+    --nav-border-color: var(--color-white);
   }
 
   &--light {
     color: var(--color-black);
+    --nav-border-color: var(--color-black);
   }
 
   &__surface {
@@ -96,7 +98,7 @@
     &:hover,
     &:focus-visible,
     &.active {
-      border-color: var(--color-white);
+      border-color: var(--nav-border-color);
       outline: none;
     }
   }

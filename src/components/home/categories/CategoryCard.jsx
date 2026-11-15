@@ -12,6 +12,16 @@ function CategoryCard({ category, onSelectCategory }) {
           srcSet={`${category.image2x} 2x`}
           alt={category.title}
           loading="lazy"
+          onClick={handleCategoryClick}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              handleCategoryClick();
+            }
+          }}
+          aria-label={`View recipes in ${category.title}`}
         />
       )}
 
