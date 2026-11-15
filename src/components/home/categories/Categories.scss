@@ -1,6 +1,4 @@
 .categories-section {
-  padding-top: 60px;
-  padding-bottom: 60px;
   background-color: var(--color-white);
 
   &__heading {
@@ -106,12 +104,12 @@
     background: rgba(255, 255, 255, 0.2);
     color: var(--color-white);
     font-family: var(--font-family);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     line-height: 24px;
     letter-spacing: -0.02em;
     text-align: center;
-    text-transform: uppercase;
+
     white-space: nowrap;
     cursor: pointer;
   }
@@ -260,7 +258,8 @@
     &__name {
       flex-basis: 118px;
       height: 44px;
-      font-size: 14px;
+      font-size: 16px;
+      line-height: 24px;
     }
 
     &__arrow {
