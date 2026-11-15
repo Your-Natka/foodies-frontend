@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Container from "../common/Container/Container";
 import "./Header.scss";
 
@@ -15,6 +15,11 @@ function Header({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsUserMenuOpen(false);
+  }, [location.pathname]);
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -94,17 +99,22 @@ function Header({
                   aria-expanded={isUserMenuOpen}
                   aria-label="Open user menu"
                 >
-                  {avatarUrl ? (
-                    <img src={avatarUrl} alt="" className="header__avatar" />
-                  ) : (
-                    <span className="header__avatar-placeholder">
-                      {userName.charAt(0).toUpperCase()}
-                    </span>
-                  )}
+                  <img
+                    src={avatarUrl || "/images/chef-food.png"}
+                    alt=""
+                    className="header__avatar"
+                  />
 
                   <span className="header__user-name">{userName}</span>
-                  <span className="header__user-arrow">
-                    {isUserMenuOpen ? "⌃" : "⌄"}
+
+                  <span
+                    className={`header__user-arrow ${
+                      isUserMenuOpen ? "is-open" : ""
+                    }`}
+                  >
+                    <svg width="18" height="18" aria-hidden="true">
+                      <use href="/images/sprite.svg#icon-chevron-down18x18" />
+                    </svg>
                   </span>
                 </button>
 
@@ -115,7 +125,10 @@ function Header({
                       className="header__dropdown-link"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
-                      Profile
+                      <span>Profile</span>
+                      <svg width="18" height="18" aria-hidden="true">
+                        <use href="/images/sprite.svg#icon-avatar-arrow-up-right18x18" />
+                      </svg>
                     </Link>
 
                     <button
@@ -126,7 +139,10 @@ function Header({
                         onLogout?.();
                       }}
                     >
-                      Log out
+                      <span>Log out</span>
+                      <svg width="18" height="18" aria-hidden="true">
+                        <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
+                      </svg>
                     </button>
                   </div>
                 )}

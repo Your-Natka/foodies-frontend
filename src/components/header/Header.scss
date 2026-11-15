@@ -6,18 +6,15 @@
   font-family: var(--font-family);
   color: var(--color-white);
   background-color: transparent;
-  box-shadow: none;
 
   transition: color 250ms ease;
 
   &--dark {
     color: var(--color-white);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   }
 
   &--light {
     color: var(--color-black);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   }
 
   &__surface {
@@ -26,22 +23,21 @@
     background-color: var(--color-black);
     color: var(--color-white);
     border-radius: 30px 30px 0 0;
-    overflow: hidden;
-    box-shadow: none;
+    overflow: visible;
   }
 
   &--light &__surface {
     background-color: var(--color-white);
     color: var(--color-black);
-    box-shadow: none;
   }
 
   &__container {
     position: relative;
-    min-height: 76px;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
     padding-inline: 60px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -129,23 +125,21 @@
 
   &__user {
     position: relative;
+    z-index: 101;
   }
 
   &__user-button {
     min-height: 46px;
     padding: 4px 12px 4px 4px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    border: 0;
+    border: none;
     border-radius: 30px;
     color: var(--color-white);
     background-color: var(--color-dark);
-  }
-
-  &--light &__user-button {
-    color: var(--color-black);
-    background-color: var(--color-light-gray);
+    cursor: pointer;
   }
 
   &__avatar,
@@ -172,19 +166,38 @@
     overflow: hidden;
     font-size: 12px;
     font-weight: 700;
+    line-height: 18px;
+    letter-spacing: -0.02em;
     text-overflow: ellipsis;
     text-transform: uppercase;
     white-space: nowrap;
   }
 
   &__user-arrow {
-    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+      transition: transform 250ms ease;
+    }
+
+    &.is-open svg {
+      transform: rotate(180deg);
+    }
   }
 
   &__user-dropdown {
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
+    z-index: 102;
     min-width: 140px;
     padding: 8px;
     display: flex;
@@ -197,17 +210,51 @@
   }
 
   &__dropdown-link {
+    width: 100%;
+    min-height: 40px;
     padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
     border: 0;
     border-radius: 8px;
-    color: inherit;
+
+    color: var(--color-white);
     background: transparent;
-    font: inherit;
+
+    font-family: "Mulish", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
     text-align: left;
+
     cursor: pointer;
 
-    &:hover {
+    svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition:
+        opacity 200ms ease,
+        transform 200ms ease;
+    }
+
+    &:hover,
+    &:focus-visible {
       background-color: #333333;
+
+      svg {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
   }
 
@@ -221,7 +268,6 @@
 @media screen and (min-width: 768px) and (max-width: 1439px) {
   .header {
     &__container {
-      min-height: 72px;
       padding-inline: 32px;
     }
 
@@ -239,7 +285,6 @@
 @media screen and (max-width: 767px) {
   .header {
     &__container {
-      min-height: 64px;
       padding-inline: 16px;
       gap: 8px;
     }

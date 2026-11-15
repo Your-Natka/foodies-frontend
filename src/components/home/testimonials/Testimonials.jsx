@@ -32,7 +32,7 @@ function Testimonials() {
   }, []);
 
   return (
-    <Container className="testimonials">
+    <Container className="testimonials-section">
       <div className="testimonials__container">
         <p className="testimonials__subtitle">What our customer say</p>
         <h2 className="testimonials__title">Testimonials</h2>
