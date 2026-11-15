@@ -26,7 +26,7 @@ const categoryImages = {
   Vegetarian: "Vegetarian",
 };
 
-function Categories() {
+function Categories({ onSelectCategory }) {
   const [categories, setCategories] = useState([]);
   const [isMobile, setIsMobile] = useState(
     () => window.matchMedia("(max-width: 767px)").matches,
@@ -39,7 +39,6 @@ function Categories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Визначаємо зміну між мобільною та планшетною/десктопною версіями
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
 
@@ -57,7 +56,6 @@ function Categories() {
     };
   }, []);
 
-  // Завантажуємо категорії з Backend
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -124,7 +122,11 @@ function Categories() {
       {!loading && !error && (
         <div className="categories-grid">
           {visibleCategories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onSelectCategory={onSelectCategory}
+            />
           ))}
 
           {hasMoreCategories && (

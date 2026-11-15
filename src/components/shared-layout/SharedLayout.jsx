@@ -31,8 +31,6 @@ function SharedLayout() {
   const darkPages = ["/", "/categories/desserts"];
   const theme = darkPages.includes(pathname) ? "dark" : "light";
 
-  // Якщо гість намагається відкрити захищену сторінку,
-  // відкриваємо Sign In і зберігаємо адресу призначення.
   useEffect(() => {
     const redirectFrom = location.state?.from;
 
@@ -45,7 +43,6 @@ function SharedLayout() {
       setPendingRedirect(redirectFrom);
       setActiveModal("signin");
 
-      // Очищаємо state, щоб модальне вікно не відкривалося повторно.
       navigate(
         {
           pathname,
@@ -70,7 +67,8 @@ function SharedLayout() {
     setPendingRedirect(null);
   };
 
-  const handleSignInSuccess = () => {
+  // Спільна логіка після успішного входу або реєстрації.
+  const handleAuthSuccess = () => {
     setActiveModal(null);
 
     if (pendingRedirect) {
@@ -98,7 +96,7 @@ function SharedLayout() {
   };
 
   return (
-    <>
+    <div className="app-layout">
       <Header
         theme={theme}
         isAuthenticated={isAuthenticated}
@@ -117,18 +115,19 @@ function SharedLayout() {
       <SignInModal
         isOpen={activeModal === "signin"}
         onClose={closeModal}
-        onSuccess={handleSignInSuccess}
+        onSuccess={handleAuthSuccess}
         onSwitchToSignUp={switchToSignUp}
       />
 
       <SignUpModal
         isOpen={activeModal === "signup"}
         onClose={closeModal}
+        onSuccess={handleAuthSuccess}
         onSwitchToSignIn={switchToSignIn}
       />
 
       <LogoutModal isOpen={activeModal === "logout"} onClose={closeModal} />
-    </>
+    </div>
   );
 }
 
