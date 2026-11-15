@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation, useNavigate, Outlet } from "react-router-dom";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -13,20 +12,80 @@ import LogoutModal from "../auth/logout-modal/LogoutModal";
 import {
   selectUser,
   selectIsAuthenticated,
+  selectIsSessionChecked,
 } from "../../redux/slices/auth/authSlice";
 
 function SharedLayout() {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { pathname } = location;
 
   const user = useSelector(selectUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isSessionChecked = useSelector(selectIsSessionChecked);
 
   const [activeModal, setActiveModal] = useState(null);
+  const [pendingRedirect, setPendingRedirect] = useState(null);
 
   const darkPages = ["/", "/categories/desserts"];
   const theme = darkPages.includes(pathname) ? "dark" : "light";
 
-  const closeModal = () => setActiveModal(null);
+  // Якщо гість намагається відкрити захищену сторінку,
+  // відкриваємо Sign In і зберігаємо адресу призначення.
+  useEffect(() => {
+    const redirectFrom = location.state?.from;
+
+    if (
+      isSessionChecked &&
+      !isAuthenticated &&
+      pathname === "/" &&
+      redirectFrom
+    ) {
+      setPendingRedirect(redirectFrom);
+      setActiveModal("signin");
+
+      // Очищаємо state, щоб модальне вікно не відкривалося повторно.
+      navigate(
+        {
+          pathname,
+          search: location.search,
+          hash: location.hash,
+        },
+        { replace: true, state: null },
+      );
+    }
+  }, [
+    isSessionChecked,
+    isAuthenticated,
+    pathname,
+    location.state,
+    location.search,
+    location.hash,
+    navigate,
+  ]);
+
+  const closeModal = () => {
+    setActiveModal(null);
+    setPendingRedirect(null);
+  };
+
+  const handleSignInSuccess = () => {
+    setActiveModal(null);
+
+    if (pendingRedirect) {
+      navigate(
+        {
+          pathname: pendingRedirect.pathname,
+          search: pendingRedirect.search || "",
+          hash: pendingRedirect.hash || "",
+        },
+        { replace: true },
+      );
+    }
+
+    setPendingRedirect(null);
+  };
 
   const openSignIn = () => setActiveModal("signin");
   const openSignUp = () => setActiveModal("signup");
@@ -58,6 +117,7 @@ function SharedLayout() {
       <SignInModal
         isOpen={activeModal === "signin"}
         onClose={closeModal}
+        onSuccess={handleSignInSuccess}
         onSwitchToSignUp={switchToSignUp}
       />
 

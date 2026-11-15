@@ -1,10 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 function CategoryCard({ category }) {
+  const navigate = useNavigate();
+
   const handleCategoryClick = () => {
-    console.log("Selected category:", category.id);
+    navigate(`/recipes/${category.id}`);
   };
 
   const handleRecipeClick = () => {
-    console.log("Open recipe from:", category.id);
+    navigate(`/recipes/${category.id}`);
   };
 
   return (
@@ -32,9 +36,11 @@ function CategoryCard({ category }) {
           type="button"
           className="category-card__arrow"
           onClick={handleRecipeClick}
-          aria-label={`Open a recipe from ${category.title}`}
+          aria-label={`View recipes in ${category.title}`}
         >
-          ↗
+          <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true">
+            <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
+          </svg>
         </button>
       </div>
     </article>

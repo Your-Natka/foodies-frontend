@@ -1,15 +1,18 @@
+.testimonials-section {
+  width: 100%;
+  padding: 60px 229px;
+}
+
 .testimonials {
-  padding-top: 60px;
-  padding-bottom: 60px;
+   &__container {
+  width: 100%;
+  max-width: 822px;
+  
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  &__container {
-    width: 100%;
-    max-width: 822px;
-
-    text-align: center;
+  text-align: center;
   }
 
   &__subtitle {
@@ -19,15 +22,19 @@
     font-weight: 500;
     line-height: 24px;
     letter-spacing: -0.02em;
+    text-align: center;
   }
 
   &__title {
+    width: 100%;
+    margin: 0;
     font-family: "Mulish", sans-serif;
     font-size: 40px;
     font-weight: 800;
     line-height: 44px;
     letter-spacing: -0.02em;
     text-transform: uppercase;
+    text-align: center;
   }
 }
 
@@ -35,18 +42,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 
   &__quote {
     display: block;
     align-self: flex-start;
-    flex-direction: column;
     width: 59px;
     height: 48px;
     margin: 0 0 20px 40px;
   }
 
   &__text {
-    font-family: "Mulish", sans-serif;
+    width: 100%;
+    margin-bottom: 80px;
     font-size: 24px;
     font-weight: 500;
     line-height: 36px;
@@ -56,8 +64,6 @@
   }
 
   &__author {
-    margin: 0;
-    font-family: "Mulish", sans-serif;
     font-size: 20px;
     font-weight: 800;
     line-height: 24px;
@@ -93,10 +99,20 @@
   }
 }
 @media (min-width: 768px) and (max-width: 1439px) {
+  .testimonials-section {
+    padding: 50px;
+  }
+
   .testimonials {
     &__container {
       padding-left: 24px;
       padding-right: 24px;
     }
+  }
+}
+
+@media (max-width: 767px) {
+  .testimonials-section {
+    padding: 32px;
   }
 }

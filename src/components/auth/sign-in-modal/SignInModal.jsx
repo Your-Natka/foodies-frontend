@@ -51,7 +51,7 @@ function PasswordField({ visible, onToggle }) {
   );
 }
 
-function SignInModal({ isOpen, onClose, onSwitchToSignUp }) {
+function SignInModal({ isOpen, onClose, onSuccess, onSwitchToSignUp }) {
   const dispatch = useDispatch();
   const status = useSelector(selectAuthStatus);
   const isLoading = status === "loading";
@@ -63,7 +63,7 @@ function SignInModal({ isOpen, onClose, onSwitchToSignUp }) {
       await dispatch(loginThunk(values)).unwrap();
 
       toast.success("Welcome back!");
-      onClose();
+      onSuccess();
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Login failed");
     }
