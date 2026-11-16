@@ -4,7 +4,8 @@ import CategoryCard from "./CategoryCard";
 import { getCategories } from "../../../services/api/categoriesApi";
 import "./Categories.scss";
 
-const INITIAL_CATEGORIES_COUNT = 11;
+const DESKTOP_CATEGORIES_COUNT = 11;
+const MOBILE_CATEGORIES_COUNT = 8;
 
 const categoryImages = {
   Beef: "Beef",
@@ -25,19 +26,40 @@ const categoryImages = {
   Vegetarian: "Vegetarian",
 };
 
-function Categories() {
+function Categories({ onSelectCategory }) {
   const [categories, setCategories] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
+  const [visibleCount, setVisibleCount] = useState(() =>
+    window.matchMedia("(max-width: 767px)").matches
+      ? MOBILE_CATEGORIES_COUNT
+      : DESKTOP_CATEGORIES_COUNT,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const handleScreenChange = (event) => {
+      setIsMobile(event.matches);
+      setVisibleCount(
+        event.matches ? MOBILE_CATEGORIES_COUNT : DESKTOP_CATEGORIES_COUNT,
+      );
+    };
+
+    mediaQuery.addEventListener("change", handleScreenChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleScreenChange);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
-
-        console.log("Categories from API:", data);
-        console.log("Image mapping:", categoryImages);
 
         setCategories(
           data.map((category) => {
@@ -69,14 +91,24 @@ function Categories() {
     fetchCategories();
   }, []);
 
-  const visibleCategories = showAll
-    ? categories
-    : categories.slice(0, INITIAL_CATEGORIES_COUNT);
+  const initialCount = isMobile
+    ? MOBILE_CATEGORIES_COUNT
+    : DESKTOP_CATEGORIES_COUNT;
+
+  const visibleCategories = categories.slice(0, visibleCount);
+  const hasMoreCategories = visibleCount < categories.length;
+
+  const handleLoadMore = () => {
+    setVisibleCount((currentCount) =>
+      Math.min(currentCount + initialCount, categories.length),
+    );
+  };
 
   return (
     <Section className="categories-section" id="categories">
       <div className="categories-section__heading">
         <h2 className="categories-section__title">Categories</h2>
+
         <p className="categories-section__description">
           Discover a limitless world of culinary possibilities and enjoy
           exquisite recipes that combine taste, style and the warm atmosphere of
@@ -90,14 +122,18 @@ function Categories() {
       {!loading && !error && (
         <div className="categories-grid">
           {visibleCategories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onSelectCategory={onSelectCategory}
+            />
           ))}
 
-          {!showAll && categories.length > INITIAL_CATEGORIES_COUNT && (
+          {hasMoreCategories && (
             <button
               type="button"
               className="categories-grid__all"
-              onClick={() => setShowAll(true)}
+              onClick={handleLoadMore}
             >
               <span>ALL CATEGORIES</span>
             </button>

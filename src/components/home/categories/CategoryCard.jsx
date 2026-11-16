@@ -1,10 +1,6 @@
-function CategoryCard({ category }) {
+function CategoryCard({ category, onSelectCategory }) {
   const handleCategoryClick = () => {
-    console.log("Selected category:", category.id);
-  };
-
-  const handleRecipeClick = () => {
-    console.log("Open recipe from:", category.id);
+    onSelectCategory(category.title);
   };
 
   return (
@@ -16,6 +12,16 @@ function CategoryCard({ category }) {
           srcSet={`${category.image2x} 2x`}
           alt={category.title}
           loading="lazy"
+          onClick={handleCategoryClick}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              handleCategoryClick();
+            }
+          }}
+          aria-label={`View recipes in ${category.title}`}
         />
       )}
 
@@ -31,10 +37,12 @@ function CategoryCard({ category }) {
         <button
           type="button"
           className="category-card__arrow"
-          onClick={handleRecipeClick}
-          aria-label={`Open a recipe from ${category.title}`}
+          onClick={handleCategoryClick}
+          aria-label={`View recipes in ${category.title}`}
         >
-          ↗
+          <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true">
+            <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
+          </svg>
         </button>
       </div>
     </article>

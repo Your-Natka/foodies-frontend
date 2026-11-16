@@ -1,6 +1,4 @@
 .categories-section {
-  padding-top: 60px;
-  padding-bottom: 60px;
   background-color: var(--color-white);
 
   &__heading {
@@ -36,10 +34,10 @@
   grid-auto-rows: 368px;
   gap: 20px;
 
-  .category-card:nth-child(3),
-  .category-card:nth-child(4),
-  .category-card:nth-child(8),
-  .category-card:nth-child(10) {
+  .category-card:nth-child(12n + 3),
+  .category-card:nth-child(12n + 4),
+  .category-card:nth-child(12n + 8),
+  .category-card:nth-child(12n + 10) {
     grid-column: span 2;
   }
 
@@ -101,19 +99,17 @@
     width: fit-content;
     height: 44px;
     padding: 16px 10px;
-
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 30px;
     background: rgba(255, 255, 255, 0.2);
-
     color: var(--color-white);
     font-family: var(--font-family);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     line-height: 24px;
     letter-spacing: -0.02em;
     text-align: center;
-    text-transform: uppercase;
+
     white-space: nowrap;
     cursor: pointer;
   }
@@ -129,19 +125,23 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     background: transparent;
-    color: var(--color-white);
-    font-size: 24px;
-    line-height: 1;
     cursor: pointer;
     transition:
       background-color 250ms ease,
       border-color 250ms ease;
+
+    svg {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--color-white);
+    }
   }
 
-  &__arrow:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: var(--color-white);
-  }
   &__all {
     display: flex;
     align-items: center;
@@ -165,11 +165,6 @@
 }
 
 @media (min-width: 768px) and (max-width: 1439px) {
-  .categories-section {
-    padding-top: 64px;
-    padding-bottom: 64px;
-  }
-
   .categories-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: 369px;
@@ -194,9 +189,6 @@
 
 @media (max-width: 767px) {
   .categories-section {
-    padding-top: 48px;
-    padding-bottom: 48px;
-
     &__heading {
       margin-bottom: 24px;
     }
@@ -265,9 +257,9 @@
 
     &__name {
       flex-basis: 118px;
-      width: 118px;
       height: 44px;
-      font-size: 14px;
+      font-size: 16px;
+      line-height: 24px;
     }
 
     &__arrow {

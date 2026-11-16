@@ -19,7 +19,7 @@ function Hero() {
             you in the aromas and tastes of various cuisines.
           </p>
 
-          <Link to="/add" className="hero__button">
+          <Link to="/recipe/add" className="hero__button">
             Add recipe
           </Link>
 

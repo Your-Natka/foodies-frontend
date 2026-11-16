@@ -6,6 +6,7 @@ const RecipeList = ({
   recipes = [],
   favoriteIds = [],
   onToggleFavorite,
+  onAuthorClick,
 }) => {
   return (
     <ul className={css.list}>
@@ -15,6 +16,7 @@ const RecipeList = ({
           recipe={recipe}
           isFavorite={favoriteIds.includes(recipe.id)}
           onToggleFavorite={onToggleFavorite}
+          onAuthorClick={onAuthorClick}
         />
       ))}
     </ul>

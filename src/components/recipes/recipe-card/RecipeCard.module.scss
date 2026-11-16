@@ -16,7 +16,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  gap: 12px;
+  gap: 8px;
   color: inherit;
   text-decoration: none;
 }
@@ -40,9 +40,9 @@
   margin: 0;
   overflow: hidden;
   font-family: var(--font-family);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.3;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--color-black);
@@ -55,9 +55,9 @@
   margin: 0;
   overflow: hidden;
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.4;
   letter-spacing: -0.02em;
   color: var(--color-dark);
   -webkit-box-orient: vertical;
@@ -85,13 +85,20 @@
   font-weight: 700;
   line-height: 1.5;
   color: var(--color-dark);
+
+  border: none;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
 }
 
 .avatar,
 .avatarFallback {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
 }
 
@@ -127,8 +134,8 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   padding: 11px;
   border: 1px solid var(--color-gray);
   border-radius: 50%;
@@ -147,8 +154,8 @@
 
 .icon {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   fill: none;
   stroke: currentColor;
 }
@@ -163,8 +170,8 @@
 }
 
 .actionButton:hover {
-  border-color: #050505;
-  background-color: #050505;
+  border-color: var(--color-black);
+  background-color: var(--color-black);
   color: var(--color-white);
 }
 
@@ -203,10 +210,23 @@
   .description {
     font-size: 16px;
   }
+  .avatar,
+  .avatarFallback {
+    width: 40px;
+    height: 40px;
+  }
 
   .author {
     font-size: 16px;
     gap: 4px;
+  }
+  .actionButton {
+    width: 42px;
+    height: 42px;
+  }
+  .icon {
+    width: 18px;
+    height: 18px;
   }
 
 }

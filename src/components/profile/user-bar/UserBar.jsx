@@ -139,7 +139,7 @@ function UserBar({ user, onLogout, onProfileUpdate, isOwnProfile = true }) {
             />
           ) : (
             <img
-              src="/images/default-chef-avatar.png"
+              src="/images/chef-food.png"
               alt="Default chef avatar"
               onError={(event) => {
                 event.currentTarget.style.display = "none";

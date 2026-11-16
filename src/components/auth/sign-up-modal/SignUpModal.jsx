@@ -65,7 +65,7 @@ function PasswordField({ name, placeholder, visible, onToggle }) {
   );
 }
 
-function SignUpModal({ isOpen, onClose, onSwitchToSignIn }) {
+function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
   const dispatch = useDispatch();
   const status = useSelector(selectAuthStatus);
   const isLoading = status === "loading";
@@ -84,7 +84,7 @@ function SignUpModal({ isOpen, onClose, onSwitchToSignIn }) {
       await dispatch(registerThunk(userData)).unwrap();
 
       toast.success("Registration successful!");
-      onClose();
+      onSuccess();
     } catch (error) {
       toast.error(typeof error === "string" ? error : "Registration failed");
     }

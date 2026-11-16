@@ -1,0 +1,43 @@
+.categorySection {
+  margin: 0;
+  background: transparent;
+}
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.sidebar {
+  min-width: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+
+/* Tablet */
+
+@media (min-width: 768px) {
+  .catalog {
+    gap: 40px;
+    margin-top: 40px;
+  }
+}
+
+/* Desktop */
+
+@media (min-width: 1440px) {
+  .catalog {
+    display: grid;
+    grid-template-columns: 345px minmax(0, 1fr);
+    column-gap: 40px;
+    align-items: start;
+    margin-top: 40px;
+  }
+}
