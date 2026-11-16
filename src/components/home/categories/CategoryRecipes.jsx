@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import CategoryInfo from "../../recipes/category-info/CategoryInfo";
@@ -9,9 +9,6 @@ import RecipeList from "../../recipes/recipe-list/RecipeList";
 import Pagination from "../../shared/pagination/Pagination";
 import LoadingState from "../../recipes/recipe-states/LoadingState";
 import EmptyState from "../../recipes/recipe-states/EmptyState";
-
-import SignInModal from "../../auth/sign-in-modal/SignInModal";
-import SignUpModal from "../../auth/sign-up-modal/SignUpModal";
 
 import { selectIngredients } from "../../../redux/slices/ingredients/ingredientsSlice";
 import { selectAreas } from "../../../redux/slices/areas/areasSlice";
@@ -54,6 +51,7 @@ const CATEGORY_DESCRIPTIONS = {
 const CategoryRecipes = ({ categoryName, onBack }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { onRequireAuth } = useOutletContext();
 
   const recipes = useSelector(selectRecipes);
   const status = useSelector(selectRecipesStatus);
@@ -69,7 +67,6 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
 
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [selectedArea, setSelectedArea] = useState("");
-  const [authModal, setAuthModal] = useState(null);
 
   const [isMobile, setIsMobile] = useState(
     () => window.matchMedia("(max-width: 767px)").matches,
@@ -133,7 +130,7 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
   // Guest cannot open another user's profile
   const handleAuthorClick = (authorId) => {
     if (!isAuthenticated) {
-      setAuthModal("signIn");
+      onRequireAuth();
       return;
     }
 
@@ -166,7 +163,7 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
   // Guest must sign in to add or remove favorites
   const handleToggleFavorite = async (recipeId) => {
     if (!isAuthenticated) {
-      setAuthModal("signIn");
+      onRequireAuth();
       return;
     }
 
@@ -242,18 +239,6 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
           </div>
         </div>
       </div>
-
-      <SignInModal
-        isOpen={authModal === "signIn"}
-        onClose={() => setAuthModal(null)}
-        onSwitchToSignUp={() => setAuthModal("signUp")}
-      />
-
-      <SignUpModal
-        isOpen={authModal === "signUp"}
-        onClose={() => setAuthModal(null)}
-        onSwitchToSignIn={() => setAuthModal("signIn")}
-      />
     </section>
   );
 };

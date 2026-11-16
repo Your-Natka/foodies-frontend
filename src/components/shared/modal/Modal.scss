@@ -105,3 +105,18 @@
     }
   }
 }
+/* Move modal slightly higher on the screen */
+.modal {
+  transform: translateY(-24px);
+}
+
+/* Keep notifications above modal backdrop */
+.Toastify__toast-container {
+  z-index: 11000 !important;
+}
+
+@media screen and (max-width: 600px) {
+  .modal {
+    transform: translateY(-12px);
+  }
+}

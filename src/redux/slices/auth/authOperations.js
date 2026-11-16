@@ -36,11 +36,12 @@ export const loginThunk = createAsyncThunk(
 );
 
 export const logoutThunk = createAsyncThunk("auth/logout", async () => {
-  // Навіть якщо сервер не відповів, локальну сесію потрібно завершити.
   try {
     await logoutUser();
+
+    return { serverLogoutSucceeded: true };
   } catch {
-    // Credentials будуть очищені в extraReducers.
+    return { serverLogoutSucceeded: false };
   }
 });
 

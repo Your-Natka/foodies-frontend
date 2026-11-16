@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -11,18 +12,37 @@ function LogoutModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await dispatch(logoutThunk());
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-    toast.success("You have been logged out.");
-    onClose();
-    navigate("/", { replace: true });
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+
+    try {
+      const result = await dispatch(logoutThunk()).unwrap();
+
+      if (result.serverLogoutSucceeded) {
+        toast.success("You have been logged out.");
+      } else {
+        toast.warning(
+          "Your local session has ended, but the server could not confirm logout.",
+        );
+      }
+
+      onClose();
+      navigate("/", { replace: true, state: null });
+    } catch {
+      toast.error("Something went wrong while logging out.");
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={isLoggingOut ? undefined : onClose}
       title="Are you logging out?"
       className="modal--auth modal--logout"
     >
@@ -36,14 +56,16 @@ function LogoutModal({ isOpen, onClose }) {
             type="button"
             className="logout-modal__confirm"
             onClick={handleLogout}
+            disabled={isLoggingOut}
           >
-            Log out
+            {isLoggingOut ? "Logging out..." : "Log out"}
           </button>
 
           <button
             type="button"
             className="logout-modal__cancel"
             onClick={onClose}
+            disabled={isLoggingOut}
           >
             Cancel
           </button>

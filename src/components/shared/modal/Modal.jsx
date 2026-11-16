@@ -7,7 +7,7 @@ function Modal({ isOpen, onClose, title, children, className = "" }) {
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
-        onClose();
+        onClose?.();
       }
     };
 
@@ -27,7 +27,7 @@ function Modal({ isOpen, onClose, title, children, className = "" }) {
       className="modal-backdrop"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
-          onClose();
+          onClose?.();
         }
       }}
     >

@@ -107,7 +107,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isValid, dirty }) => (
+        {({ isValid, dirty, isValidating }) => (
           <Form className="auth-form">
             <div className="auth-form__field">
               <Field
@@ -117,6 +117,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
                 aria-label="Name"
                 className="auth-form__input"
               />
+
               <ErrorMessage
                 name="name"
                 component="span"
@@ -132,6 +133,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
                 aria-label="Email"
                 className="auth-form__input"
               />
+
               <ErrorMessage
                 name="email"
                 component="span"
@@ -146,6 +148,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
                 visible={showPassword}
                 onToggle={() => setShowPassword((current) => !current)}
               />
+
               <ErrorMessage
                 name="password"
                 component="span"
@@ -160,6 +163,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
                 visible={showConfirmPassword}
                 onToggle={() => setShowConfirmPassword((current) => !current)}
               />
+
               <ErrorMessage
                 name="confirmPassword"
                 component="span"
@@ -170,7 +174,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
             <button
               type="submit"
               className="auth-form__submit"
-              disabled={isLoading || !isValid || !dirty}
+              disabled={isLoading || isValidating || !isValid || !dirty}
             >
               {isLoading ? "Please wait..." : "CREATE"}
             </button>

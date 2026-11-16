@@ -16,7 +16,14 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
-        <ToastContainer position="top-right" autoClose={3000} />
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          theme="light"
+        />
       </BrowserRouter>
     </Provider>
   </StrictMode>,

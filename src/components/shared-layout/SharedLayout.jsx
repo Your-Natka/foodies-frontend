@@ -67,7 +67,6 @@ function SharedLayout() {
     setPendingRedirect(null);
   };
 
-  // Спільна логіка після успішного входу або реєстрації.
   const handleAuthSuccess = () => {
     setActiveModal(null);
 
@@ -92,6 +91,7 @@ function SharedLayout() {
   const switchToSignIn = () => setActiveModal("signin");
 
   const handleLogout = () => {
+    setPendingRedirect(null);
     setActiveModal("logout");
   };
 
@@ -108,7 +108,12 @@ function SharedLayout() {
         onLogout={handleLogout}
       />
 
-      <Outlet context={{ onLogout: handleLogout }} />
+      <Outlet
+        context={{
+          onLogout: handleLogout,
+          onRequireAuth: openSignIn,
+        }}
+      />
 
       <Footer theme={theme} />
 

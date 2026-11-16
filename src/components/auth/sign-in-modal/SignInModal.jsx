@@ -14,7 +14,11 @@ const validationSchema = Yup.object({
   email: Yup.string()
     .email("Enter a valid email")
     .required("Email is required"),
-  password: Yup.string().required("Password is required"),
+
+  password: Yup.string()
+    .min(8, "Password must contain at least 8 characters")
+    .max(72, "Password is too long")
+    .required("Password is required"),
 });
 
 function PasswordField({ visible, onToggle }) {
@@ -81,7 +85,7 @@ function SignInModal({ isOpen, onClose, onSuccess, onSwitchToSignUp }) {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isValid, dirty }) => (
+        {({ isValid, dirty, isValidating }) => (
           <Form className="auth-form">
             <div className="auth-form__field">
               <Field
@@ -91,6 +95,7 @@ function SignInModal({ isOpen, onClose, onSuccess, onSwitchToSignUp }) {
                 aria-label="Email"
                 className="auth-form__input"
               />
+
               <ErrorMessage
                 name="email"
                 component="span"
@@ -103,6 +108,7 @@ function SignInModal({ isOpen, onClose, onSuccess, onSwitchToSignUp }) {
                 visible={showPassword}
                 onToggle={() => setShowPassword((current) => !current)}
               />
+
               <ErrorMessage
                 name="password"
                 component="span"
@@ -113,7 +119,7 @@ function SignInModal({ isOpen, onClose, onSuccess, onSwitchToSignUp }) {
             <button
               type="submit"
               className="auth-form__submit"
-              disabled={isLoading || !isValid || !dirty}
+              disabled={isLoading || isValidating || !isValid || !dirty}
             >
               {isLoading ? "Please wait..." : "SIGN IN"}
             </button>

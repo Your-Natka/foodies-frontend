@@ -1,11 +1,12 @@
-import RecipeCard from '../recipe-card/RecipeCard';
+import RecipeCard from "../recipe-card/RecipeCard";
 
-import css from './PopularRecipes.module.scss';
+import css from "./PopularRecipes.module.scss";
 
 const PopularRecipes = ({
   recipes = [],
   favoriteIds = [],
   onToggleFavorite,
+  onAuthorClick,
 }) => {
   if (!recipes.length) {
     return null;
@@ -16,12 +17,13 @@ const PopularRecipes = ({
       <h3 className={css.title}>POPULAR RECIPES</h3>
 
       <ul className={css.list}>
-        {recipes.map(recipe => (
+        {recipes.map((recipe) => (
           <RecipeCard
             key={recipe.id}
             recipe={recipe}
             isFavorite={favoriteIds.includes(recipe.id)}
             onToggleFavorite={onToggleFavorite}
+            onAuthorClick={onAuthorClick}
           />
         ))}
       </ul>
