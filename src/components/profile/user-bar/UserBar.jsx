@@ -1,17 +1,44 @@
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import { updateAvatar } from "../../../services/api/usersApi";
-import { updateUser } from "../../../redux/slices/auth/authSlice";
+import {
+  updateAvatar,
+  followUser,
+  unfollowUser,
+} from "../../../services/api/usersApi";
+
+import {
+  updateUser,
+  selectIsAuthenticated,
+} from "../../../redux/slices/auth/authSlice";
 
 import "./UserBar.scss";
 
-function UserBar({ user, onLogout, onProfileUpdate }) {
+function UserBar({ user, onLogout, onProfileUpdate, isOwnProfile = true }) {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   const fileInputRef = useRef(null);
+
   const [isUploading, setIsUploading] = useState(false);
-  const [avatarError, setAvatarError] = useState(false);
+  const [failedAvatarUrl, setFailedAvatarUrl] = useState(null);
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const [followOverride, setFollowOverride] = useState(null);
+
+  const avatarUrl = user?.avatar;
+  const avatarError = avatarUrl === failedAvatarUrl;
+
+  const serverIsFollowing = Boolean(user?.isFollowing);
+
+  const hasFollowOverride =
+    followOverride &&
+    String(followOverride.userId) === String(user?.id) &&
+    followOverride.previousValue === serverIsFollowing;
+
+  const isFollowing = hasFollowOverride
+    ? followOverride.value
+    : serverIsFollowing;
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -39,8 +66,10 @@ function UserBar({ user, onLogout, onProfileUpdate }) {
       }
 
       dispatch(updateUser(updatedUser));
-      setAvatarError(false);
+      setFailedAvatarUrl(null);
+
       await onProfileUpdate?.();
+
       toast.success("Profile photo updated successfully.");
     } catch (error) {
       toast.error(
@@ -52,7 +81,51 @@ function UserBar({ user, onLogout, onProfileUpdate }) {
     }
   };
 
-  const avatarUrl = user?.avatar;
+  const handleFollowToggle = async () => {
+    if (!isAuthenticated) {
+      toast.info("Please sign in to follow users.");
+      return;
+    }
+
+    if (!user?.id || isFollowLoading || isOwnProfile) return;
+
+    const targetUserId = user.id;
+    const wasFollowing = isFollowing;
+
+    setIsFollowLoading(true);
+
+    try {
+      if (wasFollowing) {
+        await unfollowUser(targetUserId);
+      } else {
+        await followUser(targetUserId);
+      }
+
+      setFollowOverride({
+        userId: targetUserId,
+        previousValue: serverIsFollowing,
+        value: !wasFollowing,
+      });
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to update following status.",
+      );
+      setIsFollowLoading(false);
+      return;
+    }
+
+    try {
+      const updatedProfile = await onProfileUpdate?.();
+
+      if (!updatedProfile && onProfileUpdate) {
+        toast.error("Following updated, but profile refresh failed.");
+      }
+    } catch {
+      toast.error("Following updated, but profile refresh failed.");
+    } finally {
+      setIsFollowLoading(false);
+    }
+  };
 
   return (
     <section className="user-bar">
@@ -62,7 +135,7 @@ function UserBar({ user, onLogout, onProfileUpdate }) {
             <img
               src={avatarUrl}
               alt={`${user?.name || "User"} profile`}
-              onError={() => setAvatarError(true)}
+              onError={() => setFailedAvatarUrl(avatarUrl)}
             />
           ) : (
             <img
@@ -75,32 +148,38 @@ function UserBar({ user, onLogout, onProfileUpdate }) {
           )}
         </div>
 
-        <button
-          className="user-bar__avatar-button"
-          type="button"
-          onClick={handleAvatarClick}
-          disabled={isUploading}
-          aria-label="Upload profile photo"
-        >
-          {isUploading ? "…" : "+"}
-        </button>
+        {isOwnProfile && (
+          <>
+            <button
+              className="user-bar__avatar-button"
+              type="button"
+              onClick={handleAvatarClick}
+              disabled={isUploading}
+              aria-label="Upload profile photo"
+            >
+              {isUploading ? "…" : "+"}
+            </button>
 
-        <input
-          ref={fileInputRef}
-          className="user-bar__file-input"
-          type="file"
-          accept="image/*"
-          onChange={handleAvatarChange}
-        />
+            <input
+              ref={fileInputRef}
+              className="user-bar__file-input"
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+            />
+          </>
+        )}
       </div>
 
       <h1 className="user-bar__name">{user?.name || "User"}</h1>
 
       <dl className="user-bar__details">
-        <div className="user-bar__detail">
-          <dt>Email:</dt>
-          <dd>{user?.email || "—"}</dd>
-        </div>
+        {isOwnProfile && (
+          <div className="user-bar__detail">
+            <dt>Email:</dt>
+            <dd>{user?.email || "—"}</dd>
+          </div>
+        )}
 
         <div className="user-bar__detail">
           <dt>Added recipes:</dt>
@@ -109,7 +188,7 @@ function UserBar({ user, onLogout, onProfileUpdate }) {
 
         <div className="user-bar__detail">
           <dt>Favorites:</dt>
-          <dd>{user?.favoritesCount ?? 0}</dd>
+          <dd>{user?.favoritesCount ?? "—"}</dd>
         </div>
 
         <div className="user-bar__detail">
@@ -119,13 +198,26 @@ function UserBar({ user, onLogout, onProfileUpdate }) {
 
         <div className="user-bar__detail">
           <dt>Following:</dt>
-          <dd>{user?.followingCount ?? 0}</dd>
+          <dd>{user?.followingCount ?? "—"}</dd>
         </div>
       </dl>
 
-      <button className="user-bar__logout" type="button" onClick={onLogout}>
-        LOG OUT
-      </button>
+      {isOwnProfile && (
+        <button className="user-bar__logout" type="button" onClick={onLogout}>
+          LOG OUT
+        </button>
+      )}
+
+      {!isOwnProfile && (
+        <button
+          className="user-bar__follow"
+          type="button"
+          onClick={handleFollowToggle}
+          disabled={isFollowLoading}
+        >
+          {isFollowLoading ? "LOADING..." : isFollowing ? "UNFOLLOW" : "FOLLOW"}
+        </button>
+      )}
     </section>
   );
 }

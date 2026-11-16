@@ -1,4 +1,9 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+  useOutletContext,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
@@ -11,6 +16,8 @@ function PrivateRoute() {
   const isSessionChecked = useSelector(selectIsSessionChecked);
   const location = useLocation();
 
+  const outletContext = useOutletContext();
+
   if (!isSessionChecked) {
     return <p>Loading...</p>;
   }
@@ -19,7 +26,7 @@ function PrivateRoute() {
     return <Navigate to="/" replace state={{ from: location }} />;
   }
 
-  return <Outlet />;
+  return <Outlet context={outletContext} />;
 }
 
 export default PrivateRoute;
