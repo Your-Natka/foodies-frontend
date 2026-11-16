@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Section from "../../common/Section/Section";
 import CategoryCard from "./CategoryCard";
 import { getCategories } from "../../../services/api/categoriesApi";
+import LoadingState from "../../recipes/recipe-states/LoadingState";
 import "./Categories.scss";
 
 const DESKTOP_CATEGORIES_COUNT = 11;
@@ -116,7 +117,7 @@ function Categories({ onSelectCategory }) {
         </p>
       </div>
 
-      {loading && <p>Loading categories...</p>}
+      {loading && <LoadingState />}
       {error && <p>{error}</p>}
 
       {!loading && !error && (
