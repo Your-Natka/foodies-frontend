@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "./RecipeListItem.scss";
 
 function RecipeListItem({
@@ -8,29 +9,63 @@ function RecipeListItem({
   showRemoveButton = false,
   isRemoving = false,
 }) {
+  const navigate = useNavigate();
+
+  const {
+    id,
+    title = "Untitled recipe",
+    description = "",
+    thumb,
+    image,
+  } = recipe;
+
+  const imageSrc = thumb || image;
+
+  const handleOpen = () => {
+    if (onOpen) {
+      onOpen(recipe);
+    } else if (id) {
+      navigate(`/recipe/${id}`);
+    }
+  };
+
   return (
     <li className="recipe-list-item">
       <div className="recipe-list-item__image">
-        {(recipe.thumb || recipe.image) && (
-          <img src={recipe.thumb || recipe.image} alt={recipe.title} />
-        )}
+        {imageSrc && <img src={imageSrc} alt={title} loading="lazy" />}
       </div>
 
       <div className="recipe-list-item__content">
-        <h3 className="recipe-list-item__title">{recipe.title}</h3>
+        <h3 className="recipe-list-item__title">{title}</h3>
 
-        <p className="recipe-list-item__description">{recipe.description}</p>
+        {description && (
+          <p className="recipe-list-item__description">{description}</p>
+        )}
       </div>
 
       <div className="recipe-list-item__actions">
         <button
           type="button"
           className="recipe-list-item__button"
-          onClick={() => onOpen?.(recipe)}
-          disabled={!onOpen}
-          aria-label={`Open ${recipe.title}`}
+          onClick={handleOpen}
+          disabled={!onOpen && !id}
+          aria-label={`Open ${title}`}
         >
-          ↗
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 17L17 7M8 7h9v9"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
 
         {showRemoveButton && (
@@ -39,7 +74,7 @@ function RecipeListItem({
             className="recipe-list-item__button"
             onClick={() => onRemove?.(recipe)}
             disabled={isRemoving || !onRemove}
-            aria-label={`${removeLabel}: ${recipe.title}`}
+            aria-label={`${removeLabel}: ${title}`}
             aria-busy={isRemoving}
           >
             <svg

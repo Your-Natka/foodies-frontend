@@ -2,18 +2,31 @@ import { useSearchParams } from "react-router-dom";
 
 import ProfileRecipes from "../profile-recipes/ProfileRecipes";
 import ProfileFavourites from "../profile-favourites/ProfileFavourites";
+import ProfileFollowers from "../profile-followers/ProfileFollowers";
+import UserRecipes from "../user-recipes/UserRecipes";
 
 import "./TabsList.scss";
 
-const tabs = [
+const ownTabs = [
   { id: "recipes", label: "My Recipes" },
   { id: "favourites", label: "My Favorites" },
   { id: "followers", label: "Followers" },
   { id: "following", label: "Following" },
 ];
 
-function TabsList({ onProfileUpdate }) {
+const otherTabs = [
+  { id: "recipes", label: "Recipes" },
+  { id: "followers", label: "Followers" },
+];
+
+function TabsList({
+  isOwnProfile = true,
+  profileUserId,
+  onProfileUpdate,
+  recipes = [],
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const tabs = isOwnProfile ? ownTabs : otherTabs;
 
   const tabParam = searchParams.get("tab");
 
@@ -35,16 +48,26 @@ function TabsList({ onProfileUpdate }) {
   const renderContent = () => {
     switch (activeTab) {
       case "recipes":
-        return <ProfileRecipes onProfileUpdate={onProfileUpdate} />;
+        return isOwnProfile ? (
+          <ProfileRecipes onProfileUpdate={onProfileUpdate} />
+        ) : (
+          <UserRecipes recipes={recipes} />
+        );
 
       case "favourites":
-        return <ProfileFavourites onProfileUpdate={onProfileUpdate} />;
+        return isOwnProfile ? (
+          <ProfileFavourites onProfileUpdate={onProfileUpdate} />
+        ) : null;
 
       case "followers":
-      case "following":
         return (
-          <p className="user-page__message">This section is coming soon.</p>
+          <ProfileFollowers type="followers" profileUserId={profileUserId} />
         );
+
+      case "following":
+        return isOwnProfile ? (
+          <ProfileFollowers type="following" profileUserId={profileUserId} />
+        ) : null;
 
       default:
         return null;

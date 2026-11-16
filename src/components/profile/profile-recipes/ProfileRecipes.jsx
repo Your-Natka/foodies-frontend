@@ -119,7 +119,7 @@ function ProfileRecipes({ onProfileUpdate }) {
 
       {!isLoadingRecipes && !error && recipes.length > 0 && (
         <Pagination
-          currentPage={currentPage}
+          page={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
