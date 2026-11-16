@@ -43,7 +43,7 @@
     padding: 0;
     border: none;
     border-radius: 50%;
-    background-color: var(--color-black);
+    background-color: var(--color-gray);
     color: var(--color-white);
     font-size: 24px;
     line-height: 1;
@@ -51,6 +51,13 @@
     &:disabled {
       cursor: wait;
       opacity: 0.7;
+    }
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      background: var(--color-dark);
+      color: var(--color-white);
     }
   }
 
@@ -101,6 +108,7 @@
     }
   }
 
+  // Кнопка виходу з власного профілю
   &__logout {
     width: 100%;
     min-height: 44px;
@@ -108,16 +116,67 @@
     padding: 12px 20px;
     border: none;
     border-radius: 30px;
-    background-color: var(--color-black);
+    background-color: var(--color-gray);
     color: var(--color-white);
     font-size: 14px;
     font-weight: 800;
     line-height: 20px;
     letter-spacing: -0.02em;
-    transition: opacity 200ms ease;
+    cursor: pointer;
+    transition: background-color 200ms ease;
 
-    &:hover {
-      opacity: 0.8;
+    &:hover,
+    &:focus-visible,
+    &:active {
+      background: var(--color-dark);
+      color: var(--color-white);
+    }
+  }
+
+  // Кнопка підписки на чужому профілі
+  // Кнопка підписки на чужому профілі
+  &__follow {
+    width: 100%;
+    min-height: 44px;
+    margin-top: auto;
+    padding: 12px 20px;
+    border: 1px solid var(--color-gray);
+    border-radius: 30px;
+    background-color: var(--color-gray);
+    color: var(--color-white);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+
+    transition:
+      background-color 250ms ease,
+      border-color 250ms ease,
+      transform 200ms ease,
+      opacity 200ms ease;
+
+    &:hover,
+    &:focus-visible,
+    &:active {
+      background-color: var(--color-black);
+      border-color: var(--color-black);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 3px;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
     }
   }
 }
@@ -142,7 +201,8 @@
       gap: 6px;
     }
 
-    &__logout {
+    &__logout,
+    &__follow {
       min-height: 40px;
     }
   }
