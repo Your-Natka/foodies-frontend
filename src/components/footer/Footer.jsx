@@ -2,6 +2,7 @@ import Container from "../common/Container/Container";
 import Logo from "./Logo";
 import NetworkLinks from "./NetworkLinks";
 import Copyright from "./Copyright";
+import InstallAppButton from "../pwa/InstallAppButton";
 import "./Footer.scss";
 
 function Footer() {
@@ -11,6 +12,10 @@ function Footer() {
         <div className="footer__top">
           <Logo />
           <NetworkLinks />
+        </div>
+
+        <div className="footer__install">
+          <InstallAppButton />
         </div>
 
         <div className="footer__divider" />

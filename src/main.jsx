@@ -8,6 +8,7 @@ import "modern-normalize/modern-normalize.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/global.scss";
 
+import "./pwa/installPrompt";
 import { store } from "./redux/store";
 import App from "./App";
 

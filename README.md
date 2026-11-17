@@ -40,6 +40,11 @@
 - 👤 **User profiles** — own recipes, favorites, followers & following tabs, follow / unfollow, avatar upload
 - ➕ **Add recipe** — Formik + Yup form with dynamic ingredients list (private route)
 - 📱 **Responsive layout** — mobile menu, mobile / tablet / desktop breakpoints, retina-ready AVIF images
+- 🛒 **Shopping list** — add a recipe's ingredients in one click, tick off bought items, copy the list as text (stored on the device)
+- 👩‍🍳 **Cooking mode** — full-screen step-by-step view with ingredient checklist, keep-screen-awake and step timers
+- 🔗 **Share & print** — native share sheet (or copy link) and print-friendly recipe layout
+- 📝 **Recipe drafts** — the add-recipe form autosaves and restores after reload
+- 📲 **PWA** — installable app, works offline for previously opened pages, update prompt
 - 🔔 **Toast notifications** via `react-toastify`
 
 ---

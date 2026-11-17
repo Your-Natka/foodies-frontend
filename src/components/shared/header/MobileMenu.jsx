@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import InstallAppButton from "../../pwa/InstallAppButton";
 import { selectShoppingCount } from "../../../redux/slices/shoppingList/shoppingListSlice";
 import "./MobileMenu.scss";
 
@@ -58,6 +59,12 @@ function MobileMenu({ isOpen, onClose }) {
           >
             Shopping list{shoppingCount > 0 ? ` (${shoppingCount})` : ""}
           </NavLink>
+
+          <InstallAppButton
+            className="mobile-menu__install"
+            onDone={onClose}
+            tabIndex={isOpen ? 0 : -1}
+          />
         </nav>
 
         <div className="mobile-menu__images" aria-hidden="true">
