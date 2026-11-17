@@ -146,7 +146,7 @@ function Header({
                       >
                         <span>Profile</span>
                         <svg width="18" height="18" aria-hidden="true">
-                          <use href="/images/sprite.svg#icon-avatar-arrow-up-right18x18" />
+                          <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
                         </svg>
                       </Link>
 
