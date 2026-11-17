@@ -223,20 +223,17 @@ export function CookingTimeField() {
       <span className="recipe-form__label" id={labelId}>
         Cooking time
       </span>
-      <div
-        className="recipe-form__time"
-        role="group"
-        aria-labelledby={labelId}
-      >
+      <div className="recipe-form__time" role="group" aria-labelledby={labelId}>
         <button
           type="button"
           className="recipe-form__round-button"
-          onClick={() => changeBy(-1)}
+          onClick={() => changeBy(-5)}
           disabled={value <= TIME_MIN}
           aria-label="Decrease cooking time"
         >
           <img src={minusIcon} width="24" height="24" alt="" />
         </button>
+
         <output
           className={`recipe-form__time-value ${
             isPristine ? "recipe-form__time-value--placeholder" : ""
@@ -248,7 +245,7 @@ export function CookingTimeField() {
         <button
           type="button"
           className="recipe-form__round-button"
-          onClick={() => changeBy(1)}
+          onClick={() => changeBy(5)}
           aria-label="Increase cooking time"
         >
           <img src={plusIcon} width="24" height="24" alt="" />
