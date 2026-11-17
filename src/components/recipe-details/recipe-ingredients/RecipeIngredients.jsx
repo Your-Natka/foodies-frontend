@@ -1,9 +1,44 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import {
+  addRecipeIngredients,
+  selectIsRecipeInList,
+} from '../../../redux/slices/shoppingList/shoppingListSlice';
+
 import css from './RecipeIngredients.module.scss';
 
-const RecipeIngredients = ({ ingredients = [] }) => {
+const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
+  const dispatch = useDispatch();
+  const isInList = useSelector(selectIsRecipeInList(recipeId));
+
+  const handleAddToList = () => {
+    dispatch(addRecipeIngredients({ recipeId, recipeTitle, ingredients }));
+    toast.success('Ingredients added to your shopping list.');
+  };
+
   return (
     <section className={css.ingredientsSection}>
-      <h3 className={css.title}>INGREDIENTS</h3>
+      <div className={css.header}>
+        <h3 className={css.title}>INGREDIENTS</h3>
+
+        {recipeId && ingredients.length > 0 && (
+          isInList ? (
+            <Link to="/shopping-list" className={`${css.listButton} no-print`}>
+              In shopping list ✓
+            </Link>
+          ) : (
+            <button
+              type="button"
+              className={`${css.listButton} no-print`}
+              onClick={handleAddToList}
+            >
+              + Add to shopping list
+            </button>
+          )
+        )}
+      </div>
 
       <ul className={css.ingredientsList}>
         {ingredients.map(ingredient => (

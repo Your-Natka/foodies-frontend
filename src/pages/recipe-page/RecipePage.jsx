@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -34,6 +34,8 @@ import RecipeInfo from "../../components/recipe-details/recipe-info/RecipeInfo";
 import RecipeIngredients from "../../components/recipe-details/recipe-ingredients/RecipeIngredients";
 import RecipePreparation from "../../components/recipe-details/recipe-preparation/RecipePreparation";
 import RecipeFavoriteButton from "../../components/recipe-details/recipe-favorite-button/RecipeFavoriteButton";
+import RecipeActions from "../../components/recipe-details/recipe-actions/RecipeActions";
+import CookingMode from "../../components/recipe-details/cooking-mode/CookingMode";
 import PathInfo from "../../components/recipe-details/path-info/PathInfo";
 import PopularRecipes from "../../components/recipes/popular-recipes/PopularRecipes";
 
@@ -53,6 +55,10 @@ const RecipePage = () => {
   const favoriteIds = useSelector(selectFavoriteIds);
   const popularRecipes = useSelector(selectPopularRecipes);
   const popularStatus = useSelector(selectPopularStatus);
+
+  // Cooking mode is tied to a recipe id, so it closes when navigating away.
+  const [cookingRecipeId, setCookingRecipeId] = useState(null);
+  const closeCookingMode = useCallback(() => setCookingRecipeId(null), []);
 
   useEffect(() => {
     dispatch(clearCurrentRecipe());
@@ -154,18 +160,29 @@ const RecipePage = () => {
 
         <div className={css.recipeInfoWrapper}>
           <RecipeInfo recipe={recipe} onAuthorClick={handleAuthorClick}>
-            <RecipeIngredients ingredients={recipe.ingredients} />
+            <RecipeIngredients
+              ingredients={recipe.ingredients}
+              recipeId={recipe.id}
+              recipeTitle={recipe.title}
+            />
 
             <RecipePreparation instructions={recipe.instructions} />
 
-            <RecipeFavoriteButton
-              isFavorite={isFavorite}
-              onClick={handleToggleFavorite}
-            />
+            <div className={`${css.actions} no-print`}>
+              <RecipeFavoriteButton
+                isFavorite={isFavorite}
+                onClick={() => handleToggleFavorite()}
+              />
+
+              <RecipeActions
+                recipe={recipe}
+                onStartCooking={() => setCookingRecipeId(recipe.id)}
+              />
+            </div>
           </RecipeInfo>
         </div>
 
-        <div className={css.popularRecipesWrapper}>
+        <div className={`${css.popularRecipesWrapper} no-print`}>
           {popularStatus === "loading" && <p>Loading popular recipes...</p>}
 
           {popularStatus === "failed" && <p>Failed to load popular recipes.</p>}
@@ -180,6 +197,10 @@ const RecipePage = () => {
           )}
         </div>
       </div>
+
+      {cookingRecipeId === recipe.id && (
+        <CookingMode recipe={recipe} onClose={closeCookingMode} />
+      )}
     </main>
   );
 };

@@ -1,7 +1,11 @@
+import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { selectShoppingCount } from "../../../redux/slices/shoppingList/shoppingListSlice";
 import "./MobileMenu.scss";
 
 function MobileMenu({ isOpen, onClose }) {
+  const shoppingCount = useSelector(selectShoppingCount);
+
   return (
     <div
       className={`mobile-menu ${isOpen ? "is-open" : ""}`}
@@ -45,6 +49,14 @@ function MobileMenu({ isOpen, onClose }) {
             tabIndex={isOpen ? 0 : -1}
           >
             Add recipe
+          </NavLink>
+
+          <NavLink
+            to="/shopping-list"
+            onClick={onClose}
+            tabIndex={isOpen ? 0 : -1}
+          >
+            Shopping list{shoppingCount > 0 ? ` (${shoppingCount})` : ""}
           </NavLink>
         </nav>
 

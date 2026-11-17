@@ -19,6 +19,10 @@ const CategoryPage = lazy(() => import("../pages/category-page/CategoryPage"));
 
 const RecipePage = lazy(() => import("../pages/recipe-page/RecipePage"));
 
+const ShoppingListPage = lazy(
+  () => import("../pages/shopping-list-page/ShoppingListPage"),
+);
+
 function AppRoutes() {
   const dispatch = useDispatch();
 
@@ -47,6 +51,9 @@ function AppRoutes() {
 
           {/* Recipe details */}
           <Route path="recipe/:id" element={<RecipePage />} />
+
+          {/* Shopping list (stored locally, no auth needed) */}
+          <Route path="shopping-list" element={<ShoppingListPage />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -4,6 +4,9 @@ import recipesReducer from './slices/recipes/recipesSlice';
 import ingredientsReducer from './slices/ingredients/ingredientsSlice';
 import areasReducer from './slices/areas/areasSlice';
 import favoritesReducer from './slices/favorites/favoritesSlice';
+import shoppingListReducer, {
+  SHOPPING_LIST_STORAGE_KEY,
+} from "./slices/shoppingList/shoppingListSlice";
 
 import authReducer, {
   setAccessToken,
@@ -11,6 +14,14 @@ import authReducer, {
 } from "./slices/auth/authSlice";
 
 import { configureApiAuth } from "../services/api";
+import { loadJSON, saveJSON } from "../utils/storage";
+
+const loadShoppingList = () => {
+  const saved = loadJSON(SHOPPING_LIST_STORAGE_KEY, null);
+  return Array.isArray(saved?.items) ? { items: saved.items } : undefined;
+};
+
+const savedShoppingList = loadShoppingList();
 
 export const store = configureStore({
   reducer: {
@@ -19,8 +30,23 @@ export const store = configureStore({
     ingredients: ingredientsReducer,
     areas: areasReducer,
     favorites: favoritesReducer,
-
+    shoppingList: shoppingListReducer,
   },
+  preloadedState: savedShoppingList
+    ? { shoppingList: savedShoppingList }
+    : undefined,
+});
+
+// Persist the shopping list locally whenever it changes.
+let lastShoppingList = store.getState().shoppingList;
+
+store.subscribe(() => {
+  const { shoppingList } = store.getState();
+
+  if (shoppingList !== lastShoppingList) {
+    lastShoppingList = shoppingList;
+    saveJSON(SHOPPING_LIST_STORAGE_KEY, shoppingList);
+  }
 });
 
 configureApiAuth({

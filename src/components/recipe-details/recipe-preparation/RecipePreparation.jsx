@@ -1,9 +1,8 @@
+import { splitInstructions } from '../../../utils/instructions';
 import css from './RecipePreparation.module.scss';
 
 const RecipePreparation = ({ instructions = '' }) => {
-  const paragraphs = instructions
-    .split(/\n+/)
-    .filter(paragraph => paragraph.trim());
+  const paragraphs = splitInstructions(instructions);
 
   return (
     <section className={css.preparation}>
@@ -12,7 +11,7 @@ const RecipePreparation = ({ instructions = '' }) => {
       <div className={css.content}>
         {paragraphs.map((paragraph, index) => (
           <p key={index} className={css.paragraph}>
-            {paragraph.trim()}
+            {paragraph}
           </p>
         ))}
       </div>

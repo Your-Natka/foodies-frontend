@@ -127,3 +127,28 @@ img {
     max-width: 1280px;
   }
 }
+/* Print: keep only the recipe itself */
+@media print {
+  .header,
+  .footer,
+  .mobile-menu,
+  .Toastify,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  img {
+    max-width: 100%;
+    break-inside: avoid;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
