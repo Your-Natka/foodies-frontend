@@ -4,7 +4,7 @@ export const TITLE_MAX = 255;
 export const DESCRIPTION_MAX = 200;
 export const INSTRUCTIONS_MAX = 1000;
 export const MEASURE_MAX = 100;
-export const TIME_MIN = 1;
+export const TIME_MIN = 5;
 export const TIME_DEFAULT = 10;
 
 export const PHOTO_MAX_SIZE = 5 * 1024 * 1024;
