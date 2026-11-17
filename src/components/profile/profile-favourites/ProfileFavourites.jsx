@@ -11,11 +11,20 @@ import EmptyState from "../../shared/empty-state/EmptyState";
 
 const RECIPES_PER_PAGE = 9;
 
-function ProfileFavourites({ onProfileUpdate }) {
-  const [favorites, setFavorites] = useState([]);
+function ProfileFavourites({ onProfileUpdate, getCachedData, setCachedData }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [favorites, setFavorites] = useState(
+    () => getCachedData("favourites", 1)?.favorites ?? [],
+  );
+
+  const [totalPages, setTotalPages] = useState(
+    () => getCachedData("favourites", 1)?.totalPages ?? 0,
+  );
+
+  const [isLoading, setIsLoading] = useState(
+    () => !getCachedData("favourites", 1),
+  );
   const [error, setError] = useState(null);
 
   const [removingFavoriteId, setRemovingFavoriteId] = useState(null);
@@ -27,10 +36,19 @@ function ProfileFavourites({ onProfileUpdate }) {
     let isActive = true;
 
     const fetchFavorites = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
+      const cachedData = getCachedData("favourites", currentPage);
 
+      if (cachedData) {
+        setFavorites(cachedData.favorites);
+        setTotalPages(cachedData.totalPages);
+        setIsLoading(false);
+      } else {
+        setIsLoading(true);
+      }
+
+      setError(null);
+
+      try {
         const response = await getFavoriteRecipes({
           page: currentPage,
           limit: RECIPES_PER_PAGE,
@@ -39,20 +57,27 @@ function ProfileFavourites({ onProfileUpdate }) {
         if (!isActive) return;
 
         const favoriteRecipes = response.data ?? [];
+        const nextFavorites = Array.isArray(favoriteRecipes)
+          ? favoriteRecipes
+          : [];
+
         const nextTotalPages = response.pagination?.totalPages ?? 0;
 
-        if (nextTotalPages > 0 && currentPage > nextTotalPages) {
-          setCurrentPage(nextTotalPages);
+        if (currentPage > 1 && currentPage > nextTotalPages) {
+          setCurrentPage(Math.max(1, nextTotalPages));
           return;
         }
 
-        setFavorites(Array.isArray(favoriteRecipes) ? favoriteRecipes : []);
+        setFavorites(nextFavorites);
         setTotalPages(nextTotalPages);
+
+        setCachedData("favourites", currentPage, {
+          favorites: nextFavorites,
+          totalPages: nextTotalPages,
+        });
       } catch (err) {
         if (!isActive) return;
 
-        setFavorites([]);
-        setTotalPages(0);
         setError(
           err.response?.data?.message ||
             "Failed to load your favourite recipes.",
@@ -64,7 +89,7 @@ function ProfileFavourites({ onProfileUpdate }) {
       }
     };
 
-    fetchFavorites();
+    void fetchFavorites();
 
     return () => {
       isActive = false;
@@ -81,9 +106,21 @@ function ProfileFavourites({ onProfileUpdate }) {
       await removeFavoriteRecipe(recipe.id);
 
       toast.success("Recipe removed from favourites.");
+
+      const updatedFavorites = favorites.filter(
+        (item) => String(item.id) !== String(recipe.id),
+      );
+
+      setFavorites(updatedFavorites);
+
+      setCachedData("favourites", currentPage, {
+        favorites: updatedFavorites,
+        totalPages,
+      });
+
       onProfileUpdate?.();
 
-      if (favorites.length === 1 && currentPage > 1) {
+      if (updatedFavorites.length === 0 && currentPage > 1) {
         setCurrentPage((prevPage) => prevPage - 1);
       } else {
         setRefreshKey((prevKey) => prevKey + 1);
@@ -126,7 +163,7 @@ function ProfileFavourites({ onProfileUpdate }) {
 
       {!isLoading && !error && favorites.length > 0 && (
         <Pagination
-          currentPage={currentPage}
+          page={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />

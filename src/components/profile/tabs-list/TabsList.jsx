@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import ProfileRecipes from "../profile-recipes/ProfileRecipes";
@@ -26,6 +27,28 @@ function TabsList({
   recipes = [],
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const tabCache = useRef(new Map());
+
+  const getCachedData = (tabId, page = 1) => {
+    const key = `${profileUserId}:${tabId}:${page}`;
+    return tabCache.current.get(key);
+  };
+
+  const setCachedData = (tabId, page, data) => {
+    const key = `${profileUserId}:${tabId}:${page}`;
+    tabCache.current.set(key, data);
+  };
+
+  const invalidateTabCache = (tabId) => {
+    const prefix = `${profileUserId}:${tabId}:`;
+
+    for (const key of tabCache.current.keys()) {
+      if (key.startsWith(prefix)) {
+        tabCache.current.delete(key);
+      }
+    }
+  };
+
   const tabs = isOwnProfile ? ownTabs : otherTabs;
 
   const tabParam = searchParams.get("tab");
@@ -49,24 +72,46 @@ function TabsList({
     switch (activeTab) {
       case "recipes":
         return isOwnProfile ? (
-          <ProfileRecipes onProfileUpdate={onProfileUpdate} />
+          <ProfileRecipes
+            onProfileUpdate={onProfileUpdate}
+            getCachedData={getCachedData}
+            setCachedData={setCachedData}
+          />
         ) : (
-          <UserRecipes recipes={recipes} />
+          <UserRecipes recipes={recipes} userId={profileUserId} />
         );
 
       case "favourites":
         return isOwnProfile ? (
-          <ProfileFavourites onProfileUpdate={onProfileUpdate} />
+          <ProfileFavourites
+            onProfileUpdate={onProfileUpdate}
+            getCachedData={getCachedData}
+            setCachedData={setCachedData}
+          />
         ) : null;
 
       case "followers":
         return (
-          <ProfileFollowers type="followers" profileUserId={profileUserId} />
+          <ProfileFollowers
+            type="followers"
+            profileUserId={profileUserId}
+            onProfileUpdate={onProfileUpdate}
+            getCachedData={getCachedData}
+            setCachedData={setCachedData}
+            invalidateTabCache={invalidateTabCache}
+          />
         );
 
       case "following":
         return isOwnProfile ? (
-          <ProfileFollowers type="following" profileUserId={profileUserId} />
+          <ProfileFollowers
+            type="following"
+            profileUserId={profileUserId}
+            onProfileUpdate={onProfileUpdate}
+            getCachedData={getCachedData}
+            setCachedData={setCachedData}
+            invalidateTabCache={invalidateTabCache}
+          />
         ) : null;
 
       default:

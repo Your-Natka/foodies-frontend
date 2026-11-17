@@ -1,4 +1,4 @@
-import api from "../api";
+import api, { refreshAccessToken } from "../api";
 
 export const registerUser = async (userData) => {
   const { data } = await api.post("/auth/register", userData);
@@ -11,8 +11,7 @@ export const loginUser = async (credentials) => {
 };
 
 export const refreshSession = async () => {
-  const { data } = await api.post("/auth/refresh");
-  return data;
+  return await refreshAccessToken();
 };
 
 export const logoutUser = async () => {

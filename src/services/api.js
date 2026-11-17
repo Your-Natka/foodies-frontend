@@ -11,6 +11,22 @@ let onAuthFailure = () => {};
 
 let refreshPromise = null;
 
+export const refreshAccessToken = () => {
+  if (!refreshPromise) {
+    refreshPromise = api
+      .post("/auth/refresh")
+      .then(({ data }) => {
+        setAccessToken(data.accessToken);
+        return data;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+
+  return refreshPromise;
+};
+
 export const configureApiAuth = ({ getToken, updateToken, onFailure }) => {
   getAccessToken = getToken;
   setAccessToken = updateToken;
@@ -51,19 +67,8 @@ api.interceptors.response.use(
     originalRequest._retry = true;
 
     try {
-      if (!refreshPromise) {
-        refreshPromise = api
-          .post("/auth/refresh")
-          .then(({ data }) => {
-            setAccessToken(data.accessToken);
-            return data.accessToken;
-          })
-          .finally(() => {
-            refreshPromise = null;
-          });
-      }
-
-      const newToken = await refreshPromise;
+      const session = await refreshAccessToken();
+      const newToken = session.accessToken;
 
       originalRequest.headers.Authorization = `Bearer ${newToken}`;
 

@@ -32,7 +32,17 @@ function RecipeListItem({
   return (
     <li className="recipe-list-item">
       <div className="recipe-list-item__image">
-        {imageSrc && <img src={imageSrc} alt={title} loading="lazy" />}
+        {imageSrc && (
+          <button
+            type="button"
+            onClick={handleOpen}
+            disabled={!onOpen && !id}
+            aria-label={`Open ${title}`}
+            className="recipe-list-item__image-button"
+          >
+            <img src={imageSrc} alt={title} loading="lazy" />
+          </button>
+        )}
       </div>
 
       <div className="recipe-list-item__content">
@@ -71,7 +81,7 @@ function RecipeListItem({
         {showRemoveButton && (
           <button
             type="button"
-            className="recipe-list-item__button"
+            className="recipe-list-item__button recipe-list-item__button--remove"
             onClick={() => onRemove?.(recipe)}
             disabled={isRemoving || !onRemove}
             aria-label={`${removeLabel}: ${title}`}

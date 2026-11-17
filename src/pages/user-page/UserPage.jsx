@@ -12,6 +12,7 @@ import {
 
 import { useCurrentUserProfile } from "../../hooks/useCurrentUserProfile";
 import { useUserProfile } from "../../hooks/useUserProfile";
+import PathInfo from "../../components/recipe-details/path-info/PathInfo";
 
 import "./UserPage.scss";
 
@@ -24,14 +25,12 @@ function UserPage() {
 
   const { onLogout } = useOutletContext();
 
-  // Визначаємо, чи це власний профіль
   const isOwnProfile =
     !userId ||
     (isAuthenticated && user?.id != null && String(user.id) === String(userId));
 
   const isPublicProfile = !isOwnProfile;
 
-  // Завантажуємо власний профіль
   const {
     profile: ownProfile,
     isLoading: isOwnLoading,
@@ -39,7 +38,6 @@ function UserPage() {
     refreshProfile: refreshOwnProfile,
   } = useCurrentUserProfile(isAuthenticated && isOwnProfile, user?.id);
 
-  // Завантажуємо чужий профіль
   const {
     profile: otherProfile,
     isLoading: isOtherLoading,
@@ -47,7 +45,6 @@ function UserPage() {
     refreshProfile: refreshOtherProfile,
   } = useUserProfile(isPublicProfile ? userId : null);
 
-  // Обираємо потрібні дані
   const profile = isPublicProfile ? otherProfile : (ownProfile ?? user);
 
   const isLoading = isPublicProfile ? isOtherLoading : isOwnLoading;
@@ -58,22 +55,18 @@ function UserPage() {
     ? refreshOtherProfile
     : refreshOwnProfile;
 
-  // Очікуємо завершення авторизації
   if (authStatus === "loading" && !isPublicProfile) {
     return <p className="user-page__message">Loading profile...</p>;
   }
 
-  // Захищаємо власний профіль
   if (!isPublicProfile && (!isAuthenticated || !user)) {
     return <Navigate to="/" replace />;
   }
 
-  // Завантаження профілю
   if (isLoading && !profile) {
     return <p className="user-page__message">Loading user information...</p>;
   }
 
-  // Помилка завантаження
   if (error && !profile) {
     return (
       <p className="user-page__message" role="alert">
@@ -88,27 +81,41 @@ function UserPage() {
 
   return (
     <main className="user-page">
-      <div className="container user-page__container">
-        <UserBar
-          user={profile}
-          isOwnProfile={isOwnProfile}
-          onLogout={onLogout}
-          onProfileUpdate={refreshProfile}
-        />
+      <div className="container">
+        <div className="user-page__header">
+          <PathInfo title="PROFILE" />
 
-        {error && (
-          <p className="user-page__message" role="alert">
-            {error}
+          <h1 className="user-page__heading">PROFILE</h1>
+
+          <p className="user-page__description">
+            Reveal your culinary art, share your favorite recipe and create
+            gastronomic masterpieces with us.
           </p>
-        )}
+        </div>
 
-        <div className="user-page__content">
-          <TabsList
+        <div className="user-page__container">
+          <UserBar
+            user={profile}
             isOwnProfile={isOwnProfile}
-            profileUserId={profile?.id ?? userId}
+            onLogout={onLogout}
             onProfileUpdate={refreshProfile}
-            recipes={profile?.recipes ?? []}
           />
+
+          {error && (
+            <p className="user-page__message" role="alert">
+              {error}
+            </p>
+          )}
+
+          <div className="user-page__content">
+            <TabsList
+              key={`${isOwnProfile ? "own" : "public"}:${profile?.id ?? userId}`}
+              isOwnProfile={isOwnProfile}
+              profileUserId={profile?.id ?? userId}
+              onProfileUpdate={refreshProfile}
+              recipes={profile?.recipes ?? []}
+            />
+          </div>
         </div>
       </div>
     </main>

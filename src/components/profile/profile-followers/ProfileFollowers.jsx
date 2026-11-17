@@ -13,15 +13,25 @@ import EmptyState from "../../shared/empty-state/EmptyState";
 import UserCard from "../user-card/UserCard";
 import Pagination from "../../shared/pagination/Pagination";
 
-function ProfileFollowers({ type = "followers", profileUserId }) {
+function ProfileFollowers({
+  type = "followers",
+  profileUserId,
+  onProfileUpdate,
+  getCachedData,
+  setCachedData,
+  invalidateTabCache,
+}) {
   const currentUser = useSelector(selectUser);
-  const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  const [isLoading, setIsLoading] = useState(
-    type === "following" || Boolean(profileUserId),
+  const [users, setUsers] = useState(() => getCachedData(type, 1)?.users ?? []);
+
+  const [totalPages, setTotalPages] = useState(
+    () => getCachedData(type, 1)?.totalPages ?? 1,
   );
+
+  const [isLoading, setIsLoading] = useState(() => !getCachedData(type, 1));
+
   const [error, setError] = useState(null);
 
   const [actionError, setActionError] = useState(null);
@@ -33,11 +43,13 @@ function ProfileFollowers({ type = "followers", profileUserId }) {
   const currentListKey = `${type}:${profileUserId ?? ""}`;
 
   if (listKey !== currentListKey) {
+    const cachedData = getCachedData(type, 1);
+
     setListKey(currentListKey);
     setPage(1);
-    setUsers([]);
-    setTotalPages(1);
-    setIsLoading(type === "following" || Boolean(profileUserId));
+    setUsers(cachedData?.users ?? []);
+    setTotalPages(cachedData?.totalPages ?? 1);
+    setIsLoading(!cachedData);
     setError(null);
     setActionError(null);
   }
@@ -46,7 +58,17 @@ function ProfileFollowers({ type = "followers", profileUserId }) {
     let isActive = true;
 
     const fetchUsers = async () => {
-      setIsLoading(true);
+      const cachedData = getCachedData(type, page);
+
+      if (cachedData) {
+        setUsers(cachedData.users);
+        setTotalPages(cachedData.totalPages);
+        setIsLoading(false);
+      } else {
+        setUsers([]);
+        setIsLoading(true);
+      }
+
       setError(null);
 
       try {
@@ -60,7 +82,8 @@ function ProfileFollowers({ type = "followers", profileUserId }) {
 
         if (!isActive) return;
 
-        const nextUsers = response.data ?? [];
+        const nextUsers = Array.isArray(response.data) ? response.data : [];
+
         const nextTotalPages = response.pagination?.totalPages ?? 1;
 
         if (page > nextTotalPages) {
@@ -70,10 +93,14 @@ function ProfileFollowers({ type = "followers", profileUserId }) {
 
         setUsers(nextUsers);
         setTotalPages(nextTotalPages);
+
+        setCachedData(type, page, {
+          users: nextUsers,
+          totalPages: nextTotalPages,
+        });
       } catch (err) {
         if (!isActive) return;
 
-        setUsers([]);
         setError(
           err.response?.data?.message ||
             err.response?.data?.error ||
@@ -108,14 +135,37 @@ function ProfileFollowers({ type = "followers", profileUserId }) {
         await followUser(userId);
       }
 
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, isFollowing: !isFollowing } : user,
-        ),
-      );
+      const updatedUsers =
+        type === "following" && isFollowing
+          ? users.filter((user) => String(user.id) !== String(userId))
+          : users.map((user) =>
+              String(user.id) === String(userId)
+                ? { ...user, isFollowing: !isFollowing }
+                : user,
+            );
 
-      // Оновлюємо дані та пагінацію після зміни підписки.
-      setReloadKey((prev) => prev + 1);
+      setUsers(updatedUsers);
+
+      setCachedData(type, page, {
+        users: updatedUsers,
+        totalPages,
+      });
+
+      if (type === "followers") {
+        invalidateTabCache("following");
+      } else {
+        invalidateTabCache("followers");
+      }
+
+      if (type === "following" && isFollowing) {
+        if (users.length === 1 && page > 1) {
+          setPage((prev) => prev - 1);
+        } else {
+          setReloadKey((prev) => prev + 1);
+        }
+      }
+
+      onProfileUpdate?.();
     } catch (err) {
       setActionError(
         err.response?.data?.message ||
@@ -127,7 +177,7 @@ function ProfileFollowers({ type = "followers", profileUserId }) {
     }
   };
 
-  if (isLoading) {
+  if (isLoading && users.length === 0) {
     return <p className="user-page__message">Loading users...</p>;
   }
 

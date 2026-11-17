@@ -8,11 +8,21 @@ import EmptyState from "../../shared/empty-state/EmptyState";
 
 const RECIPES_PER_PAGE = 9;
 
-function ProfileRecipes({ onProfileUpdate }) {
-  const [recipes, setRecipes] = useState([]);
-  const [isLoadingRecipes, setIsLoadingRecipes] = useState(true);
+function ProfileRecipes({ onProfileUpdate, getCachedData, setCachedData }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+
+  const [recipes, setRecipes] = useState(
+    () => getCachedData("recipes", 1)?.recipes ?? [],
+  );
+
+  const [totalPages, setTotalPages] = useState(
+    () => getCachedData("recipes", 1)?.totalPages ?? 0,
+  );
+
+  const [isLoadingRecipes, setIsLoadingRecipes] = useState(
+    () => !getCachedData("recipes", 1),
+  );
+
   const [deletingRecipeId, setDeletingRecipeId] = useState(null);
   const [error, setError] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -23,10 +33,19 @@ function ProfileRecipes({ onProfileUpdate }) {
     let isActive = true;
 
     const fetchRecipes = async () => {
-      try {
-        setIsLoadingRecipes(true);
-        setError(null);
+      const cachedData = getCachedData("recipes", currentPage);
 
+      if (cachedData) {
+        setRecipes(cachedData.recipes);
+        setTotalPages(cachedData.totalPages);
+        setIsLoadingRecipes(false);
+      } else {
+        setIsLoadingRecipes(true);
+      }
+
+      setError(null);
+
+      try {
         const response = await getOwnRecipes({
           page: currentPage,
           limit: RECIPES_PER_PAGE,
@@ -35,22 +54,24 @@ function ProfileRecipes({ onProfileUpdate }) {
         if (!isActive) return;
 
         const ownRecipes = response.data ?? response.recipes ?? [];
-        const pagination = response.pagination;
+        const nextRecipes = Array.isArray(ownRecipes) ? ownRecipes : [];
+        const nextTotalPages = response.pagination?.totalPages ?? 0;
 
-        const nextTotalPages = pagination?.totalPages ?? 0;
-
-        if (nextTotalPages > 0 && currentPage > nextTotalPages) {
-          setCurrentPage(nextTotalPages);
+        if (currentPage > 1 && currentPage > nextTotalPages) {
+          setCurrentPage(Math.max(1, nextTotalPages));
           return;
         }
 
-        setRecipes(Array.isArray(ownRecipes) ? ownRecipes : []);
+        setRecipes(nextRecipes);
         setTotalPages(nextTotalPages);
+
+        setCachedData("recipes", currentPage, {
+          recipes: nextRecipes,
+          totalPages: nextTotalPages,
+        });
       } catch (err) {
         if (!isActive) return;
 
-        setRecipes([]);
-        setTotalPages(0);
         setError(err.response?.data?.message || "Failed to load your recipes.");
       } finally {
         if (isActive) {
@@ -59,7 +80,7 @@ function ProfileRecipes({ onProfileUpdate }) {
       }
     };
 
-    fetchRecipes();
+    void fetchRecipes();
 
     return () => {
       isActive = false;
@@ -76,9 +97,21 @@ function ProfileRecipes({ onProfileUpdate }) {
       await deleteRecipe(recipe.id);
 
       toast.success("Recipe deleted successfully.");
+
+      const updatedRecipes = recipes.filter(
+        (item) => String(item.id) !== String(recipe.id),
+      );
+
+      setRecipes(updatedRecipes);
+
+      setCachedData("recipes", currentPage, {
+        recipes: updatedRecipes,
+        totalPages,
+      });
+
       onProfileUpdate?.();
 
-      if (recipes.length === 1 && currentPage > 1) {
+      if (updatedRecipes.length === 0 && currentPage > 1) {
         setCurrentPage((prevPage) => prevPage - 1);
       } else {
         setRefreshKey((prevKey) => prevKey + 1);
