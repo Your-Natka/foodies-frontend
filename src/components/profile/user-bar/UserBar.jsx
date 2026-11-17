@@ -129,78 +129,82 @@ function UserBar({ user, onLogout, onProfileUpdate, isOwnProfile = true }) {
 
   return (
     <section className="user-bar">
-      <div className="user-bar__avatar-wrapper">
-        <div className="user-bar__avatar">
-          {avatarUrl && !avatarError ? (
-            <img
-              src={avatarUrl}
-              alt={`${user?.name || "User"} profile`}
-              onError={() => setFailedAvatarUrl(avatarUrl)}
-            />
-          ) : (
-            <img
-              src="/images/chef-food.png"
-              alt="Default chef avatar"
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
-            />
+      <div className="user-bar__card">
+        <div className="user-bar__avatar-wrapper">
+          <div className="user-bar__avatar">
+            {avatarUrl && !avatarError ? (
+              <img
+                src={avatarUrl}
+                alt={`${user?.name || "User"} profile`}
+                onError={() => setFailedAvatarUrl(avatarUrl)}
+              />
+            ) : (
+              <img
+                src="/images/chef-food.png"
+                alt="Default chef avatar"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                }}
+              />
+            )}
+          </div>
+
+          {isOwnProfile && (
+            <>
+              <button
+                className="user-bar__avatar-button"
+                type="button"
+                onClick={handleAvatarClick}
+                disabled={isUploading}
+                aria-label="Upload profile photo"
+              >
+                {isUploading ? "…" : "+"}
+              </button>
+
+              <input
+                ref={fileInputRef}
+                className="user-bar__file-input"
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+            </>
           )}
         </div>
 
-        {isOwnProfile && (
-          <>
-            <button
-              className="user-bar__avatar-button"
-              type="button"
-              onClick={handleAvatarClick}
-              disabled={isUploading}
-              aria-label="Upload profile photo"
-            >
-              {isUploading ? "…" : "+"}
-            </button>
+        <h1 className="user-bar__name">{user?.name || "User"}</h1>
 
-            <input
-              ref={fileInputRef}
-              className="user-bar__file-input"
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarChange}
-            />
-          </>
-        )}
-      </div>
-
-      <h1 className="user-bar__name">{user?.name || "User"}</h1>
-
-      <dl className="user-bar__details">
-        {isOwnProfile && (
+        <dl className="user-bar__details">
           <div className="user-bar__detail">
             <dt>Email:</dt>
             <dd>{user?.email || "—"}</dd>
           </div>
-        )}
 
-        <div className="user-bar__detail">
-          <dt>Added recipes:</dt>
-          <dd>{user?.recipesCount ?? 0}</dd>
-        </div>
+          <div className="user-bar__detail">
+            <dt>Added recipes:</dt>
+            <dd>{user?.recipesCount ?? 0}</dd>
+          </div>
 
-        <div className="user-bar__detail">
-          <dt>Favorites:</dt>
-          <dd>{user?.favoritesCount ?? "—"}</dd>
-        </div>
+          {isOwnProfile && (
+            <div className="user-bar__detail">
+              <dt>Favorites:</dt>
+              <dd>{user?.favoritesCount ?? "0"}</dd>
+            </div>
+          )}
 
-        <div className="user-bar__detail">
-          <dt>Followers:</dt>
-          <dd>{user?.followersCount ?? 0}</dd>
-        </div>
+          <div className="user-bar__detail">
+            <dt>Followers:</dt>
+            <dd>{user?.followersCount ?? 0}</dd>
+          </div>
 
-        <div className="user-bar__detail">
-          <dt>Following:</dt>
-          <dd>{user?.followingCount ?? "—"}</dd>
-        </div>
-      </dl>
+          {isOwnProfile && (
+            <div className="user-bar__detail">
+              <dt>Following:</dt>
+              <dd>{user?.followingCount ?? "0"}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
 
       {isOwnProfile && (
         <button className="user-bar__logout" type="button" onClick={onLogout}>

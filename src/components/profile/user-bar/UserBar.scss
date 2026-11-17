@@ -1,19 +1,27 @@
+
 .user-bar {
-  width: 394px;
-  min-height: 484px;
-  padding: 40px 24px 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: var(--color-white);
-  border: 1px solid var(--color-light-gray);
-  border-radius: 20px;
+  gap: 20px;
+  width: 343px;
+  max-width: 100%;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 24px 20px 20px;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 20px;
+    background-color: var(--color-white);
+  }
 
   &__avatar-wrapper {
     position: relative;
-    width: 120px;
-    height: 120px;
-    margin-bottom: 28px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 24px;
   }
 
   &__avatar {
@@ -35,15 +43,18 @@
     left: 50%;
     bottom: -12px;
     transform: translateX(-50%);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 32px;
     height: 32px;
     padding: 0;
     border: none;
     border-radius: 50%;
-    background-color: var(--color-gray);
+
+    background-color: var(--color-black);
     color: var(--color-white);
     font-size: 24px;
     line-height: 1;
@@ -66,7 +77,7 @@
   }
 
   &__name {
-    margin: 0 0 24px;
+    margin: 0 0 16px;
     color: var(--color-black);
     font-family: var(--font-family);
     font-size: 20px;
@@ -78,11 +89,15 @@
   }
 
   &__details {
-    width: 100%;
-    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 6px;
+
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    transform: translateX(-20px);
   }
 
   &__detail {
@@ -90,6 +105,7 @@
     align-items: baseline;
     gap: 4px;
     margin: 0;
+
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.02em;
@@ -108,20 +124,21 @@
     }
   }
 
-  // Кнопка виходу з власного профілю
   &__logout {
     width: 100%;
-    min-height: 44px;
-    margin-top: auto;
+    min-height: 40px;
+    margin-top: 0;
     padding: 12px 20px;
     border: none;
     border-radius: 30px;
-    background-color: var(--color-gray);
+
+    background-color: var(--color-black);
     color: var(--color-white);
     font-size: 14px;
     font-weight: 800;
     line-height: 20px;
     letter-spacing: -0.02em;
+
     cursor: pointer;
     transition: background-color 200ms ease;
 
@@ -133,22 +150,22 @@
     }
   }
 
-  // Кнопка підписки на чужому профілі
-  // Кнопка підписки на чужому профілі
   &__follow {
     width: 100%;
-    min-height: 44px;
-    margin-top: auto;
+    min-height: 40px;
+    margin-top: 0;
     padding: 12px 20px;
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-black);
     border-radius: 30px;
-    background-color: var(--color-gray);
+
+    background-color: var(--color-black);
     color: var(--color-white);
     font-family: var(--font-family);
     font-size: 14px;
     font-weight: 800;
     line-height: 20px;
     letter-spacing: -0.02em;
+
     cursor: pointer;
 
     transition:
@@ -181,16 +198,20 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+// Tablet and Desktop
+@media screen and (min-width: 768px) {
   .user-bar {
-    width: 343px;
-    min-height: 388px;
-    padding: 24px 20px 20px;
+    width: 394px;
+
+    &__card {
+      padding: 40px 80px;
+      border: 1px solid var(--color-black);
+    }
 
     &__avatar-wrapper {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 24px;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
     }
 
     &__name {
@@ -198,12 +219,20 @@
     }
 
     &__details {
-      gap: 6px;
+      gap: 8px;
     }
 
     &__logout,
     &__follow {
-      min-height: 40px;
+      min-height: 44px;
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .user-bar {
+    &__card {
+      border: 1px solid var(--color-light-gray);
     }
   }
 }

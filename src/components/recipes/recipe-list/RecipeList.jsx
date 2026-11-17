@@ -1,6 +1,5 @@
-
-import RecipeCard from '../recipe-card/RecipeCard';
-import css from './RecipeList.module.scss';
+import RecipeCard from "../recipe-card/RecipeCard";
+import css from "./RecipeList.module.scss";
 
 const RecipeList = ({
   recipes = [],
@@ -10,7 +9,7 @@ const RecipeList = ({
 }) => {
   return (
     <ul className={css.list}>
-      {recipes.map(recipe => (
+      {recipes.map((recipe) => (
         <RecipeCard
           key={recipe.id}
           recipe={recipe}
