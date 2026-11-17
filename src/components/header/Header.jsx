@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Container from "../common/Container/Container";
 import MobileMenu from "../shared/header/MobileMenu";
+import { selectShoppingCount } from "../../redux/slices/shoppingList/shoppingListSlice";
 
 import "./Header.scss";
 
@@ -18,6 +20,7 @@ function Header({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
+  const shoppingCount = useSelector(selectShoppingCount);
 
   useEffect(() => {
     setIsUserMenuOpen(false);
@@ -73,6 +76,14 @@ function Header({
                   }
                 >
                   Add recipe
+                </NavLink>
+                <NavLink
+                  to="/shopping-list"
+                  className={({ isActive }) =>
+                    `header__nav-link ${isActive ? "active" : ""}`
+                  }
+                >
+                  Shopping list{shoppingCount > 0 ? ` (${shoppingCount})` : ""}
                 </NavLink>
               </nav>
 

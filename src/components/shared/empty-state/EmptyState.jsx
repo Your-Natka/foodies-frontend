@@ -1,6 +1,9 @@
 import "./EmptyState.scss";
 
 const emptyMessages = {
+  shopping:
+    "Your shopping list is empty. Open any recipe and add its ingredients to the list — it is saved on this device.",
+
   recipes:
     "Nothing has been added to your recipes list yet. Please browse our recipes and add your favorites for easy access in the future.",
 

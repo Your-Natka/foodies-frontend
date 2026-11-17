@@ -19,6 +19,11 @@ import {
 } from "./fields";
 import IngredientsField from "./IngredientsField";
 import {
+  DraftAutosave,
+  clearRecipeDraft,
+  loadRecipeDraft,
+} from "./recipeDraft";
+import {
   DESCRIPTION_MAX,
   INSTRUCTIONS_MAX,
   buildRecipeFormData,
@@ -76,9 +81,21 @@ function RecipeForm() {
   // Remounts the ingredient picker so its draft row is cleared on reset.
   const [resetCount, setResetCount] = useState(0);
 
+  // Restore an unfinished recipe saved on this device (read once on mount).
+  const [savedDraft] = useState(loadRecipeDraft);
+
+  useEffect(() => {
+    if (savedDraft) {
+      toast.info("Draft restored. Don't forget to add the photo again.", {
+        toastId: "recipe-draft-restored",
+      });
+    }
+  }, [savedDraft]);
+
   const handleSubmit = async (values, { setFieldError }) => {
     try {
       const recipe = await createRecipe(buildRecipeFormData(values));
+      clearRecipeDraft();
 
       toast.success("Recipe published!");
       navigate(`/recipe/${recipe.id}`);
@@ -101,12 +118,13 @@ function RecipeForm() {
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={savedDraft ?? initialValues}
       validationSchema={recipeSchema}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, resetForm }) => (
         <Form className="recipe-form" noValidate>
+          <DraftAutosave />
           <PhotoField />
 
           <div className="recipe-form__body">
@@ -183,7 +201,8 @@ function RecipeForm() {
                 type="button"
                 className="recipe-form__round-button recipe-form__reset"
                 onClick={() => {
-                  resetForm();
+                  clearRecipeDraft();
+                  resetForm({ values: initialValues });
                   setResetCount((count) => count + 1);
                 }}
                 disabled={isSubmitting}

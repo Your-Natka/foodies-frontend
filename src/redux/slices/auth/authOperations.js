@@ -35,7 +35,18 @@ export const loginThunk = createAsyncThunk(
   },
 );
 
+// Cached API responses may contain the user's private data.
+const clearApiCache = async () => {
+  try {
+    await globalThis.caches?.delete("foodies-api");
+  } catch {
+    // Cache Storage is optional.
+  }
+};
+
 export const logoutThunk = createAsyncThunk("auth/logout", async () => {
+  await clearApiCache();
+
   try {
     await logoutUser();
 
