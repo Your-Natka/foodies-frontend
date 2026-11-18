@@ -7,20 +7,18 @@ const CustomSelect = ({ placeholder, options, value, onChange }) => {
 
   const wrapperRef = useRef(null);
   const searchInputRef = useRef(null);
-  const optionsListRef = useRef(null);
-  const optionRefs = useRef(new Map());
 
   const selectedOption = options.find(
     (option) => String(option.value) === String(value),
   );
 
-  const normalizedSearch = search.trim().toLowerCase();
+  const normalizedSearch = search.trim().toLocaleLowerCase();
 
-  const matchingIndex = normalizedSearch
-    ? options.findIndex((option) =>
-        option.label.toLowerCase().startsWith(normalizedSearch),
+  const filteredOptions = normalizedSearch
+    ? options.filter((option) =>
+        option.label.toLocaleLowerCase().startsWith(normalizedSearch),
       )
-    : -1;
+    : options;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -51,30 +49,6 @@ const CustomSelect = ({ placeholder, options, value, onChange }) => {
       searchInputRef.current?.focus();
     }
   }, [isOpen]);
-
-  // Прокручуємо повний список до першого відповідного елемента.
-  useEffect(() => {
-    if (!isOpen || !normalizedSearch || matchingIndex === -1) {
-      return;
-    }
-
-    const list = optionsListRef.current;
-    const option = optionRefs.current.get(String(options[matchingIndex].value));
-
-    if (!list || !option) {
-      return;
-    }
-
-    const listRect = list.getBoundingClientRect();
-    const optionRect = option.getBoundingClientRect();
-
-    const scrollPosition = list.scrollTop + optionRect.top - listRect.top;
-
-    list.scrollTo({
-      top: scrollPosition,
-      behavior: "smooth",
-    });
-  }, [isOpen, normalizedSearch, matchingIndex, options]);
 
   const handleToggle = () => {
     setSearch("");
@@ -117,6 +91,8 @@ const CustomSelect = ({ placeholder, options, value, onChange }) => {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               aria-label={`Search ${placeholder}`}
+              autoComplete="off"
+              style={{ color: "var(--color-black)" }}
             />
 
             <svg
@@ -129,48 +105,37 @@ const CustomSelect = ({ placeholder, options, value, onChange }) => {
             </svg>
           </div>
 
-          {normalizedSearch && matchingIndex === -1 && (
+          {filteredOptions.length > 0 ? (
+            <ul className={css.optionsList} role="listbox">
+              {filteredOptions.map((option) => {
+                const isSelected = String(option.value) === String(value);
+
+                return (
+                  <li key={option.value}>
+                    <button
+                      type="button"
+                      className={`${css.option} ${
+                        isSelected ? css.selectedOption : ""
+                      }`}
+                      onClick={() => handleSelect(option.value)}
+                      role="option"
+                      aria-selected={isSelected}
+                    >
+                      {isSelected && (
+                        <span className={css.checkmark} aria-hidden="true">
+                          ✓
+                        </span>
+                      )}
+
+                      <span>{option.label}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
             <p className={css.noResults}>No results found</p>
           )}
-
-          <ul ref={optionsListRef} className={css.optionsList} role="listbox">
-            {options.map((option, index) => {
-              const isSelected = String(option.value) === String(value);
-
-              return (
-                <li
-                  key={option.value}
-                  ref={(element) => {
-                    const key = String(option.value);
-
-                    if (element) {
-                      optionRefs.current.set(key, element);
-                    } else {
-                      optionRefs.current.delete(key);
-                    }
-                  }}
-                >
-                  <button
-                    type="button"
-                    className={`${css.option} ${
-                      isSelected ? css.selectedOption : ""
-                    }`}
-                    onClick={() => handleSelect(option.value)}
-                    role="option"
-                    aria-selected={isSelected}
-                  >
-                    {isSelected && (
-                      <span className={css.checkmark} aria-hidden="true">
-                        ✓
-                      </span>
-                    )}
-
-                    <span>{option.label}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       )}
     </div>
