@@ -49,7 +49,7 @@ export const recipeSchema = Yup.object({
   time: Yup.number()
     .typeError("Enter the cooking time")
     .integer("Cooking time must be a whole number of minutes")
-    .min(TIME_MIN, `Cooking time must be at least ${TIME_MIN} minute`)
+    .min(TIME_MIN, `Cooking time must be at least ${TIME_MIN} minutes`)
     .required("Enter the cooking time"),
   area: Yup.string().required("Select an area"),
   ingredients: Yup.array()

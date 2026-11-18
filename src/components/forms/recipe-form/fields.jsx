@@ -349,23 +349,74 @@ export function SelectField({
   );
 }
 
+// converts minutes into a readable cooking time
+function formatCookingTime(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours && minutes) return `${hours}h ${minutes}min`;
+  if (hours) return `${hours} h`;
+
+  return `${minutes} min`;
+}
+
+function parseCookingTime(input) {
+  const value = input.trim().toLowerCase().replace(/\s+/g, "");
+
+  const minutesMatch = value.match(/^(\d+)min$/);
+  if (minutesMatch) {
+    return Number(minutesMatch[1]);
+  }
+
+  const hoursMatch = value.match(/^(\d+)h(?:(\d+)m(?:in)?)?$/);
+  if (hoursMatch) {
+    return Number(hoursMatch[1]) * 60 + Number(hoursMatch[2] || 0);
+  }
+
+  return null;
+}
+
 export function CookingTimeField() {
   const [field, meta, helpers] = useField("time");
   const labelId = useId();
+  const [isEditing, setIsEditing] = useState(false);
+  const [draft, setDraft] = useState("");
 
   const value = Number(field.value) || TIME_MIN;
 
   const changeBy = (delta) => {
+    // prevent decreasing below the minimum.
+    if (delta < 0 && value <= TIME_MIN) return;
+
     const nextValue = value + delta;
 
-    if (nextValue < TIME_MIN) return;
-
-    helpers.setValue(nextValue);
+    helpers.setValue(nextValue, true);
     helpers.setTouched(true, false);
   };
 
   const isPristine = !meta.touched && value === meta.initialValue;
   const isMinValue = value <= TIME_MIN;
+
+  const startEditing = () => {
+    setDraft(formatCookingTime(value));
+    setIsEditing(true);
+  };
+
+  const finishEditing = async () => {
+    const parsedValue = parseCookingTime(draft);
+
+    if (parsedValue !== null) {
+      await helpers.setValue(parsedValue, true);
+      await helpers.setTouched(true, false);
+    }
+
+    setIsEditing(false);
+  };
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+    setDraft("");
+  };
 
   return (
     <div className="recipe-form__group recipe-form__group--time">
@@ -384,14 +435,43 @@ export function CookingTimeField() {
           <img src={minusIcon} width="24" height="24" alt="" />
         </button>
 
-        <output
-          className={`recipe-form__time-value ${
-            isPristine ? "recipe-form__time-value--placeholder" : ""
-          }`}
-          aria-live="polite"
-        >
-          {value} min
-        </output>
+        {isEditing ? (
+          <div className="recipe-form__time-edit-wrap">
+            <input
+              type="text"
+              className="recipe-form__time-edit"
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              onBlur={finishEditing}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.currentTarget.blur();
+                }
+
+                if (event.key === "Escape") {
+                  cancelEditing();
+                }
+              }}
+              aria-label="Enter cooking time"
+              autoFocus
+            />
+
+            <p className="recipe-form__time-hint">Examples: 105min or 1h 45m</p>
+          </div>
+        ) : (
+          <button
+            type="button"
+            translate="no"
+            className={`recipe-form__time-value ${
+              isPristine ? "recipe-form__time-value--placeholder" : ""
+            }`}
+            onClick={startEditing}
+            aria-label={`Edit cooking time: ${formatCookingTime(value)}`}
+            title="Click to edit cooking time"
+          >
+            {formatCookingTime(value)}
+          </button>
+        )}
 
         <button
           type="button"
