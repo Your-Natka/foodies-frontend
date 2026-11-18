@@ -158,6 +158,154 @@ export function CountedTextarea({ name, placeholder, maxLength }) {
   );
 }
 
+export function SearchableSelect({
+  id,
+  value,
+  options = [],
+  placeholder,
+  isLoading = false,
+  isInvalid = false,
+  disabledValues = [],
+  onChange,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const wrapperRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  const normalizedSearch = search.trim().toLowerCase();
+
+  const filteredOptions = options.filter((option) =>
+    option.label.toLowerCase().startsWith(normalizedSearch),
+  );
+
+  const selectedOption = options.find(
+    (option) => String(option.value) === String(value),
+  );
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (!wrapperRef.current?.contains(event.target)) {
+        setIsOpen(false);
+        setSearch("");
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        setSearch("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  const handleToggle = () => {
+    if (isLoading) return;
+
+    setSearch("");
+    setIsOpen((previous) => !previous);
+  };
+
+  const handleSelect = (optionValue) => {
+    onChange?.(optionValue);
+    setIsOpen(false);
+    setSearch("");
+  };
+
+  return (
+    <div className="recipe-form__search-select-wrap" ref={wrapperRef}>
+      <button
+        id={id}
+        type="button"
+        className={`recipe-form__select ${
+          !selectedOption ? "recipe-form__select--placeholder" : ""
+        }`}
+        onClick={handleToggle}
+        disabled={isLoading}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-invalid={isInvalid}
+      >
+        <span>
+          {isLoading ? "Loading..." : selectedOption?.label || placeholder}
+        </span>
+
+        <img
+          src={chevronIcon}
+          width="18"
+          height="18"
+          alt=""
+          className={`recipe-form__select-icon ${
+            isOpen ? "recipe-form__select-icon--open" : ""
+          }`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="recipe-form__dropdown">
+          <input
+            ref={searchInputRef}
+            type="text"
+            className="recipe-form__search-input"
+            placeholder="Type to search..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            aria-label={`Search ${placeholder}`}
+          />
+
+          {filteredOptions.length > 0 ? (
+            <ul className="recipe-form__options-list" role="listbox">
+              {filteredOptions.map((option) => {
+                const isSelected = String(option.value) === String(value);
+
+                const isDisabled = disabledValues.some(
+                  (item) => String(item) === String(option.value),
+                );
+
+                return (
+                  <li key={option.value}>
+                    <button
+                      type="button"
+                      className={`recipe-form__option ${
+                        isSelected ? "recipe-form__option--selected" : ""
+                      }`}
+                      disabled={isDisabled}
+                      onClick={() => handleSelect(option.value)}
+                      role="option"
+                      aria-selected={isSelected}
+                    >
+                      {option.label}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="recipe-form__no-results">No results found</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function SelectField({
   name,
   label,
@@ -166,42 +314,34 @@ export function SelectField({
   isLoading,
   className = "",
 }) {
-  const [field, meta] = useField(name);
+  const [field, meta, helpers] = useField(name);
   const selectId = useId();
   const isInvalid = meta.touched && Boolean(meta.error);
+
+  const selectOptions = options.map((option) => ({
+    value: option.name,
+    label: option.name,
+  }));
 
   return (
     <div className={`recipe-form__group ${className}`.trim()}>
       <label htmlFor={selectId} className="recipe-form__label">
         {label}
       </label>
-      <div className="recipe-form__select-wrap">
-        <select
-          {...field}
-          id={selectId}
-          disabled={isLoading}
-          aria-invalid={isInvalid}
-          className={`recipe-form__select ${
-            field.value ? "" : "recipe-form__select--placeholder"
-          }`}
-        >
-          <option value="" disabled>
-            {isLoading ? "Loading..." : placeholder}
-          </option>
-          {options.map((option) => (
-            <option key={option.id} value={option.name}>
-              {option.name}
-            </option>
-          ))}
-        </select>
-        <img
-          src={chevronIcon}
-          width="18"
-          height="18"
-          alt=""
-          className="recipe-form__select-icon"
-        />
-      </div>
+
+      <SearchableSelect
+        id={selectId}
+        value={field.value}
+        options={selectOptions}
+        placeholder={placeholder}
+        isLoading={isLoading}
+        isInvalid={isInvalid}
+        onChange={(value) => {
+          helpers.setValue(value);
+          helpers.setTouched(true, false);
+        }}
+      />
+
       <FieldError name={name} />
     </div>
   );
@@ -210,25 +350,33 @@ export function SelectField({
 export function CookingTimeField() {
   const [field, meta, helpers] = useField("time");
   const labelId = useId();
-  const value = Number(field.value) || 0;
-  const isPristine = !meta.touched && value === meta.initialValue;
+
+  const value = Number(field.value) || TIME_MIN;
 
   const changeBy = (delta) => {
+    const nextValue = value + delta;
+
+    if (nextValue < TIME_MIN) return;
+
+    helpers.setValue(nextValue);
     helpers.setTouched(true, false);
-    helpers.setValue(Math.max(TIME_MIN, value + delta));
   };
+
+  const isPristine = !meta.touched && value === meta.initialValue;
+  const isMinValue = value <= TIME_MIN;
 
   return (
     <div className="recipe-form__group recipe-form__group--time">
       <span className="recipe-form__label" id={labelId}>
         Cooking time
       </span>
+
       <div className="recipe-form__time" role="group" aria-labelledby={labelId}>
         <button
           type="button"
           className="recipe-form__round-button"
           onClick={() => changeBy(-5)}
-          disabled={value <= TIME_MIN}
+          disabled={isMinValue}
           aria-label="Decrease cooking time"
         >
           <img src={minusIcon} width="24" height="24" alt="" />
@@ -242,6 +390,7 @@ export function CookingTimeField() {
         >
           {value} min
         </output>
+
         <button
           type="button"
           className="recipe-form__round-button"
@@ -251,6 +400,7 @@ export function CookingTimeField() {
           <img src={plusIcon} width="24" height="24" alt="" />
         </button>
       </div>
+
       <FieldError name="time" />
     </div>
   );
