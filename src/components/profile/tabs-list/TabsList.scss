@@ -27,6 +27,7 @@
 
       .tabs-list__button--active:not(:hover):not(:focus-visible)::after {
         transform: scaleX(0);
+        transform-origin: right;
       }
     }
   }
