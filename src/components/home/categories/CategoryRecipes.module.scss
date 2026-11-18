@@ -3,6 +3,14 @@
   background: transparent;
 }
 
+.categorySection {
+  scroll-margin-top: 80px;
+
+  @media (min-width: 768px) {
+    scroll-margin-top: 86px;
+  }
+}
+
 .catalog {
   display: flex;
   flex-direction: column;

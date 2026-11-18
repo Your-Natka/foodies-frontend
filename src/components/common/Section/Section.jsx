@@ -5,9 +5,10 @@ function Section({
   className = "",
   containerVariant = "default",
   id,
+  ...props
 }) {
   return (
-    <section id={id} className={className}>
+    <section id={id} className={className} {...props}>
       <Container variant={containerVariant}>{children}</Container>
     </section>
   );

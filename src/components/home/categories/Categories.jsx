@@ -106,7 +106,11 @@ function Categories({ onSelectCategory }) {
   };
 
   return (
-    <Section className="categories-section" id="categories">
+    <Section
+      className="categories-section"
+      id="categories"
+      data-categories-section
+    >
       <div className="categories-section__heading">
         <h2 className="categories-section__title">Categories</h2>
 
