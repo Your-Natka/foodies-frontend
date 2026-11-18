@@ -268,6 +268,8 @@ export function SearchableSelect({
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             aria-label={`Search ${placeholder}`}
+            autoComplete="off"
+            style={{ color: "var(--color-black)" }}
           />
 
           {filteredOptions.length > 0 ? (

@@ -10,13 +10,15 @@ import { MEASURE_MAX } from "./recipeSchema";
 
 const EMPTY_DRAFT = { id: "", measure: "" };
 
-function IngredientsField({ options, isLoading }) {
+function IngredientsField({ options = [], isLoading }) {
   const { values } = useFormikContext();
   const selectId = useId();
   const measureId = useId();
 
   const [draft, setDraft] = useState(EMPTY_DRAFT);
   const [draftErrors, setDraftErrors] = useState({});
+  const [search, setSearch] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const optionsById = useMemo(
     () => new Map(options.map((option) => [option.id, option])),
@@ -24,6 +26,16 @@ function IngredientsField({ options, isLoading }) {
   );
 
   const addedIds = new Set(values.ingredients.map(({ id }) => id));
+
+  const filteredOptions = useMemo(() => {
+    const query = search.trim().toLocaleLowerCase();
+
+    return options.filter(
+      (option) =>
+        !addedIds.has(option.id) &&
+        option.name.toLocaleLowerCase().startsWith(query),
+    );
+  }, [options, search, values.ingredients]);
 
   const updateDraft = (key, value) => {
     setDraft((current) => ({ ...current, [key]: value }));
@@ -50,10 +62,14 @@ function IngredientsField({ options, isLoading }) {
           }
 
           setDraftErrors(errors);
+
           if (Object.keys(errors).length > 0) return;
 
           push({ id: draft.id, measure });
+
           setDraft(EMPTY_DRAFT);
+          setSearch("");
+          setIsOpen(false);
         };
 
         const handleMeasureKeyDown = (event) => {
@@ -63,6 +79,12 @@ function IngredientsField({ options, isLoading }) {
           }
         };
 
+        const handleSelect = (option) => {
+          updateDraft("id", option.id);
+          setSearch(option.name);
+          setIsOpen(false);
+        };
+
         return (
           <div className="recipe-form__ingredients">
             <div className="recipe-form__ingredient-row">
@@ -70,38 +92,108 @@ function IngredientsField({ options, isLoading }) {
                 <label htmlFor={selectId} className="recipe-form__label">
                   Ingredients
                 </label>
-                <div className="recipe-form__select-wrap">
-                  <select
-                    id={selectId}
-                    value={draft.id}
-                    disabled={isLoading}
-                    aria-invalid={Boolean(draftErrors.id)}
-                    onChange={(event) => updateDraft("id", event.target.value)}
-                    className={`recipe-form__select ${
-                      draft.id ? "" : "recipe-form__select--placeholder"
-                    }`}
-                  >
-                    <option value="" disabled>
-                      {isLoading ? "Loading..." : "Add the ingredient"}
-                    </option>
-                    {options.map((option) => (
-                      <option
-                        key={option.id}
-                        value={option.id}
-                        disabled={addedIds.has(option.id)}
+
+                <div className="recipe-form__search-select-wrap">
+                  <div className="recipe-form__select-wrap">
+                    <input
+                      id={selectId}
+                      type="text"
+                      role="combobox"
+                      autoComplete="off"
+                      value={
+                        isOpen
+                          ? search
+                          : draft.id
+                            ? (optionsById.get(draft.id)?.name ?? search)
+                            : search
+                      }
+                      placeholder={
+                        isLoading ? "Loading..." : "Add the ingredient"
+                      }
+                      disabled={isLoading}
+                      aria-expanded={isOpen}
+                      aria-controls={`${selectId}-options`}
+                      aria-autocomplete="list"
+                      aria-invalid={Boolean(draftErrors.id)}
+                      onFocus={() => {
+                        setSearch("");
+                        setIsOpen(true);
+                      }}
+                      onChange={(event) => {
+                        setSearch(event.target.value);
+                        setDraft((current) => ({ ...current, id: "" }));
+                        setDraftErrors((current) => ({
+                          ...current,
+                          id: undefined,
+                        }));
+                        setIsOpen(true);
+                      }}
+                      onBlur={() => {
+                        setTimeout(() => setIsOpen(false), 150);
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Escape") {
+                          setIsOpen(false);
+                        }
+
+                        if (event.key === "Enter" && isOpen) {
+                          event.preventDefault();
+
+                          if (filteredOptions.length > 0) {
+                            handleSelect(filteredOptions[0]);
+                          }
+                        }
+                      }}
+                      className={`recipe-form__select ${
+                        draft.id ? "" : "recipe-form__select--placeholder"
+                      }`}
+                    />
+
+                    <img
+                      src={chevronIcon}
+                      width="18"
+                      height="18"
+                      alt=""
+                      className={`recipe-form__select-icon ${
+                        isOpen ? "recipe-form__select-icon--open" : ""
+                      }`}
+                    />
+                  </div>
+
+                  {isOpen && (
+                    <div className="recipe-form__dropdown">
+                      <ul
+                        id={`${selectId}-options`}
+                        className="recipe-form__options-list"
+                        role="listbox"
                       >
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
-                  <img
-                    src={chevronIcon}
-                    width="18"
-                    height="18"
-                    alt=""
-                    className="recipe-form__select-icon"
-                  />
+                        {filteredOptions.length > 0 ? (
+                          filteredOptions.map((option) => (
+                            <li
+                              key={option.id}
+                              role="option"
+                              aria-selected={false}
+                            >
+                              <button
+                                type="button"
+                                className="recipe-form__option"
+                                onMouseDown={(event) => event.preventDefault()}
+                                onClick={() => handleSelect(option)}
+                              >
+                                {option.name}
+                              </button>
+                            </li>
+                          ))
+                        ) : (
+                          <li className="recipe-form__no-results">
+                            No results found
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
                 </div>
+
                 {draftErrors.id && (
                   <p className="recipe-form__error" role="alert">
                     {draftErrors.id}
@@ -113,6 +205,7 @@ function IngredientsField({ options, isLoading }) {
                 <label htmlFor={measureId} className="visually-hidden">
                   Quantity
                 </label>
+
                 <input
                   id={measureId}
                   type="text"
@@ -125,6 +218,7 @@ function IngredientsField({ options, isLoading }) {
                   onKeyDown={handleMeasureKeyDown}
                   className="recipe-form__line-input"
                 />
+
                 {draftErrors.measure && (
                   <p className="recipe-form__error" role="alert">
                     {draftErrors.measure}
@@ -162,12 +256,14 @@ function IngredientsField({ options, isLoading }) {
                           />
                         )}
                       </div>
+
                       <div className="recipe-form__ingredient-text">
                         <p className="recipe-form__ingredient-name">{name}</p>
                         <p className="recipe-form__ingredient-measure">
                           {item.measure}
                         </p>
                       </div>
+
                       <button
                         type="button"
                         className="recipe-form__ingredient-remove"
