@@ -1,11 +1,10 @@
 import { useId, useMemo, useState } from "react";
 import { FieldArray, useFormikContext } from "formik";
 
-import chevronIcon from "../../../assets/icons/add-recipe/chevron-down.svg";
 import plusIcon from "../../../assets/icons/add-recipe/plus-small.svg";
 import closeIcon from "../../../assets/icons/add-recipe/close.svg";
 
-import { FieldError } from "./fields";
+import { FieldError, SearchableSelect } from "./fields";
 import { MEASURE_MAX } from "./recipeSchema";
 
 const EMPTY_DRAFT = { id: "", measure: "" };
@@ -17,25 +16,22 @@ function IngredientsField({ options = [], isLoading }) {
 
   const [draft, setDraft] = useState(EMPTY_DRAFT);
   const [draftErrors, setDraftErrors] = useState({});
-  const [search, setSearch] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
 
   const optionsById = useMemo(
-    () => new Map(options.map((option) => [option.id, option])),
+    () => new Map(options.map((option) => [String(option.id), option])),
     [options],
   );
 
-  const addedIds = new Set(values.ingredients.map(({ id }) => id));
+  const searchableOptions = useMemo(
+    () =>
+      options.map((option) => ({
+        value: option.id,
+        label: option.name,
+      })),
+    [options],
+  );
 
-  const filteredOptions = useMemo(() => {
-    const query = search.trim().toLocaleLowerCase();
-
-    return options.filter(
-      (option) =>
-        !addedIds.has(option.id) &&
-        option.name.toLocaleLowerCase().startsWith(query),
-    );
-  }, [options, search, values.ingredients]);
+  const addedIds = values.ingredients.map(({ id }) => id);
 
   const updateDraft = (key, value) => {
     setDraft((current) => ({ ...current, [key]: value }));
@@ -51,7 +47,7 @@ function IngredientsField({ options = [], isLoading }) {
 
           if (!draft.id) {
             errors.id = "Select an ingredient";
-          } else if (addedIds.has(draft.id)) {
+          } else if (addedIds.some((id) => String(id) === String(draft.id))) {
             errors.id = "This ingredient is already added";
           }
 
@@ -68,8 +64,7 @@ function IngredientsField({ options = [], isLoading }) {
           push({ id: draft.id, measure });
 
           setDraft(EMPTY_DRAFT);
-          setSearch("");
-          setIsOpen(false);
+          setDraftErrors({});
         };
 
         const handleMeasureKeyDown = (event) => {
@@ -77,12 +72,6 @@ function IngredientsField({ options = [], isLoading }) {
             event.preventDefault();
             handleAdd();
           }
-        };
-
-        const handleSelect = (option) => {
-          updateDraft("id", option.id);
-          setSearch(option.name);
-          setIsOpen(false);
         };
 
         return (
@@ -93,106 +82,16 @@ function IngredientsField({ options = [], isLoading }) {
                   Ingredients
                 </label>
 
-                <div className="recipe-form__search-select-wrap">
-                  <div className="recipe-form__select-wrap">
-                    <input
-                      id={selectId}
-                      type="text"
-                      role="combobox"
-                      autoComplete="off"
-                      value={
-                        isOpen
-                          ? search
-                          : draft.id
-                            ? (optionsById.get(draft.id)?.name ?? search)
-                            : search
-                      }
-                      placeholder={
-                        isLoading ? "Loading..." : "Add the ingredient"
-                      }
-                      disabled={isLoading}
-                      aria-expanded={isOpen}
-                      aria-controls={`${selectId}-options`}
-                      aria-autocomplete="list"
-                      aria-invalid={Boolean(draftErrors.id)}
-                      onFocus={() => {
-                        setSearch("");
-                        setIsOpen(true);
-                      }}
-                      onChange={(event) => {
-                        setSearch(event.target.value);
-                        setDraft((current) => ({ ...current, id: "" }));
-                        setDraftErrors((current) => ({
-                          ...current,
-                          id: undefined,
-                        }));
-                        setIsOpen(true);
-                      }}
-                      onBlur={() => {
-                        setTimeout(() => setIsOpen(false), 150);
-                      }}
-                      onKeyDown={(event) => {
-                        if (event.key === "Escape") {
-                          setIsOpen(false);
-                        }
-
-                        if (event.key === "Enter" && isOpen) {
-                          event.preventDefault();
-
-                          if (filteredOptions.length > 0) {
-                            handleSelect(filteredOptions[0]);
-                          }
-                        }
-                      }}
-                      className={`recipe-form__select ${
-                        draft.id ? "" : "recipe-form__select--placeholder"
-                      }`}
-                    />
-
-                    <img
-                      src={chevronIcon}
-                      width="18"
-                      height="18"
-                      alt=""
-                      className={`recipe-form__select-icon ${
-                        isOpen ? "recipe-form__select-icon--open" : ""
-                      }`}
-                    />
-                  </div>
-
-                  {isOpen && (
-                    <div className="recipe-form__dropdown">
-                      <ul
-                        id={`${selectId}-options`}
-                        className="recipe-form__options-list"
-                        role="listbox"
-                      >
-                        {filteredOptions.length > 0 ? (
-                          filteredOptions.map((option) => (
-                            <li
-                              key={option.id}
-                              role="option"
-                              aria-selected={false}
-                            >
-                              <button
-                                type="button"
-                                className="recipe-form__option"
-                                onMouseDown={(event) => event.preventDefault()}
-                                onClick={() => handleSelect(option)}
-                              >
-                                {option.name}
-                              </button>
-                            </li>
-                          ))
-                        ) : (
-                          <li className="recipe-form__no-results">
-                            No results found
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                <SearchableSelect
+                  id={selectId}
+                  value={draft.id}
+                  options={searchableOptions}
+                  placeholder="Add the ingredient"
+                  isLoading={isLoading}
+                  isInvalid={Boolean(draftErrors.id)}
+                  disabledValues={addedIds}
+                  onChange={(value) => updateDraft("id", value)}
+                />
 
                 {draftErrors.id && (
                   <p className="recipe-form__error" role="alert">
@@ -240,7 +139,7 @@ function IngredientsField({ options = [], isLoading }) {
             {values.ingredients.length > 0 && (
               <ul className="recipe-form__ingredient-list">
                 {values.ingredients.map((item, index) => {
-                  const ingredient = optionsById.get(item.id);
+                  const ingredient = optionsById.get(String(item.id));
                   const name = ingredient?.name ?? "Ingredient";
 
                   return (
