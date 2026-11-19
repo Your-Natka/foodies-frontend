@@ -51,6 +51,7 @@ function AppRoutes() {
           <Route element={<PrivateRoute />}>
             <Route path="user" element={<UserPage />} />
             <Route path="recipe/add" element={<AddRecipePage />} />
+            <Route path="recipe/:recipeId/edit" element={<AddRecipePage />} />
           </Route>
 
           {/* Public user profile */}

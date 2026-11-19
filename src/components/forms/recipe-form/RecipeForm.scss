@@ -804,4 +804,18 @@ $desktop: 1440px;
       cursor: not-allowed;
     }
   }
+
+  .recipe-form__cancel {
+    @extend .recipe-form__submit;
+
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray);
+    color: var(--color-dark);
+
+    &:hover {
+      background-color: var(--color-dark);
+      border-color: var(--color-dark);
+      color: var(--color-white);
+    }
+  }
 }

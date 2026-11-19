@@ -24,7 +24,7 @@ export function FieldError({ name }) {
   );
 }
 
-export function PhotoField() {
+export function PhotoField({ initialPhoto }) {
   const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const inputId = useId();
   const [preview, setPreview] = useState(null);
@@ -33,6 +33,9 @@ export function PhotoField() {
   // Shown only while the form still holds the same file (cleared on reset).
   const previewUrl =
     preview && preview.file === values.photo ? preview.url : "";
+
+  // Show the newly selected photo or the saved recipe photo.
+  const photoUrl = previewUrl || initialPhoto;
 
   useEffect(
     () => () => {
@@ -43,6 +46,7 @@ export function PhotoField() {
 
   const handleChange = (event) => {
     const file = event.currentTarget.files?.[0];
+
     // Allow picking the same file again after a reset.
     event.currentTarget.value = "";
 
@@ -53,6 +57,7 @@ export function PhotoField() {
     const url = PHOTO_TYPES.includes(file.type)
       ? URL.createObjectURL(file)
       : "";
+
     previewUrlRef.current = url;
     setPreview({ file, url });
 
@@ -71,18 +76,19 @@ export function PhotoField() {
         onChange={handleChange}
       />
 
-      {previewUrl ? (
+      {photoUrl ? (
         <>
           <label
             htmlFor={inputId}
             className="recipe-form__photo-frame recipe-form__photo-frame--filled"
           >
             <img
-              src={previewUrl}
+              src={photoUrl}
               alt="Recipe preview"
               className="recipe-form__photo-preview"
             />
           </label>
+
           <label htmlFor={inputId} className="recipe-form__photo-link">
             Upload another photo
           </label>
@@ -99,6 +105,7 @@ export function PhotoField() {
               className="recipe-form__photo-camera"
             />
           </span>
+
           <span className="recipe-form__photo-link">Upload a photo</span>
         </label>
       )}
