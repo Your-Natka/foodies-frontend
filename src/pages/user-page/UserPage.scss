@@ -46,7 +46,7 @@
 
   &__message {
     margin: 0;
-    color: var(--color-gray);
+    color: var(--color-black);
     font-size: 14px;
     line-height: 20px;
   }
@@ -113,7 +113,7 @@
     }
 
     &__description {
-    color: var(--color-gray);
-  }
+      color: var(--color-black);
+    }
   }
 }
