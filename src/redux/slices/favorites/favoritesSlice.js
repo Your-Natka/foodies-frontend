@@ -6,6 +6,8 @@ import {
   addFavoriteThunk,
   removeFavoriteThunk,
 } from './favoritesOperations';
+import { logoutThunk } from '../auth/authOperations';
+import { clearCredentials } from '../auth/authSlice';
 
 const initialState = {
   items: [],
@@ -31,6 +33,10 @@ const favoritesSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      // Favorites belong to the signed-in user: drop them when the session ends.
+      .addCase(logoutThunk.fulfilled, () => initialState)
+      .addCase(clearCredentials, () => initialState)
+
       // Fetch favorites
       .addCase(fetchFavoritesThunk.pending, state => {
         state.status = 'loading';

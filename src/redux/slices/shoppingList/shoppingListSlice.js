@@ -1,5 +1,7 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 
+import { logoutThunk } from "../auth/authOperations";
+
 export const SHOPPING_LIST_STORAGE_KEY = "foodies:shopping-list";
 
 const initialState = { items: [] };
@@ -43,6 +45,11 @@ const shoppingListSlice = createSlice({
     clearAll(state) {
       state.items = [];
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logoutThunk.fulfilled, (state) => {
+      state.items = [];
+    });
   },
 });
 
