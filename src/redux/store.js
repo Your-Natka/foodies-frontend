@@ -14,7 +14,7 @@ import authReducer, {
 } from "./slices/auth/authSlice";
 
 import { configureApiAuth } from "../services/api";
-import { loadJSON, saveJSON } from "../utils/storage";
+import { loadJSON, removeKey, saveJSON } from "../utils/storage";
 
 const loadShoppingList = () => {
   const saved = loadJSON(SHOPPING_LIST_STORAGE_KEY, null);
@@ -45,7 +45,12 @@ store.subscribe(() => {
 
   if (shoppingList !== lastShoppingList) {
     lastShoppingList = shoppingList;
-    saveJSON(SHOPPING_LIST_STORAGE_KEY, shoppingList);
+
+    if (shoppingList.items.length === 0) {
+      removeKey(SHOPPING_LIST_STORAGE_KEY);
+    } else {
+      saveJSON(SHOPPING_LIST_STORAGE_KEY, shoppingList);
+    }
   }
 });
 

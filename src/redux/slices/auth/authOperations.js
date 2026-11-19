@@ -11,6 +11,7 @@ import {
   markSessionExists,
   clearStoredSession,
 } from "../../../services/authStorage";
+import { clearAppStorage } from "../../../utils/storage";
 
 const getErrorMessage = (error) =>
   error.response?.data?.message ||
@@ -47,14 +48,14 @@ export const loginThunk = createAsyncThunk(
 const clearApiCache = async () => {
   try {
     await globalThis.caches?.delete("foodies-api");
-  } catch {
+  } catch (error) {
     console.error("Failed to clear API cache:", error);
   }
 };
 
 export const logoutThunk = createAsyncThunk("auth/logout", async () => {
   await clearApiCache();
-  clearStoredSession();
+  clearAppStorage();
 
   try {
     await logoutUser();
