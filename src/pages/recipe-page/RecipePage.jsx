@@ -17,7 +17,10 @@ import {
   fetchPopularRecipesThunk,
 } from "../../redux/slices/recipes/recipesOperations";
 
-import { selectIsAuthenticated } from "../../redux/slices/auth/authSlice";
+import {
+  selectIsAuthenticated,
+  selectUser,
+} from "../../redux/slices/auth/authSlice";
 
 import {
   selectFavoriteIds,
@@ -52,6 +55,7 @@ const RecipePage = () => {
   const error = useSelector(selectRecipesError);
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const currentUser = useSelector(selectUser);
   const favoriteIds = useSelector(selectFavoriteIds);
   const popularRecipes = useSelector(selectPopularRecipes);
   const popularStatus = useSelector(selectPopularStatus);
@@ -59,6 +63,10 @@ const RecipePage = () => {
   // Cooking mode is tied to a recipe id, so it closes when navigating away.
   const [cookingRecipeId, setCookingRecipeId] = useState(null);
   const closeCookingMode = useCallback(() => setCookingRecipeId(null), []);
+
+  const isOwner =
+    Boolean(currentUser?.id) &&
+    currentUser.id === (recipe?.owner?.id ?? recipe?.owner?._id);
 
   useEffect(() => {
     dispatch(clearCurrentRecipe());
@@ -81,6 +89,10 @@ const RecipePage = () => {
       dispatch(clearFavorites());
     }
   }, [dispatch, isAuthenticated]);
+
+  const handleEditRecipe = () => {
+    navigate(`/recipe/${recipe.id}/edit`);
+  };
 
   // Guest cannot open another user's profile
   const handleAuthorClick = (authorId) => {
@@ -173,6 +185,16 @@ const RecipePage = () => {
                 isFavorite={isFavorite}
                 onClick={() => handleToggleFavorite()}
               />
+
+              {isOwner && (
+                <button
+                  type="button"
+                  className={css.editButton}
+                  onClick={handleEditRecipe}
+                >
+                  EDIT RECIPE
+                </button>
+              )}
 
               <RecipeActions
                 recipe={recipe}

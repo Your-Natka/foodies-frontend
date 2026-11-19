@@ -41,7 +41,13 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.isAuthenticated = false;
       state.status = "idle";
+      state.isSessionChecked = true;
       state.error = null;
+
+    },
+
+    markSessionChecked: (state) => {
+      state.isSessionChecked = true;
     },
   },
 
@@ -85,12 +91,14 @@ const authSlice = createSlice({
         state.accessToken = null;
         state.isAuthenticated = false;
         state.status = "idle";
+        state.isSessionChecked = true;
         state.error = null;
       })
 
       // Restore session
       .addCase(restoreSessionThunk.pending, (state) => {
         state.status = "loading";
+        state.error = null;
       })
       .addCase(restoreSessionThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
@@ -100,17 +108,18 @@ const authSlice = createSlice({
         state.isSessionChecked = true;
         state.error = null;
       })
-      .addCase(restoreSessionThunk.rejected, (state) => {
+      .addCase(restoreSessionThunk.rejected, (state, action) => {
         state.user = null;
         state.accessToken = null;
         state.isAuthenticated = false;
         state.status = "idle";
         state.isSessionChecked = true;
+        state.error = action.payload ?? null;
       });
   },
 });
 
-export const { setCredentials, setAccessToken, updateUser, clearCredentials } =
+export const { setCredentials, setAccessToken, updateUser, clearCredentials, markSessionChecked } =
   authSlice.actions;
 
 export const selectUser = (state) => state.auth.user;

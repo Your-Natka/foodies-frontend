@@ -6,7 +6,11 @@ import {
   refreshSession,
 } from "../../../services/api/authApi";
 import { getCurrentUser } from "../../../services/api/usersApi";
-import { setAccessToken } from "./authSlice";
+import {
+  hasStoredSession,
+  markSessionExists,
+  clearStoredSession,
+} from "../../../services/authStorage";
 
 const getErrorMessage = (error) =>
   error.response?.data?.message ||
@@ -17,7 +21,9 @@ export const registerThunk = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      return await registerUser(userData);
+      const result = await registerUser(userData);
+      markSessionExists();
+      return result;
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
     }
@@ -28,7 +34,9 @@ export const loginThunk = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      return await loginUser(credentials);
+      const result = await loginUser(credentials);
+      markSessionExists();
+      return result;
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
     }
@@ -40,16 +48,16 @@ const clearApiCache = async () => {
   try {
     await globalThis.caches?.delete("foodies-api");
   } catch {
-    // Cache Storage is optional.
+    console.error("Failed to clear API cache:", error);
   }
 };
 
 export const logoutThunk = createAsyncThunk("auth/logout", async () => {
   await clearApiCache();
+  clearStoredSession();
 
   try {
     await logoutUser();
-
     return { serverLogoutSucceeded: true };
   } catch {
     return { serverLogoutSucceeded: false };
@@ -58,11 +66,9 @@ export const logoutThunk = createAsyncThunk("auth/logout", async () => {
 
 export const restoreSessionThunk = createAsyncThunk(
   "auth/restoreSession",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const session = await refreshSession();
-
-      dispatch(setAccessToken(session.accessToken));
 
       const profile = await getCurrentUser();
 
@@ -74,10 +80,15 @@ export const restoreSessionThunk = createAsyncThunk(
         accessToken: session.accessToken,
       };
     } catch (error) {
+      if (error.response?.status === 401) {
+        clearStoredSession();
+        return rejectWithValue(null);
+      }
+
       return rejectWithValue(getErrorMessage(error));
     }
   },
   {
-    condition: (_, { getState }) => getState().auth.status === "idle",
+    condition: () => hasStoredSession(),
   },
 );

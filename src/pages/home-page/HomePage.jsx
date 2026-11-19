@@ -4,6 +4,7 @@ import Hero from "../../components/home/hero/Hero";
 import Categories from "../../components/home/categories/Categories";
 import CategoryRecipes from "../../components/home/categories/CategoryRecipes";
 import Testimonials from "../../components/home/testimonials/Testimonials";
+import ScrollUp from "../../components/scroll/ScrollUp";
 import "./HomePage.scss";
 
 function HomePage() {
@@ -23,6 +24,7 @@ function HomePage() {
       )}
 
       <Testimonials />
+      <ScrollUp />
     </main>
   );
 }

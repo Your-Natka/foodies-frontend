@@ -8,7 +8,11 @@ import trashIcon from "../../../assets/icons/add-recipe/trash.svg";
 import { getCategories } from "../../../services/api/categoriesApi";
 import { getAreas } from "../../../services/api/areasApi";
 import { getIngredients } from "../../../services/api/ingredientsApi";
-import { createRecipe } from "../../../services/api/recipesApi";
+import {
+  createRecipe,
+  updateRecipe,
+  getRecipeById,
+} from "../../../services/api/recipesApi";
 
 import {
   CookingTimeField,
@@ -17,18 +21,23 @@ import {
   PhotoField,
   SelectField,
 } from "./fields";
+
 import IngredientsField from "./IngredientsField";
+
 import {
   DraftAutosave,
   clearRecipeDraft,
   loadRecipeDraft,
 } from "./recipeDraft";
+
 import {
   DESCRIPTION_MAX,
   INSTRUCTIONS_MAX,
   buildRecipeFormData,
   initialValues,
   recipeSchema,
+  editRecipeSchema,
+  getRecipeInitialValues,
 } from "./recipeSchema";
 
 import "./RecipeForm.scss";
@@ -42,6 +51,7 @@ function useRecipeReferenceData() {
     areas: [],
     ingredients: [],
   });
+
   const [status, setStatus] = useState("loading");
 
   useEffect(() => {
@@ -56,6 +66,7 @@ function useRecipeReferenceData() {
           areas: sortByName(areas),
           ingredients: sortByName(ingredients),
         });
+
         setStatus("success");
       })
       .catch(() => {
@@ -70,35 +81,93 @@ function useRecipeReferenceData() {
     };
   }, []);
 
-  return { ...data, isLoading: status === "loading", isError: status === "error" };
+  return {
+    ...data,
+    isLoading: status === "loading",
+    isError: status === "error",
+  };
 }
 
-function RecipeForm() {
+function RecipeForm({ recipeId }) {
   const navigate = useNavigate();
+
   const { categories, areas, ingredients, isLoading, isError } =
     useRecipeReferenceData();
 
-  // Remounts the ingredient picker so its draft row is cleared on reset.
+  const isEditMode = Boolean(recipeId);
+
   const [resetCount, setResetCount] = useState(0);
 
-  // Restore an unfinished recipe saved on this device (read once on mount).
-  const [savedDraft] = useState(loadRecipeDraft);
+  const [savedDraft] = useState(() => (isEditMode ? null : loadRecipeDraft()));
+
+  const [recipe, setRecipe] = useState(null);
+  const [isRecipeLoading, setIsRecipeLoading] = useState(isEditMode);
+  const [recipeError, setRecipeError] = useState(false);
+
+  // Load the existing recipe in edit mode.
+  useEffect(() => {
+    if (!isEditMode) return;
+
+    let ignore = false;
+
+    const loadRecipe = async () => {
+      try {
+        setIsRecipeLoading(true);
+        setRecipeError(false);
+        setRecipe(null);
+
+        const response = await getRecipeById(recipeId);
+        const recipeData = response.data ?? response;
+
+        if (!ignore) {
+          setRecipe(recipeData);
+        }
+      } catch {
+        if (!ignore) {
+          setRecipeError(true);
+          toast.error("Failed to load the recipe.");
+        }
+      } finally {
+        if (!ignore) {
+          setIsRecipeLoading(false);
+        }
+      }
+    };
+
+    loadRecipe();
+
+    return () => {
+      ignore = true;
+    };
+  }, [recipeId, isEditMode]);
 
   useEffect(() => {
-    if (savedDraft) {
+    if (savedDraft && !isEditMode) {
       toast.info("Draft restored. Don't forget to add the photo again.", {
         toastId: "recipe-draft-restored",
       });
     }
-  }, [savedDraft]);
+  }, [savedDraft, isEditMode]);
 
   const handleSubmit = async (values, { setFieldError }) => {
     try {
-      const recipe = await createRecipe(buildRecipeFormData(values));
-      clearRecipeDraft();
+      const formData = buildRecipeFormData(values);
 
-      toast.success("Recipe published!");
-      navigate(`/recipe/${recipe.id}`);
+      let result;
+
+      if (isEditMode) {
+        result = await updateRecipe(recipeId, formData);
+
+        toast.success("Recipe updated!");
+      } else {
+        result = await createRecipe(formData);
+
+        clearRecipeDraft();
+
+        toast.success("Recipe published!");
+      }
+
+      navigate(`/recipe/${result.id ?? recipeId}`);
     } catch (error) {
       const data = error.response?.data;
 
@@ -111,21 +180,40 @@ function RecipeForm() {
       });
 
       toast.error(
-        data?.message || "Failed to publish the recipe. Please try again.",
+        data?.message ||
+          `Failed to ${isEditMode ? "update" : "publish"} the recipe. Please try again.`,
       );
     }
   };
 
+  if (isEditMode && isRecipeLoading) {
+    return <p className="recipe-form__notice">Loading recipe...</p>;
+  }
+
+  if (isEditMode && (recipeError || !recipe)) {
+    return (
+      <p className="recipe-form__notice" role="alert">
+        Failed to load the recipe. Please try again.
+      </p>
+    );
+  }
+
+  const formInitialValues = isEditMode
+    ? getRecipeInitialValues(recipe)
+    : (savedDraft ?? initialValues);
+
   return (
     <Formik
-      initialValues={savedDraft ?? initialValues}
-      validationSchema={recipeSchema}
+      initialValues={formInitialValues}
+      validationSchema={isEditMode ? editRecipeSchema : recipeSchema}
+      enableReinitialize
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, resetForm }) => (
         <Form className="recipe-form" noValidate>
-          <DraftAutosave />
-          <PhotoField />
+          {!isEditMode && <DraftAutosave />}
+
+          <PhotoField initialPhoto={recipe?.thumb} />
 
           <div className="recipe-form__body">
             {isError && (
@@ -165,6 +253,7 @@ function RecipeForm() {
                     isLoading={isLoading}
                     className="recipe-form__group--category"
                   />
+
                   <CookingTimeField />
                 </div>
 
@@ -189,6 +278,7 @@ function RecipeForm() {
               <h2 className="recipe-form__label recipe-form__label--section">
                 Recipe Preparation
               </h2>
+
               <CountedTextarea
                 name="instructions"
                 placeholder="Enter recipe"
@@ -201,22 +291,47 @@ function RecipeForm() {
                 type="button"
                 className="recipe-form__round-button recipe-form__reset"
                 onClick={() => {
-                  clearRecipeDraft();
-                  resetForm({ values: initialValues });
+                  if (!isEditMode) {
+                    clearRecipeDraft();
+                    resetForm({ values: initialValues });
+                  } else {
+                    resetForm({
+                      values: getRecipeInitialValues(recipe),
+                    });
+                  }
+
                   setResetCount((count) => count + 1);
                 }}
                 disabled={isSubmitting}
-                aria-label="Clear the form"
+                aria-label={isEditMode ? "Reset changes" : "Clear the form"}
               >
                 <img src={trashIcon} width="20" height="20" alt="" />
               </button>
+
               <button
                 type="submit"
                 className="recipe-form__submit"
                 disabled={isSubmitting || isLoading}
               >
-                {isSubmitting ? "Publishing..." : "Publish"}
+                {isSubmitting
+                  ? isEditMode
+                    ? "Updating..."
+                    : "Publishing..."
+                  : isEditMode
+                    ? "Update"
+                    : "Publish"}
               </button>
+
+              {isEditMode && (
+                <button
+                  type="button"
+                  className="recipe-form__cancel"
+                  onClick={() => navigate(`/recipe/${recipeId}`)}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </button>
+              )}
             </div>
           </div>
         </Form>

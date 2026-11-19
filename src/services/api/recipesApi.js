@@ -41,8 +41,12 @@ export const removeFavoriteRecipe = async (id) => {
   await api.delete(`/recipes/${id}/favorite`);
 };
 
-// Create recipe
 export const createRecipe = async (formData) => {
   const { data } = await api.post("/recipes", formData);
+  return data.data;
+};
+
+export const updateRecipe = async (id, formData) => {
+  const { data } = await api.patch(`/recipes/${id}`, formData);
   return data.data;
 };

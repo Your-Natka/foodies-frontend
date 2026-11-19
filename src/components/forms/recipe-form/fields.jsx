@@ -24,7 +24,7 @@ export function FieldError({ name }) {
   );
 }
 
-export function PhotoField() {
+export function PhotoField({ initialPhoto }) {
   const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const inputId = useId();
   const [preview, setPreview] = useState(null);
@@ -33,6 +33,9 @@ export function PhotoField() {
   // Shown only while the form still holds the same file (cleared on reset).
   const previewUrl =
     preview && preview.file === values.photo ? preview.url : "";
+
+  // Show the newly selected photo or the saved recipe photo.
+  const photoUrl = previewUrl || initialPhoto;
 
   useEffect(
     () => () => {
@@ -43,6 +46,7 @@ export function PhotoField() {
 
   const handleChange = (event) => {
     const file = event.currentTarget.files?.[0];
+
     // Allow picking the same file again after a reset.
     event.currentTarget.value = "";
 
@@ -53,6 +57,7 @@ export function PhotoField() {
     const url = PHOTO_TYPES.includes(file.type)
       ? URL.createObjectURL(file)
       : "";
+
     previewUrlRef.current = url;
     setPreview({ file, url });
 
@@ -71,18 +76,19 @@ export function PhotoField() {
         onChange={handleChange}
       />
 
-      {previewUrl ? (
+      {photoUrl ? (
         <>
           <label
             htmlFor={inputId}
             className="recipe-form__photo-frame recipe-form__photo-frame--filled"
           >
             <img
-              src={previewUrl}
+              src={photoUrl}
               alt="Recipe preview"
               className="recipe-form__photo-preview"
             />
           </label>
+
           <label htmlFor={inputId} className="recipe-form__photo-link">
             Upload another photo
           </label>
@@ -99,6 +105,7 @@ export function PhotoField() {
               className="recipe-form__photo-camera"
             />
           </span>
+
           <span className="recipe-form__photo-link">Upload a photo</span>
         </label>
       )}
@@ -349,23 +356,74 @@ export function SelectField({
   );
 }
 
+// converts minutes into a readable cooking time
+function formatCookingTime(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours && minutes) return `${hours}h ${minutes}min`;
+  if (hours) return `${hours} h`;
+
+  return `${minutes} min`;
+}
+
+function parseCookingTime(input) {
+  const value = input.trim().toLowerCase().replace(/\s+/g, "");
+
+  const minutesMatch = value.match(/^(\d+)min$/);
+  if (minutesMatch) {
+    return Number(minutesMatch[1]);
+  }
+
+  const hoursMatch = value.match(/^(\d+)h(?:(\d+)m(?:in)?)?$/);
+  if (hoursMatch) {
+    return Number(hoursMatch[1]) * 60 + Number(hoursMatch[2] || 0);
+  }
+
+  return null;
+}
+
 export function CookingTimeField() {
   const [field, meta, helpers] = useField("time");
   const labelId = useId();
+  const [isEditing, setIsEditing] = useState(false);
+  const [draft, setDraft] = useState("");
 
   const value = Number(field.value) || TIME_MIN;
 
   const changeBy = (delta) => {
+    // prevent decreasing below the minimum.
+    if (delta < 0 && value <= TIME_MIN) return;
+
     const nextValue = value + delta;
 
-    if (nextValue < TIME_MIN) return;
-
-    helpers.setValue(nextValue);
+    helpers.setValue(nextValue, true);
     helpers.setTouched(true, false);
   };
 
   const isPristine = !meta.touched && value === meta.initialValue;
   const isMinValue = value <= TIME_MIN;
+
+  const startEditing = () => {
+    setDraft(formatCookingTime(value));
+    setIsEditing(true);
+  };
+
+  const finishEditing = async () => {
+    const parsedValue = parseCookingTime(draft);
+
+    if (parsedValue !== null) {
+      await helpers.setValue(parsedValue, true);
+      await helpers.setTouched(true, false);
+    }
+
+    setIsEditing(false);
+  };
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+    setDraft("");
+  };
 
   return (
     <div className="recipe-form__group recipe-form__group--time">
@@ -384,14 +442,43 @@ export function CookingTimeField() {
           <img src={minusIcon} width="24" height="24" alt="" />
         </button>
 
-        <output
-          className={`recipe-form__time-value ${
-            isPristine ? "recipe-form__time-value--placeholder" : ""
-          }`}
-          aria-live="polite"
-        >
-          {value} min
-        </output>
+        {isEditing ? (
+          <div className="recipe-form__time-edit-wrap">
+            <input
+              type="text"
+              className="recipe-form__time-edit"
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              onBlur={finishEditing}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.currentTarget.blur();
+                }
+
+                if (event.key === "Escape") {
+                  cancelEditing();
+                }
+              }}
+              aria-label="Enter cooking time"
+              autoFocus
+            />
+
+            <p className="recipe-form__time-hint">Examples: 105min or 1h 45m</p>
+          </div>
+        ) : (
+          <button
+            type="button"
+            translate="no"
+            className={`recipe-form__time-value ${
+              isPristine ? "recipe-form__time-value--placeholder" : ""
+            }`}
+            onClick={startEditing}
+            aria-label={`Edit cooking time: ${formatCookingTime(value)}`}
+            title="Click to edit cooking time"
+          >
+            {formatCookingTime(value)}
+          </button>
+        )}
 
         <button
           type="button"

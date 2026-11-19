@@ -1,0 +1,48 @@
+.scrollBtn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  border: 1px solid var(--color-dark);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-dark);
+
+  cursor: pointer;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 250ms ease,
+    visibility 250ms ease,
+    background-color 250ms ease;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  transform: rotate(-45deg);
+}

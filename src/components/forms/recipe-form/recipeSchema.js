@@ -1,3 +1,4 @@
+
 import * as Yup from "yup";
 
 export const TITLE_MAX = 255;
@@ -21,9 +22,10 @@ export const initialValues = {
   instructions: "",
 };
 
-export const recipeSchema = Yup.object({
+// Shared validation rules for creating and editing recipes.
+const baseRecipeSchema = Yup.object({
   photo: Yup.mixed()
-    .required("Upload a photo of the dish")
+    .nullable()
     .test(
       "photo-type",
       "Use a JPEG, PNG or WebP image",
@@ -34,10 +36,12 @@ export const recipeSchema = Yup.object({
       "Photo must not exceed 5 MB",
       (file) => !file || file.size <= PHOTO_MAX_SIZE,
     ),
+
   title: Yup.string()
     .trim()
     .max(TITLE_MAX, `Name must be at most ${TITLE_MAX} characters`)
     .required("Enter the name of the recipe"),
+
   description: Yup.string()
     .trim()
     .max(
@@ -45,13 +49,17 @@ export const recipeSchema = Yup.object({
       `Description must be at most ${DESCRIPTION_MAX} characters`,
     )
     .required("Enter a description of the dish"),
+
   category: Yup.string().required("Select a category"),
+
   time: Yup.number()
     .typeError("Enter the cooking time")
     .integer("Cooking time must be a whole number of minutes")
-    .min(TIME_MIN, `Cooking time must be at least ${TIME_MIN} minute`)
+    .min(TIME_MIN, `Cooking time must be at least ${TIME_MIN} minutes`)
     .required("Enter the cooking time"),
+
   area: Yup.string().required("Select an area"),
+
   ingredients: Yup.array()
     .of(
       Yup.object({
@@ -60,6 +68,7 @@ export const recipeSchema = Yup.object({
       }),
     )
     .min(1, "Add at least one ingredient"),
+
   instructions: Yup.string()
     .trim()
     .max(
@@ -69,16 +78,46 @@ export const recipeSchema = Yup.object({
     .required("Enter the recipe preparation"),
 });
 
+// photo is required when creating a recipe
+export const recipeSchema = baseRecipeSchema.shape({
+  photo: baseRecipeSchema.fields.photo.required(
+    "Upload a photo of the dish",
+  ),
+});
+
+// existing photo can be kept when editing a recipe
+export const editRecipeSchema = baseRecipeSchema;
+
+// convert an existing recipe into Formik initial values
+export const getRecipeInitialValues = (recipe) => ({
+  photo: null,
+  title: recipe.title ?? "",
+  description: recipe.description ?? "",
+  category: recipe.category ?? "",
+  time: Number(recipe.time) || TIME_DEFAULT,
+  area: recipe.area ?? "",
+  ingredients: (recipe.ingredients ?? []).map((ingredient) => ({
+    id: ingredient.id,
+    measure: ingredient.measure,
+  })),
+  instructions: recipe.instructions ?? "",
+});
+
+// build multipart form data for creating or updating a recipe
 export const buildRecipeFormData = (values) => {
   const formData = new FormData();
 
-  formData.append("photo", values.photo);
+  if (values.photo) {
+    formData.append("photo", values.photo);
+  }
+
   formData.append("title", values.title.trim());
   formData.append("description", values.description.trim());
   formData.append("category", values.category);
   formData.append("area", values.area);
   formData.append("time", String(values.time));
   formData.append("instructions", values.instructions.trim());
+
   formData.append(
     "ingredients",
     JSON.stringify(
