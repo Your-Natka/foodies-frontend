@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import SharedLayout from "../components/shared-layout/SharedLayout";
 import PrivateRoute from "./PrivateRoute";
 import { restoreSessionThunk } from "../redux/slices/auth/authOperations";
+import { markSessionChecked } from "../redux/slices/auth/authSlice";
+import { hasStoredSession } from "../services/authStorage";
 
 const UserPage = lazy(() => import("../pages/user-page/UserPage"));
 
@@ -28,7 +30,11 @@ function AppRoutes() {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(restoreSessionThunk());
+    if (hasStoredSession()) {
+      dispatch(restoreSessionThunk());
+    } else {
+      dispatch(markSessionChecked());
+    }
   }, [dispatch]);
 
   useEffect(() => {

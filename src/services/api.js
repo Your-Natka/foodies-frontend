@@ -6,8 +6,8 @@ const api = axios.create({
 });
 
 let getAccessToken = () => null;
-let setAccessToken = () => {};
-let onAuthFailure = () => {};
+let setAccessToken = () => { };
+let onAuthFailure = () => { };
 
 let refreshPromise = null;
 
