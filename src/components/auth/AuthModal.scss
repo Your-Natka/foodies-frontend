@@ -88,10 +88,10 @@
     min-height: 56px;
     margin-top: 40px;
     padding: 16px 20px;
-    border: 1px solid #bfbebe;
+    border: 1px solid var(--color-gray);
     border-radius: 30px;
     background: var(--color-gray);
-    color: #ffffff;
+    color: var(--color-white);
     font-family: var(--font-family);
     font-size: 14px;
     font-weight: 800;
@@ -104,9 +104,9 @@
       border-color 200ms ease;
 
     &:not(:disabled) {
-      border-color: #050505;
-      background: #050505;
-      color: #ffffff;
+      border-color: var(--color-dark);
+      background: var(--color-dark);
+      color: var(--color-white);
       cursor: pointer;
     }
 

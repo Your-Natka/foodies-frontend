@@ -52,13 +52,12 @@
 
   &__confirm {
     background: var(--color-gray);
-    color: var(--color-dark);
+    color: var(--color-white);
 
     &:hover,
     &:focus-visible,
     &:active {
       background: var(--color-dark);
-      color: var(--color-white);
     }
   }
 
