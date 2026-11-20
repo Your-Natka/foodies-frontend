@@ -29,13 +29,8 @@ import { fetchAreasThunk } from "../../../redux/slices/areas/areasOperations";
 
 import { selectIsAuthenticated } from "../../../redux/slices/auth/authSlice";
 
-import {
-  selectFavoriteIds,
-  clearFavorites,
-} from "../../../redux/slices/favorites/favoritesSlice";
 
 import {
-  fetchFavoritesThunk,
   addFavoriteThunk,
   removeFavoriteThunk,
 } from "../../../redux/slices/favorites/favoritesOperations";
@@ -57,7 +52,6 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
   const areas = useSelector(selectAreas);
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const favoriteIds = useSelector(selectFavoriteIds);
 
   const [selectedIngredient, setSelectedIngredient] = useState("");
   const [selectedArea, setSelectedArea] = useState("");
@@ -112,14 +106,6 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
     );
   }, [dispatch, page, limit, categoryName, selectedIngredient, selectedArea]);
 
-  // Load favorites for authenticated users
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(fetchFavoritesThunk({ page: 1, limit: 100 }));
-    } else {
-      dispatch(clearFavorites());
-    }
-  }, [dispatch, isAuthenticated]);
 
   // scroll to the top of the section
   const categorySectionRef = useRef(null);
@@ -171,14 +157,14 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
   };
 
   // Guest must sign in to add or remove favorites
-  const handleToggleFavorite = async (recipeId) => {
+  const handleToggleFavorite = async (recipeId, isFavorite) => {
     if (!isAuthenticated) {
       onRequireAuth();
       return;
     }
 
     try {
-      if (favoriteIds.includes(recipeId)) {
+      if (isFavorite) {
         await dispatch(removeFavoriteThunk(recipeId)).unwrap();
       } else {
         await dispatch(addFavoriteThunk(recipeId)).unwrap();
@@ -237,7 +223,6 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
             {status === "succeeded" && recipes.length > 0 && (
               <RecipeList
                 recipes={recipes}
-                favoriteIds={favoriteIds}
                 onToggleFavorite={handleToggleFavorite}
                 onAuthorClick={handleAuthorClick}
               />

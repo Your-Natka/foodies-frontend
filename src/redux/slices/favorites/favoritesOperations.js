@@ -1,20 +1,20 @@
 
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
   getFavoriteRecipes,
   addRecipeToFavorites,
   removeRecipeFromFavorites,
-} from '../../../services/api/favoritesApi';
+} from "../../../services/api/favoritesApi";
 
-const getErrorMessage = error =>
+const getErrorMessage = (error) =>
   error.response?.data?.message ||
   error.response?.data?.error ||
-  'Something went wrong. Please try again.';
+  "Something went wrong. Please try again.";
 
-// Fetch favorite recipes
+// Fetch paginated favorite recipes for My Favorites page
 export const fetchFavoritesThunk = createAsyncThunk(
-  'favorites/fetchFavorites',
+  "favorites/fetchFavorites",
   async (params = {}, { rejectWithValue }) => {
     try {
       return await getFavoriteRecipes(params);
@@ -26,7 +26,7 @@ export const fetchFavoritesThunk = createAsyncThunk(
 
 // Add recipe to favorites
 export const addFavoriteThunk = createAsyncThunk(
-  'favorites/addFavorite',
+  "favorites/addFavorite",
   async (recipeId, { rejectWithValue }) => {
     try {
       return await addRecipeToFavorites(recipeId);
@@ -34,11 +34,15 @@ export const addFavoriteThunk = createAsyncThunk(
       return rejectWithValue(getErrorMessage(error));
     }
   },
+  {
+    condition: (recipeId, { getState }) =>
+      !getState().favorites.pendingByRecipeId[recipeId],
+  },
 );
 
 // Remove recipe from favorites
 export const removeFavoriteThunk = createAsyncThunk(
-  'favorites/removeFavorite',
+  "favorites/removeFavorite",
   async (recipeId, { rejectWithValue }) => {
     try {
       await removeRecipeFromFavorites(recipeId);
@@ -46,5 +50,9 @@ export const removeFavoriteThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(getErrorMessage(error));
     }
+  },
+  {
+    condition: (recipeId, { getState }) =>
+      !getState().favorites.pendingByRecipeId[recipeId],
   },
 );

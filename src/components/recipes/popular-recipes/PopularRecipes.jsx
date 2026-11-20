@@ -4,7 +4,6 @@ import css from "./PopularRecipes.module.scss";
 
 const PopularRecipes = ({
   recipes = [],
-  favoriteIds = [],
   onToggleFavorite,
   onAuthorClick,
 }) => {
@@ -21,7 +20,7 @@ const PopularRecipes = ({
           <RecipeCard
             key={recipe.id}
             recipe={recipe}
-            isFavorite={favoriteIds.includes(recipe.id)}
+            isFavorite={recipe.isFavorite}
             onToggleFavorite={onToggleFavorite}
             onAuthorClick={onAuthorClick}
           />

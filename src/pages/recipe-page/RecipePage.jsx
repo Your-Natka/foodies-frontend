@@ -27,13 +27,8 @@ import {
   selectUser,
 } from "../../redux/slices/auth/authSlice";
 
-import {
-  selectFavoriteIds,
-  clearFavorites,
-} from "../../redux/slices/favorites/favoritesSlice";
 
 import {
-  fetchFavoritesThunk,
   addFavoriteThunk,
   removeFavoriteThunk,
 } from "../../redux/slices/favorites/favoritesOperations";
@@ -62,7 +57,6 @@ const RecipePage = () => {
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const currentUser = useSelector(selectUser);
-  const favoriteIds = useSelector(selectFavoriteIds);
   const popularRecipes = useSelector(selectPopularRecipes);
   const popularStatus = useSelector(selectPopularStatus);
 
@@ -89,15 +83,6 @@ const RecipePage = () => {
     dispatch(fetchPopularRecipesThunk());
   }, [dispatch]);
 
-  // Load favorites for authenticated users
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(fetchFavoritesThunk({ page: 1, limit: 100 }));
-    } else {
-      dispatch(clearFavorites());
-    }
-  }, [dispatch, isAuthenticated]);
-
   const handleEditRecipe = () => {
     navigate(`/recipe/${recipe.id}/edit`);
   };
@@ -114,17 +99,18 @@ const RecipePage = () => {
     navigate(`/user/${authorId}`);
   };
 
-  const isFavorite = recipe ? favoriteIds.includes(recipe.id) : false;
+  const isFavorite = recipe?.isFavorite ?? false;
 
-  const handleToggleFavorite = async (recipeId = recipe?.id) => {
+  const handleToggleFavorite = async (
+    recipeId = recipe?.id,
+    isRecipeFavorite = recipe?.isFavorite,
+  ) => {
     if (!recipeId) return;
 
     if (!isAuthenticated) {
       onRequireAuth();
       return;
     }
-
-    const isRecipeFavorite = favoriteIds.includes(recipeId);
 
     try {
       if (isRecipeFavorite) {
@@ -191,7 +177,7 @@ const RecipePage = () => {
             <div className={`${css.actions} no-print`}>
               <RecipeFavoriteButton
                 isFavorite={isFavorite}
-                onClick={() => handleToggleFavorite()}
+                onClick={() => handleToggleFavorite(recipe.id, isFavorite)}
               />
 
               {isOwner && (
@@ -220,7 +206,6 @@ const RecipePage = () => {
           {popularStatus === "succeeded" && (
             <PopularRecipes
               recipes={popularRecipes}
-              favoriteIds={favoriteIds}
               onToggleFavorite={handleToggleFavorite}
               onAuthorClick={handleAuthorClick}
             />
