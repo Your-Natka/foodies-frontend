@@ -14,6 +14,13 @@ export const refreshSession = async () => {
   return await refreshAccessToken();
 };
 
-export const logoutUser = async () => {
-  await api.post("/auth/logout");
-};
+export const logoutUser = (accessToken) =>
+  api.post(
+    "/auth/logout",
+    {},
+    {
+      headers: accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
+        : {},
+    },
+  );

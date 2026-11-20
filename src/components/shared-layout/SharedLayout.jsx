@@ -32,6 +32,11 @@ function SharedLayout() {
   const theme = darkPages.includes(pathname) ? "dark" : "light";
 
   useEffect(() => {
+    if (location.state?.justLoggedOut) {
+      navigate("/", { replace: true, state: null });
+      return;
+    }
+
     const redirectFrom = location.state?.from;
 
     if (

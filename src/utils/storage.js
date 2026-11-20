@@ -28,10 +28,8 @@ const APP_KEY_PREFIX = "foodies";
 // Removes all of this app's keys (session flag, shopping list, recipe draft).
 export const clearAppStorage = () => {
   try {
-    Object.keys(localStorage)
-      .filter((key) => key.startsWith(APP_KEY_PREFIX))
-      .forEach((key) => localStorage.removeItem(key));
-  } catch {
-    // ignore
+    localStorage.clear();
+  } catch (error) {
+    console.error("Failed to clear localStorage:", error);
   }
 };
