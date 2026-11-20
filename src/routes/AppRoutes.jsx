@@ -59,8 +59,10 @@ function AppRoutes() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (location.hash) return;
+
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   return (
     <Suspense fallback={<Spinner />}>
