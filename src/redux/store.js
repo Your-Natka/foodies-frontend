@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { resetSession } from "./sessionActions";
 
-import recipesReducer from './slices/recipes/recipesSlice';
-import ingredientsReducer from './slices/ingredients/ingredientsSlice';
-import areasReducer from './slices/areas/areasSlice';
-import favoritesReducer from './slices/favorites/favoritesSlice';
+import recipesReducer from "./slices/recipes/recipesSlice";
+import ingredientsReducer from "./slices/ingredients/ingredientsSlice";
+import areasReducer from "./slices/areas/areasSlice";
+import favoritesReducer from "./slices/favorites/favoritesSlice";
 import shoppingListReducer, {
   SHOPPING_LIST_STORAGE_KEY,
 } from "./slices/shoppingList/shoppingListSlice";
@@ -15,14 +15,7 @@ import authReducer, {
 } from "./slices/auth/authSlice";
 
 import { configureApiAuth } from "../services/api";
-import { loadJSON, removeKey, saveJSON } from "../utils/storage";
-
-const loadShoppingList = () => {
-  const saved = loadJSON(SHOPPING_LIST_STORAGE_KEY, null);
-  return Array.isArray(saved?.items) ? { items: saved.items } : undefined;
-};
-
-const savedShoppingList = loadShoppingList();
+import { removeKey, saveJSON } from "../utils/storage";
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -43,9 +36,6 @@ const rootReducer = (state, action) => {
 
 export const store = configureStore({
   reducer: rootReducer,
-  preloadedState: savedShoppingList
-    ? { shoppingList: savedShoppingList }
-    : undefined,
 });
 
 // Persist the shopping list locally whenever it changes.

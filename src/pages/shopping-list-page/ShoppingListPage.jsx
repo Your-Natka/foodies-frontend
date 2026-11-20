@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import EmptyState from "../../components/shared/empty-state/EmptyState";
+
+import { selectIsAuthenticated } from "../../redux/slices/auth/authSlice";
+
 import {
   clearAll,
   clearChecked,
@@ -20,7 +23,9 @@ const formatListAsText = (groups) =>
     .map(({ recipeTitle, items }) => {
       const lines = items
         .filter((item) => !item.checked)
-        .map((item) => `- ${item.name}${item.measure ? ` — ${item.measure}` : ""}`);
+        .map(
+          (item) => `- ${item.name}${item.measure ? ` — ${item.measure}` : ""}`,
+        );
 
       return lines.length ? `${recipeTitle}\n${lines.join("\n")}` : "";
     })
@@ -29,11 +34,24 @@ const formatListAsText = (groups) =>
 
 function ShoppingListPage() {
   const dispatch = useDispatch();
+
+  const { onRequireAuth } = useOutletContext();
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const groups = useSelector(selectShoppingGroups);
   const items = useSelector(selectShoppingItems);
 
   const checkedCount = items.filter((item) => item.checked).length;
   const remainingCount = items.length - checkedCount;
+
+  const requireAuth = (callback) => {
+    if (!isAuthenticated) {
+      onRequireAuth();
+      return;
+    }
+
+    callback();
+  };
 
   const handleCopy = async () => {
     const text = formatListAsText(groups);
@@ -52,9 +70,27 @@ function ShoppingListPage() {
   };
 
   const handleClearAll = () => {
-    if (window.confirm("Remove all items from the shopping list?")) {
-      dispatch(clearAll());
-    }
+    requireAuth(() => {
+      if (window.confirm("Remove all items from the shopping list?")) {
+        dispatch(clearAll());
+      }
+    });
+  };
+
+  const handleClearChecked = () => {
+    requireAuth(() => dispatch(clearChecked()));
+  };
+
+  const handleRemoveRecipe = (recipeId) => {
+    requireAuth(() => dispatch(removeRecipe(recipeId)));
+  };
+
+  const handleToggleItem = (itemKey) => {
+    requireAuth(() => dispatch(toggleItem(itemKey)));
+  };
+
+  const handleRemoveItem = (itemKey) => {
+    requireAuth(() => dispatch(removeItem(itemKey)));
   };
 
   return (
@@ -77,18 +113,28 @@ function ShoppingListPage() {
               </p>
 
               <div className={css.actions}>
-                <button type="button" className={css.action} onClick={handleCopy}>
-                  Copy as text
-                </button>
                 <button
                   type="button"
                   className={css.action}
-                  onClick={() => dispatch(clearChecked())}
+                  onClick={handleCopy}
+                >
+                  Copy as text
+                </button>
+
+                <button
+                  type="button"
+                  className={css.action}
+                  onClick={handleClearChecked}
                   disabled={checkedCount === 0}
                 >
                   Clear bought
                 </button>
-                <button type="button" className={css.action} onClick={handleClearAll}>
+
+                <button
+                  type="button"
+                  className={css.action}
+                  onClick={handleClearAll}
+                >
                   Clear all
                 </button>
               </div>
@@ -98,13 +144,17 @@ function ShoppingListPage() {
               {groups.map((group) => (
                 <section key={group.recipeId} className={css.group}>
                   <div className={css.groupHeader}>
-                    <Link to={`/recipe/${group.recipeId}`} className={css.groupTitle}>
+                    <Link
+                      to={`/recipe/${group.recipeId}`}
+                      className={css.groupTitle}
+                    >
                       {group.recipeTitle}
                     </Link>
+
                     <button
                       type="button"
                       className={css.removeGroup}
-                      onClick={() => dispatch(removeRecipe(group.recipeId))}
+                      onClick={() => handleRemoveRecipe(group.recipeId)}
                     >
                       Remove recipe
                     </button>
@@ -114,15 +164,18 @@ function ShoppingListPage() {
                     {group.items.map((item) => (
                       <li
                         key={item.key}
-                        className={`${css.item} ${item.checked ? css.checked : ""}`}
+                        className={`${css.item} ${
+                          item.checked ? css.checked : ""
+                        }`}
                       >
                         <label className={css.label}>
                           <input
                             type="checkbox"
                             className={css.checkbox}
                             checked={item.checked}
-                            onChange={() => dispatch(toggleItem(item.key))}
+                            onChange={() => handleToggleItem(item.key)}
                           />
+
                           {item.img && (
                             <img
                               className={css.image}
@@ -133,6 +186,7 @@ function ShoppingListPage() {
                               loading="lazy"
                             />
                           )}
+
                           <span className={css.text}>
                             <span className={css.name}>{item.name}</span>
                             <span className={css.measure}>{item.measure}</span>
@@ -142,7 +196,7 @@ function ShoppingListPage() {
                         <button
                           type="button"
                           className={css.removeItem}
-                          onClick={() => dispatch(removeItem(item.key))}
+                          onClick={() => handleRemoveItem(item.key)}
                           aria-label={`Remove ${item.name}`}
                         >
                           ×
