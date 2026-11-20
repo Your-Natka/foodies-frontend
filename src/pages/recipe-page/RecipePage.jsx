@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+  useOutletContext,
+  useLocation,
+} from "react-router-dom";
 import { toast } from "react-toastify";
 
 import {
@@ -41,6 +46,7 @@ import RecipeActions from "../../components/recipe-details/recipe-actions/Recipe
 import CookingMode from "../../components/recipe-details/cooking-mode/CookingMode";
 import PathInfo from "../../components/recipe-details/path-info/PathInfo";
 import PopularRecipes from "../../components/recipes/popular-recipes/PopularRecipes";
+import LoadingState from "../../components/recipes/recipe-states/LoadingState";
 
 import css from "./RecipePage.module.scss";
 
@@ -67,6 +73,8 @@ const RecipePage = () => {
   const isOwner =
     Boolean(currentUser?.id) &&
     currentUser.id === (recipe?.owner?.id ?? recipe?.owner?._id);
+
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(clearCurrentRecipe());
@@ -138,7 +146,7 @@ const RecipePage = () => {
   if (status === "loading" || status === "idle") {
     return (
       <main>
-        <p>Loading recipe...</p>
+        <LoadingState />
       </main>
     );
   }
@@ -168,7 +176,7 @@ const RecipePage = () => {
   return (
     <main className={css.recipePage}>
       <div className="container">
-        <PathInfo title={recipe.title} />
+        <PathInfo title={recipe.title} category={recipe.category} />
 
         <div className={css.recipeInfoWrapper}>
           <RecipeInfo recipe={recipe} onAuthorClick={handleAuthorClick}>

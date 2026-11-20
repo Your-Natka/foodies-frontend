@@ -21,8 +21,8 @@
   justify-content: center;
   align-items: center;
 
-  width: 172px;
-  height: 48px;
+  width: fit-content;
+  height: fit-content;
   padding: 14px 20px;
   flex-shrink: 0;
 
@@ -71,8 +71,6 @@
   }
 
   .editButton {
-    width: 215px;
-    height: 56px;
     padding: 16px 32px;
   }
 }

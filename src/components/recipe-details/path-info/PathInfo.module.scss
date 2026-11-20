@@ -3,12 +3,16 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
   font-size: 12px;
   line-height: 18px;
   text-transform: uppercase;
 }
 
 .link {
+  flex-shrink: 0;
   color: var(--color-gray);
   text-decoration: none;
   transition: color 250ms ease;
@@ -19,10 +23,16 @@
 }
 
 .separator {
+  flex-shrink: 0;
   color: var(--color-gray);
 }
 
 .current {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--color-black);
   font-weight: 700;
 }

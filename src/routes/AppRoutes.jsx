@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import SharedLayout from "../components/shared-layout/SharedLayout";
+import Spinner from "../components/loader/Spinner";
 import PrivateRoute from "./PrivateRoute";
 import { restoreSessionThunk } from "../redux/slices/auth/authOperations";
 import { markSessionChecked } from "../redux/slices/auth/authSlice";
@@ -42,7 +43,7 @@ function AppRoutes() {
   }, [location.pathname]);
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<Spinner />}>
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />

@@ -116,7 +116,12 @@ export const buildRecipeFormData = (values) => {
   formData.append("category", values.category);
   formData.append("area", values.area);
   formData.append("time", String(values.time));
-  formData.append("instructions", values.instructions.trim());
+  formData.append(
+    "instructions",
+    values.instructions
+      .trim()
+      .replace(/\r\n/g, "\n")
+  );
 
   formData.append(
     "ingredients",
