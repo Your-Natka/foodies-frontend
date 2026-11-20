@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import ProfileRecipes from "../profile-recipes/ProfileRecipes";
@@ -29,25 +29,34 @@ function TabsList({
   const [searchParams, setSearchParams] = useSearchParams();
   const tabCache = useRef(new Map());
 
-  const getCachedData = (tabId, page = 1) => {
-    const key = `${profileUserId}:${tabId}:${page}`;
-    return tabCache.current.get(key);
-  };
+  const getCachedData = useCallback(
+    (tabId, page = 1) => {
+      const key = `${profileUserId}:${tabId}:${page}`;
+      return tabCache.current.get(key);
+    },
+    [profileUserId],
+  );
 
-  const setCachedData = (tabId, page, data) => {
-    const key = `${profileUserId}:${tabId}:${page}`;
-    tabCache.current.set(key, data);
-  };
+  const setCachedData = useCallback(
+    (tabId, page, data) => {
+      const key = `${profileUserId}:${tabId}:${page}`;
+      tabCache.current.set(key, data);
+    },
+    [profileUserId],
+  );
 
-  const invalidateTabCache = (tabId) => {
-    const prefix = `${profileUserId}:${tabId}:`;
+  const invalidateTabCache = useCallback(
+    (tabId) => {
+      const prefix = `${profileUserId}:${tabId}:`;
 
-    for (const key of tabCache.current.keys()) {
-      if (key.startsWith(prefix)) {
-        tabCache.current.delete(key);
+      for (const key of tabCache.current.keys()) {
+        if (key.startsWith(prefix)) {
+          tabCache.current.delete(key);
+        }
       }
-    }
-  };
+    },
+    [profileUserId],
+  );
 
   const tabs = isOwnProfile ? ownTabs : otherTabs;
 

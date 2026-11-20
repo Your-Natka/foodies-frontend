@@ -94,7 +94,7 @@ function ProfileFavourites({ onProfileUpdate, getCachedData, setCachedData }) {
     return () => {
       isActive = false;
     };
-  }, [currentPage, refreshKey]);
+  }, [currentPage, refreshKey, getCachedData, setCachedData]);
 
   const handleRemoveFavorite = async (recipe) => {
     if (removingRef.current) return;
