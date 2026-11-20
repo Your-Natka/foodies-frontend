@@ -71,7 +71,7 @@ const RecipeCard = ({
               isFavorite ? "Remove from favorites" : "Add to favorites"
             }
             aria-pressed={isFavorite}
-            onClick={() => onToggleFavorite?.(id)}
+            onClick={() => onToggleFavorite?.(id, isFavorite)}
           >
             <svg className={css.icon} aria-hidden="true">
               <use href="/icons.svg#icon-heart" />

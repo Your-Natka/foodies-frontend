@@ -3,7 +3,6 @@ import css from "./RecipeList.module.scss";
 
 const RecipeList = ({
   recipes = [],
-  favoriteIds = [],
   onToggleFavorite,
   onAuthorClick,
 }) => {
@@ -13,7 +12,7 @@ const RecipeList = ({
         <RecipeCard
           key={recipe.id}
           recipe={recipe}
-          isFavorite={favoriteIds.includes(recipe.id)}
+          isFavorite={recipe.isFavorite}
           onToggleFavorite={onToggleFavorite}
           onAuthorClick={onAuthorClick}
         />

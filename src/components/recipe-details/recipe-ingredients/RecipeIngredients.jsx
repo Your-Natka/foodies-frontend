@@ -1,21 +1,32 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { selectIsAuthenticated } from "../../../redux/slices/auth/authSlice";
 
 import {
   addRecipeIngredients,
   selectIsRecipeInList,
 } from "../../../redux/slices/shoppingList/shoppingListSlice";
-
-import css from "./RecipeIngredients.module.scss";
 import FallbackImage from "../../fallback-img/FallbackImage";
+import css from "./RecipeIngredients.module.scss";
 
 const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
   const dispatch = useDispatch();
+
+  const { onRequireAuth } = useOutletContext();
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const isInList = useSelector(selectIsRecipeInList(recipeId));
 
   const handleAddToList = () => {
+    if (!isAuthenticated) {
+      onRequireAuth();
+      return;
+    }
+
     dispatch(addRecipeIngredients({ recipeId, recipeTitle, ingredients }));
+
     toast.success("Ingredients added to your shopping list.");
   };
 

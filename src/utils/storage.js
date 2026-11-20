@@ -25,11 +25,13 @@ export const removeKey = (key) => {
 
 const APP_KEY_PREFIX = "foodies";
 
-// Removes all of this app's keys (session flag, shopping list, recipe draft).
+// Removes only this app's keys, preserving data belonging to other apps.
 export const clearAppStorage = () => {
   try {
-    localStorage.clear();
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith(APP_KEY_PREFIX))
+      .forEach((key) => localStorage.removeItem(key));
   } catch (error) {
-    console.error("Failed to clear localStorage:", error);
+    console.error("Failed to clear app storage:", error);
   }
 };

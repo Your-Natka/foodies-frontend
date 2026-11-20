@@ -10,6 +10,10 @@ const shoppingListSlice = createSlice({
   name: "shoppingList",
   initialState,
   reducers: {
+    restoreShoppingList(state, { payload }) {
+      state.items = Array.isArray(payload?.items) ? payload.items : [];
+    },
+
     addRecipeIngredients(state, { payload }) {
       const { recipeId, recipeTitle, ingredients = [] } = payload;
 
@@ -29,31 +33,36 @@ const shoppingListSlice = createSlice({
         });
       });
     },
+
     toggleItem(state, { payload: key }) {
       const item = state.items.find((entry) => entry.key === key);
       if (item) item.checked = !item.checked;
     },
+
     removeItem(state, { payload: key }) {
       state.items = state.items.filter((item) => item.key !== key);
     },
+
     removeRecipe(state, { payload: recipeId }) {
       state.items = state.items.filter((item) => item.recipeId !== recipeId);
     },
+
     clearChecked(state) {
       state.items = state.items.filter((item) => !item.checked);
     },
+
     clearAll(state) {
       state.items = [];
     },
   },
+
   extraReducers: (builder) => {
-    builder.addCase(logoutThunk.fulfilled, (state) => {
-      state.items = [];
-    });
+    builder.addCase(logoutThunk.fulfilled, () => initialState);
   },
 });
 
 export const {
+  restoreShoppingList,
   addRecipeIngredients,
   toggleItem,
   removeItem,
@@ -83,6 +92,7 @@ export const selectShoppingGroups = createSelector(
           items: [],
         });
       }
+
       groups.get(item.recipeId).items.push(item);
     });
 
