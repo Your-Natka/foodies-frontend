@@ -113,7 +113,6 @@ function UserPage() {
               isOwnProfile={isOwnProfile}
               profileUserId={profile?.id ?? userId}
               onProfileUpdate={refreshProfile}
-              recipes={profile?.recipes ?? []}
             />
           </div>
         </div>

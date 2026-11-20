@@ -6,6 +6,7 @@ import closeIcon from "../../../assets/icons/add-recipe/close.svg";
 
 import { FieldError, SearchableSelect } from "./fields";
 import { MEASURE_MAX } from "./recipeSchema";
+import FallbackImage from "../../fallback-img/FallbackImage";
 
 const EMPTY_DRAFT = { id: "", measure: "" };
 
@@ -145,15 +146,10 @@ function IngredientsField({ options = [], isLoading }) {
                   return (
                     <li key={item.id} className="recipe-form__ingredient-card">
                       <div className="recipe-form__ingredient-thumb">
-                        {ingredient?.img && (
-                          <img
-                            src={ingredient.img}
-                            alt=""
-                            width="60"
-                            height="60"
-                            loading="lazy"
-                          />
-                        )}
+                        <FallbackImage
+                          src={ingredient?.img}
+                          alt={ingredient?.name ?? "Ingredient"}
+                        />
                       </div>
 
                       <div className="recipe-form__ingredient-text">
