@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
-import {
-  getFavoriteRecipes,
-  removeFavoriteRecipe,
-} from "../../../services/api/recipesApi";
+import { removeFavoriteThunk } from "../../../redux/slices/favorites/favoritesOperations";
+import { getFavoriteRecipes } from "../../../services/api/favoritesApi";
 import RecipeListItem from "../list-items/RecipeListItem";
 import Pagination from "../../shared/pagination/Pagination";
 import EmptyState from "../../shared/empty-state/EmptyState";
@@ -12,6 +11,7 @@ import EmptyState from "../../shared/empty-state/EmptyState";
 const RECIPES_PER_PAGE = 9;
 
 function ProfileFavourites({ onProfileUpdate, getCachedData, setCachedData }) {
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
   const [favorites, setFavorites] = useState(
@@ -103,7 +103,7 @@ function ProfileFavourites({ onProfileUpdate, getCachedData, setCachedData }) {
     setRemovingFavoriteId(recipe.id);
 
     try {
-      await removeFavoriteRecipe(recipe.id);
+      await dispatch(removeFavoriteThunk(recipe.id)).unwrap();
 
       toast.success("Recipe removed from favourites.");
 
@@ -125,10 +125,11 @@ function ProfileFavourites({ onProfileUpdate, getCachedData, setCachedData }) {
       } else {
         setRefreshKey((prevKey) => prevKey + 1);
       }
-    } catch (err) {
+    } catch (error) {
       toast.error(
-        err.response?.data?.message ||
-          "Failed to remove recipe from favourites.",
+        typeof error === "string"
+          ? error
+          : "Failed to remove recipe from favourites.",
       );
     } finally {
       removingRef.current = false;
