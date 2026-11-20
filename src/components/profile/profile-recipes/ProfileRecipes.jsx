@@ -28,6 +28,24 @@ function ProfileRecipes({ onProfileUpdate, getCachedData, setCachedData }) {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const deletingRef = useRef(false);
+  const previousPageRef = useRef(currentPage);
+
+  useEffect(() => {
+    if (previousPageRef.current !== currentPage) {
+      const tabs = document.querySelector(".tabs-list__navigation");
+
+      if (tabs) {
+        const top = tabs.getBoundingClientRect().top + window.scrollY - 100;
+
+        window.scrollTo({
+          top,
+          behavior: "smooth",
+        });
+      }
+    }
+
+    previousPageRef.current = currentPage;
+  }, [currentPage]);
 
   useEffect(() => {
     let isActive = true;

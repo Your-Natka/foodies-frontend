@@ -8,7 +8,7 @@ import {
   addRecipeIngredients,
   selectIsRecipeInList,
 } from "../../../redux/slices/shoppingList/shoppingListSlice";
-
+import FallbackImage from "../../fallback-img/FallbackImage";
 import css from "./RecipeIngredients.module.scss";
 
 const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
@@ -56,11 +56,9 @@ const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
         {ingredients.map((ingredient) => (
           <li className={css.ingredient} key={ingredient.id}>
             <div className={css.imageWrapper}>
-              <img
-                className={css.image}
-                src={ingredient.img}
-                alt={ingredient.name}
-                loading="lazy"
+              <FallbackImage
+                src={ingredient?.img}
+                alt={ingredient?.name ?? "Ingredient"}
               />
             </div>
 
