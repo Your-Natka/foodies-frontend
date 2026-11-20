@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
@@ -81,6 +80,11 @@ const updateFavoriteStatus = (state, recipeId, isFavorite) => {
 
 // Clear local favorite overrides when the authenticated user changes.
 const clearFavoriteStatusOverrides = (state) => {
+  state.favoriteStatusById = {};
+};
+
+// Reset cached favorite statuses when authentication is cleared.
+const resetFavoriteStatuses = (state) => {
   state.favoriteStatusById = {};
 
   state.items.forEach((recipe) => {
@@ -205,18 +209,17 @@ const recipesSlice = createSlice({
         updateFavoriteStatus(state, recipeId, false);
       })
 
-      // Clear local favorite overrides when the user changes
+      // Clear local overrides when the authenticated user changes
       .addCase(loginThunk.fulfilled, clearFavoriteStatusOverrides)
       .addCase(registerThunk.fulfilled, clearFavoriteStatusOverrides)
       .addCase(restoreSessionThunk.fulfilled, clearFavoriteStatusOverrides)
-      .addCase(clearCredentials, clearFavoriteStatusOverrides);
+
+      // Clear cached favorite statuses when authentication is cleared
+      .addCase(clearCredentials, resetFavoriteStatuses);
   },
 });
 
-export const {
-  setRecipesPage,
-  clearCurrentRecipe,
-} = recipesSlice.actions;
+export const { setRecipesPage, clearCurrentRecipe } = recipesSlice.actions;
 
 // Selectors
 export const selectRecipes = (state) => state.recipes.items;

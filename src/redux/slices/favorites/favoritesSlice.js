@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
@@ -75,9 +74,7 @@ const favoritesSlice = createSlice({
       .addCase(addFavoriteThunk.rejected, (state, action) => {
         const recipeId = action.meta.arg;
 
-        if (
-          state.pendingByRecipeId[recipeId] !== action.meta.requestId
-        ) {
+        if (state.pendingByRecipeId[recipeId] !== action.meta.requestId) {
           return;
         }
 
@@ -101,16 +98,12 @@ const favoritesSlice = createSlice({
           state.status = state.items.length ? "succeeded" : "idle";
         }
 
-        state.items = state.items.filter(
-          (recipe) => recipe.id !== recipeId,
-        );
+        state.items = state.items.filter((recipe) => recipe.id !== recipeId);
       })
       .addCase(removeFavoriteThunk.rejected, (state, action) => {
         const recipeId = action.meta.arg;
 
-        if (
-          state.pendingByRecipeId[recipeId] !== action.meta.requestId
-        ) {
+        if (state.pendingByRecipeId[recipeId] !== action.meta.requestId) {
           return;
         }
 

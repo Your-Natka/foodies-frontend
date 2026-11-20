@@ -13,7 +13,7 @@ const PopularRecipes = ({
 
   return (
     <section className={css.popularRecipes}>
-      <h3 className={css.title}>POPULAR RECIPES</h3>
+      <h2 className={css.title}>POPULAR RECIPES</h2>
 
       <ul className={css.list}>
         {recipes.map((recipe) => (

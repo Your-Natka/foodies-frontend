@@ -27,7 +27,6 @@ import {
   selectUser,
 } from "../../redux/slices/auth/authSlice";
 
-
 import {
   addFavoriteThunk,
   removeFavoriteThunk,

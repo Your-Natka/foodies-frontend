@@ -29,7 +29,6 @@ import { fetchAreasThunk } from "../../../redux/slices/areas/areasOperations";
 
 import { selectIsAuthenticated } from "../../../redux/slices/auth/authSlice";
 
-
 import {
   addFavoriteThunk,
   removeFavoriteThunk,
@@ -106,8 +105,7 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
     );
   }, [dispatch, page, limit, categoryName, selectedIngredient, selectedArea]);
 
-
-  // scroll to the top of the section
+  // Scroll to the top of the section
   const categorySectionRef = useRef(null);
 
   useEffect(() => {
