@@ -59,7 +59,7 @@
     left: 50%;
     display: flex;
     align-items: center;
-    gap: 0;
+    gap: 40px;
     transform: translateX(-50%);
 
     &:has(.header__nav-link:hover) {
@@ -313,6 +313,10 @@
 
     &__auth {
       width: 160px;
+    }
+
+    &__navigation {
+      gap: 0px;
     }
   }
 }

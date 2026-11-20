@@ -11,7 +11,12 @@ import {
 
 import css from "./RecipeIngredients.module.scss";
 
-const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
+const RecipeIngredients = ({
+  ingredients = [],
+  recipeId,
+  recipeTitle,
+  recipeThumb,
+}) => {
   const dispatch = useDispatch();
 
   const { onRequireAuth } = useOutletContext();
@@ -25,7 +30,14 @@ const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
       return;
     }
 
-    dispatch(addRecipeIngredients({ recipeId, recipeTitle, ingredients }));
+    dispatch(
+      addRecipeIngredients({
+        recipeId,
+        recipeTitle,
+        recipeThumb,
+        ingredients,
+      }),
+    );
 
     toast.success("Ingredients added to your shopping list.");
   };
