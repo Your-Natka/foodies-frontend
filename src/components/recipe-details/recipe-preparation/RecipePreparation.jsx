@@ -6,7 +6,7 @@ const RecipePreparation = ({ instructions = '' }) => {
 
   return (
     <section className={css.preparation}>
-      <h3 className={css.title}>RECIPE PREPARATION</h3>
+      <h2 className={css.title}>RECIPE PREPARATION</h2>
 
       <div className={css.content}>
         {paragraphs.map((paragraph, index) => (

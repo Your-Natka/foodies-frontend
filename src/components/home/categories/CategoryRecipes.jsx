@@ -35,7 +35,7 @@ import {
 } from "../../../redux/slices/favorites/favoritesSlice";
 
 import {
-  fetchFavoritesThunk,
+  fetchAllFavoriteIdsThunk,
   addFavoriteThunk,
   removeFavoriteThunk,
 } from "../../../redux/slices/favorites/favoritesOperations";
@@ -115,7 +115,7 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
   // Load favorites for authenticated users
   useEffect(() => {
     if (isAuthenticated) {
-      dispatch(fetchFavoritesThunk({ page: 1, limit: 100 }));
+      dispatch(fetchAllFavoriteIdsThunk());
     } else {
       dispatch(clearFavorites());
     }
