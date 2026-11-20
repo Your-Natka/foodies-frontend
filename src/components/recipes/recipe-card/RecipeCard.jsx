@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import css from './RecipeCard.module.scss';
+import { Link, useLocation } from "react-router-dom";
+import css from "./RecipeCard.module.scss";
 
 const RecipeCard = ({
   recipe,
@@ -7,22 +7,26 @@ const RecipeCard = ({
   onToggleFavorite,
   onAuthorClick,
 }) => {
-  const { id, title, description, thumb, owner } = recipe;
+  const location = useLocation();
+
+  const { id, title, description, thumb, owner, category } = recipe;
 
   const authorAvatar = owner?.avatar;
-  const authorName = owner?.name || 'Unknown author';
+  const authorName = owner?.name || "Unknown author";
   const authorId = owner?.id;
   const authorInitial = authorName.charAt(0).toUpperCase();
 
   return (
     <li className={css.card}>
-      <Link to={`/recipe/${id}`} className={css.recipeLink}>
-        <img
-          className={css.image}
-          src={thumb}
-          alt={title}
-          loading="lazy"
-        />
+      <Link
+        to={`/recipe/${id}`}
+        state={{
+          from: location.pathname,
+          category,
+        }}
+        className={css.recipeLink}
+      >
+        <img className={css.image} src={thumb} alt={title} loading="lazy" />
 
         <div className={css.content}>
           <h3 className={css.title}>{title}</h3>
@@ -38,15 +42,9 @@ const RecipeCard = ({
             onClick={() => onAuthorClick?.(authorId)}
           >
             {authorAvatar ? (
-              <img
-                className={css.avatar}
-                src={authorAvatar}
-                alt={authorName}
-              />
+              <img className={css.avatar} src={authorAvatar} alt={authorName} />
             ) : (
-              <span className={css.avatarFallback}>
-                {authorInitial}
-              </span>
+              <span className={css.avatarFallback}>{authorInitial}</span>
             )}
 
             <span className={css.authorName}>{authorName}</span>
@@ -54,15 +52,9 @@ const RecipeCard = ({
         ) : (
           <div className={css.author}>
             {authorAvatar ? (
-              <img
-                className={css.avatar}
-                src={authorAvatar}
-                alt={authorName}
-              />
+              <img className={css.avatar} src={authorAvatar} alt={authorName} />
             ) : (
-              <span className={css.avatarFallback}>
-                {authorInitial}
-              </span>
+              <span className={css.avatarFallback}>{authorInitial}</span>
             )}
 
             <span className={css.authorName}>{authorName}</span>
@@ -73,12 +65,10 @@ const RecipeCard = ({
           <button
             type="button"
             className={`${css.actionButton} ${css.favoriteButton} ${
-              isFavorite ? css.isFavorite : ''
+              isFavorite ? css.isFavorite : ""
             }`}
             aria-label={
-              isFavorite
-                ? 'Remove from favorites'
-                : 'Add to favorites'
+              isFavorite ? "Remove from favorites" : "Add to favorites"
             }
             aria-pressed={isFavorite}
             onClick={() => onToggleFavorite?.(id)}
@@ -91,6 +81,10 @@ const RecipeCard = ({
           <Link
             className={`${css.actionButton} ${css.detailsLink}`}
             to={`/recipe/${id}`}
+            state={{
+              from: location.pathname,
+              category,
+            }}
             aria-label={`View ${title} recipe`}
           >
             <svg className={css.icon} aria-hidden="true">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import Hero from "../../components/home/hero/Hero";
 import Categories from "../../components/home/categories/Categories";
@@ -8,7 +9,11 @@ import ScrollUp from "../../components/scroll/ScrollUp";
 import "./HomePage.scss";
 
 function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const location = useLocation();
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    () => location.state?.selectedCategory ?? null,
+  );
 
   return (
     <main className="home-page">
