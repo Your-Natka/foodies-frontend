@@ -1,12 +1,11 @@
-
 .button {
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: 215px;
-  height: 56px;
-  padding: 16px 32px;
+  min-height: 56px;
+  padding: 16px 12px;
 
   border: 1px solid var(--color-gray);
   border-radius: 30px;
@@ -21,7 +20,9 @@
   color: var(--color-dark);
 
   cursor: pointer;
-  transition: background-color 250ms ease, color 250ms ease,
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
     border-color 250ms ease;
 
   &:hover {
@@ -38,8 +39,10 @@
 
 @media screen and (max-width: 767px) {
   .button {
-    width: 172px;
-    height: 48px;
-    padding: 14px 20px;
+    width: 190px;
+    min-height: 48px;
+    padding: 14px 10px;
+    font-size: 12px;
+    line-height: 18px;
   }
 }
