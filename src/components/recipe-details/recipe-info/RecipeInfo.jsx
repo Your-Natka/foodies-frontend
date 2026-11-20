@@ -11,7 +11,7 @@ const RecipeInfo = ({ recipe, children, onAuthorClick }) => {
 
       <div className={css.content}>
         <div className={css.details}>
-          <h3 className={css.title}>{title}</h3>
+          <h1 className={css.title}>{title}</h1>
 
           <div className={css.meta}>
             <span className={css.metaItem}>{category}</span>

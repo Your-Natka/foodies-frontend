@@ -21,7 +21,7 @@ const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
   return (
     <section className={css.ingredientsSection}>
       <div className={css.header}>
-        <h3 className={css.title}>INGREDIENTS</h3>
+        <h2 className={css.title}>INGREDIENTS</h2>
 
         {recipeId && ingredients.length > 0 && (
           isInList ? (
