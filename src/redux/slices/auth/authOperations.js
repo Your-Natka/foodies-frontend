@@ -12,6 +12,7 @@ import {
   clearStoredSession,
 } from "../../../services/authStorage";
 import { clearAppStorage } from "../../../utils/storage";
+import { resetSession } from "../../sessionActions";
 
 const getErrorMessage = (error) =>
   error.response?.data?.message ||
@@ -53,17 +54,29 @@ const clearApiCache = async () => {
   }
 };
 
-export const logoutThunk = createAsyncThunk("auth/logout", async () => {
-  await clearApiCache();
-  clearAppStorage();
+export const logoutThunk = createAsyncThunk(
+  "auth/logout",
+  async (_, { dispatch, getState }) => {
+    const accessToken = getState().auth.accessToken;
 
-  try {
-    await logoutUser();
-    return { serverLogoutSucceeded: true };
-  } catch {
-    return { serverLogoutSucceeded: false };
-  }
-});
+    const serverLogout = logoutUser(accessToken)
+      .then(() => true)
+      .catch((error) => {
+        console.error("Server logout failed:", error);
+        return false;
+      });
+
+    // Clear Redux and localStorage
+    dispatch(resetSession());
+    clearAppStorage();
+
+    void clearApiCache();
+
+    const serverLogoutSucceeded = await serverLogout;
+
+    return { serverLogoutSucceeded };
+  },
+);
 
 export const restoreSessionThunk = createAsyncThunk(
   "auth/restoreSession",

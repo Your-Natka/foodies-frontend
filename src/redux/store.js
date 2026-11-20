@@ -1,4 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { resetSession } from "./sessionActions";
 
 import recipesReducer from './slices/recipes/recipesSlice';
 import ingredientsReducer from './slices/ingredients/ingredientsSlice';
@@ -23,15 +24,25 @@ const loadShoppingList = () => {
 
 const savedShoppingList = loadShoppingList();
 
+const appReducer = combineReducers({
+  auth: authReducer,
+  recipes: recipesReducer,
+  ingredients: ingredientsReducer,
+  areas: areasReducer,
+  favorites: favoritesReducer,
+  shoppingList: shoppingListReducer,
+});
+
+const rootReducer = (state, action) => {
+  if (resetSession.match(action)) {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    recipes: recipesReducer,
-    ingredients: ingredientsReducer,
-    areas: areasReducer,
-    favorites: favoritesReducer,
-    shoppingList: shoppingListReducer,
-  },
+  reducer: rootReducer,
   preloadedState: savedShoppingList
     ? { shoppingList: savedShoppingList }
     : undefined,

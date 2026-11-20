@@ -19,6 +19,10 @@ function LogoutModal({ isOpen, onClose }) {
 
     setIsLoggingOut(true);
 
+    // Спочатку залишаємо захищену сторінку
+    onClose();
+    navigate("/", { replace: true, state: null });
+
     try {
       const result = await dispatch(logoutThunk()).unwrap();
 
@@ -29,9 +33,6 @@ function LogoutModal({ isOpen, onClose }) {
           "Your local session has ended, but the server could not confirm logout.",
         );
       }
-
-      onClose();
-      navigate("/", { replace: true, state: null });
     } catch {
       toast.error("Something went wrong while logging out.");
     } finally {
