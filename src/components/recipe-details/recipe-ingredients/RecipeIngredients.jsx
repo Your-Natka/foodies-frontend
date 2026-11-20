@@ -1,21 +1,33 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { selectIsAuthenticated } from "../../../redux/slices/auth/authSlice";
 
 import {
   addRecipeIngredients,
   selectIsRecipeInList,
-} from '../../../redux/slices/shoppingList/shoppingListSlice';
+} from "../../../redux/slices/shoppingList/shoppingListSlice";
 
-import css from './RecipeIngredients.module.scss';
+import css from "./RecipeIngredients.module.scss";
 
 const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
   const dispatch = useDispatch();
+
+  const { onRequireAuth } = useOutletContext();
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const isInList = useSelector(selectIsRecipeInList(recipeId));
 
   const handleAddToList = () => {
+    if (!isAuthenticated) {
+      onRequireAuth();
+      return;
+    }
+
     dispatch(addRecipeIngredients({ recipeId, recipeTitle, ingredients }));
-    toast.success('Ingredients added to your shopping list.');
+
+    toast.success("Ingredients added to your shopping list.");
   };
 
   return (
@@ -23,8 +35,9 @@ const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
       <div className={css.header}>
         <h2 className={css.title}>INGREDIENTS</h2>
 
-        {recipeId && ingredients.length > 0 && (
-          isInList ? (
+        {recipeId &&
+          ingredients.length > 0 &&
+          (isInList ? (
             <Link to="/shopping-list" className={`${css.listButton} no-print`}>
               In shopping list ✓
             </Link>
@@ -36,12 +49,11 @@ const RecipeIngredients = ({ ingredients = [], recipeId, recipeTitle }) => {
             >
               + Add to shopping list
             </button>
-          )
-        )}
+          ))}
       </div>
 
       <ul className={css.ingredientsList}>
-        {ingredients.map(ingredient => (
+        {ingredients.map((ingredient) => (
           <li className={css.ingredient} key={ingredient.id}>
             <div className={css.imageWrapper}>
               <img
