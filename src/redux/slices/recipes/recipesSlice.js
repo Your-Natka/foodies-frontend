@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
@@ -6,6 +5,19 @@ import {
   fetchPopularRecipesThunk,
   fetchRecipeByIdThunk,
 } from "./recipesOperations";
+
+import {
+  addFavoriteThunk,
+  removeFavoriteThunk,
+} from "../favorites/favoritesOperations";
+
+import {
+  loginThunk,
+  registerThunk,
+  restoreSessionThunk,
+} from "../auth/authOperations";
+
+import { clearCredentials } from "../auth/authSlice";
 
 const initialState = {
   items: [],
@@ -25,6 +37,67 @@ const initialState = {
   recipesRequestId: null,
   popularRequestId: null,
   recipeRequestId: null,
+
+  // Latest successful favorite status changes during the current session
+  favoriteStatusById: {},
+};
+
+// Apply locally confirmed favorite statuses to newly fetched recipes.
+const applyFavoriteStatusOverrides = (recipes, favoriteStatusById) =>
+  recipes.map((recipe) => {
+    const favoriteStatus = favoriteStatusById[recipe.id];
+
+    if (favoriteStatus === undefined) {
+      return recipe;
+    }
+
+    return {
+      ...recipe,
+      isFavorite: favoriteStatus,
+    };
+  });
+
+// Update a recipe in an array without changing unrelated recipes.
+const updateRecipeFavoriteStatus = (recipes, recipeId, isFavorite) => {
+  const recipe = recipes.find((item) => item.id === recipeId);
+
+  if (recipe) {
+    recipe.isFavorite = isFavorite;
+  }
+};
+
+// Update the favorite status everywhere the recipe may be stored.
+const updateFavoriteStatus = (state, recipeId, isFavorite) => {
+  state.favoriteStatusById[recipeId] = isFavorite;
+
+  updateRecipeFavoriteStatus(state.items, recipeId, isFavorite);
+  updateRecipeFavoriteStatus(state.popularRecipes, recipeId, isFavorite);
+
+  if (state.currentRecipe?.id === recipeId) {
+    state.currentRecipe.isFavorite = isFavorite;
+  }
+};
+
+// Clear local favorite overrides when the authenticated user changes.
+const clearFavoriteStatusOverrides = (state) => {
+  state.favoriteStatusById = {};
+};
+
+// Reset cached favorite statuses when authentication is cleared.
+const resetFavoriteStatuses = (state) => {
+  state.favoriteStatusById = {};
+
+  state.items.forEach((recipe) => {
+    recipe.isFavorite = false;
+  });
+
+  state.popularRecipes.forEach((recipe) => {
+    recipe.isFavorite = false;
+  });
+
+  if (state.currentRecipe) {
+    state.currentRecipe.isFavorite = false;
+  }
 };
 
 const recipesSlice = createSlice({
@@ -55,7 +128,10 @@ const recipesSlice = createSlice({
         if (state.recipesRequestId !== action.meta.requestId) return;
 
         state.recipesStatus = "succeeded";
-        state.items = action.payload.data;
+        state.items = applyFavoriteStatusOverrides(
+          action.payload.data,
+          state.favoriteStatusById,
+        );
         state.page = action.payload.pagination.page;
         state.totalPages = action.payload.pagination.totalPages;
         state.recipesRequestId = null;
@@ -77,7 +153,10 @@ const recipesSlice = createSlice({
         if (state.popularRequestId !== action.meta.requestId) return;
 
         state.popularStatus = "succeeded";
-        state.popularRecipes = action.payload;
+        state.popularRecipes = applyFavoriteStatusOverrides(
+          action.payload,
+          state.favoriteStatusById,
+        );
         state.popularRequestId = null;
       })
       .addCase(fetchPopularRecipesThunk.rejected, (state, action) => {
@@ -97,8 +176,15 @@ const recipesSlice = createSlice({
       .addCase(fetchRecipeByIdThunk.fulfilled, (state, action) => {
         if (state.recipeRequestId !== action.meta.requestId) return;
 
+        const recipe = action.payload;
+        const favoriteStatus = state.favoriteStatusById[recipe.id];
+
         state.recipeStatus = "succeeded";
-        state.currentRecipe = action.payload;
+        state.currentRecipe =
+          favoriteStatus === undefined
+            ? recipe
+            : { ...recipe, isFavorite: favoriteStatus };
+
         state.recipeRequestId = null;
       })
       .addCase(fetchRecipeByIdThunk.rejected, (state, action) => {
@@ -107,14 +193,33 @@ const recipesSlice = createSlice({
         state.recipeStatus = action.meta.aborted ? "idle" : "failed";
         state.error = action.meta.aborted ? null : action.payload;
         state.recipeRequestId = null;
-      });
+      })
+
+      // Add favorite
+      .addCase(addFavoriteThunk.fulfilled, (state, action) => {
+        const { recipeId, isFavorite } = action.payload.data;
+
+        updateFavoriteStatus(state, recipeId, isFavorite);
+      })
+
+      // Remove favorite
+      .addCase(removeFavoriteThunk.fulfilled, (state, action) => {
+        const recipeId = action.meta.arg;
+
+        updateFavoriteStatus(state, recipeId, false);
+      })
+
+      // Clear local overrides when the authenticated user changes
+      .addCase(loginThunk.fulfilled, clearFavoriteStatusOverrides)
+      .addCase(registerThunk.fulfilled, clearFavoriteStatusOverrides)
+      .addCase(restoreSessionThunk.fulfilled, clearFavoriteStatusOverrides)
+
+      // Clear cached favorite statuses when authentication is cleared
+      .addCase(clearCredentials, resetFavoriteStatuses);
   },
 });
 
-export const {
-  setRecipesPage,
-  clearCurrentRecipe,
-} = recipesSlice.actions;
+export const { setRecipesPage, clearCurrentRecipe } = recipesSlice.actions;
 
 // Selectors
 export const selectRecipes = (state) => state.recipes.items;

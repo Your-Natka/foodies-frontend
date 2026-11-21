@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import Hero from "../../components/home/hero/Hero";
@@ -14,6 +14,17 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(
     () => location.state?.selectedCategory ?? null,
   );
+
+  useEffect(() => {
+    if (location.hash !== "#categories" || selectedCategory) return;
+
+    requestAnimationFrame(() => {
+      document.getElementById("categories")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [location.hash, selectedCategory]);
 
   return (
     <main className="home-page">

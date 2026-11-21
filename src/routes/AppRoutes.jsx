@@ -5,9 +5,17 @@ import { useDispatch } from "react-redux";
 import SharedLayout from "../components/shared-layout/SharedLayout";
 import Spinner from "../components/loader/Spinner";
 import PrivateRoute from "./PrivateRoute";
+
 import { restoreSessionThunk } from "../redux/slices/auth/authOperations";
 import { markSessionChecked } from "../redux/slices/auth/authSlice";
+
+import {
+  restoreShoppingList,
+  SHOPPING_LIST_STORAGE_KEY,
+} from "../redux/slices/shoppingList/shoppingListSlice";
+
 import { hasStoredSession } from "../services/authStorage";
+import { loadJSON, removeKey } from "../utils/storage";
 
 const UserPage = lazy(() => import("../pages/user-page/UserPage"));
 
@@ -32,15 +40,29 @@ function AppRoutes() {
 
   useEffect(() => {
     if (hasStoredSession()) {
-      dispatch(restoreSessionThunk());
+      dispatch(restoreSessionThunk())
+        .unwrap()
+        .then(() => {
+          const savedShoppingList = loadJSON(SHOPPING_LIST_STORAGE_KEY, {
+            items: [],
+          });
+
+          dispatch(restoreShoppingList(savedShoppingList));
+        })
+        .catch(() => {
+          removeKey(SHOPPING_LIST_STORAGE_KEY);
+        });
     } else {
+      removeKey(SHOPPING_LIST_STORAGE_KEY);
       dispatch(markSessionChecked());
     }
   }, [dispatch]);
 
   useEffect(() => {
+    if (location.hash) return;
+
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   return (
     <Suspense fallback={<Spinner />}>
@@ -63,7 +85,7 @@ function AppRoutes() {
           {/* Recipe details */}
           <Route path="recipe/:id" element={<RecipePage />} />
 
-          {/* Shopping list (stored locally, no auth needed) */}
+          {/* Shopping list is accessible to guests */}
           <Route path="shopping-list" element={<ShoppingListPage />} />
 
           <Route path="*" element={<NotFoundPage />} />

@@ -20,12 +20,7 @@ const otherTabs = [
   { id: "followers", label: "Followers" },
 ];
 
-function TabsList({
-  isOwnProfile = true,
-  profileUserId,
-  onProfileUpdate,
-  recipes = [],
-}) {
+function TabsList({ isOwnProfile = true, profileUserId, onProfileUpdate }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabCache = useRef(new Map());
 
@@ -87,7 +82,7 @@ function TabsList({
             setCachedData={setCachedData}
           />
         ) : (
-          <UserRecipes recipes={recipes} userId={profileUserId} />
+          <UserRecipes userId={profileUserId} />
         );
 
       case "favourites":
