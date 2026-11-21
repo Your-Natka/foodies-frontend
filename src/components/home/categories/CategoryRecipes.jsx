@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+import Section from "../../common/Section/Section";
 
 import { CATEGORY_DESCRIPTIONS } from "../../../constants/recipes";
 import CategoryInfo from "../../recipes/category-info/CategoryInfo";
@@ -177,12 +178,12 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
   };
 
   return (
-    <section
+    <Section
       className={css.categorySection}
       ref={categorySectionRef}
       data-category-recipes-section
     >
-      <div className="hero-container">
+      <div className={css.heroContainer}>
         <CategoryInfo
           title={categoryName}
           description={categoryDescription}
@@ -236,7 +237,7 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 
