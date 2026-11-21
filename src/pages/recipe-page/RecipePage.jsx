@@ -169,6 +169,7 @@ const RecipePage = () => {
               ingredients={recipe.ingredients}
               recipeId={recipe.id}
               recipeTitle={recipe.title}
+              recipeThumb={recipe.thumb}
             />
 
             <RecipePreparation instructions={recipe.instructions} />
