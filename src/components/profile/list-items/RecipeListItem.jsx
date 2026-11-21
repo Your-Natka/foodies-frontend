@@ -61,20 +61,8 @@ function RecipeListItem({
           disabled={!onOpen && !id}
           aria-label={`Open ${title}`}
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M7 17L17 7M8 7h9v9"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+          <svg width="16" height="16" aria-hidden="true">
+            <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
           </svg>
         </button>
 
@@ -87,18 +75,8 @@ function RecipeListItem({
             aria-label={`${removeLabel}: ${title}`}
             aria-busy={isRemoving}
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M3 6h18M8 6V4h8v2M5 6l1 14h12l1-14M10 10v7M14 10v7" />
+            <svg width="16" height="16" aria-hidden="true">
+              <use href="/images/sprite.svg#icon-trash16x16-food" />
             </svg>
           </button>
         )}

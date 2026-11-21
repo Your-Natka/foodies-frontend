@@ -128,11 +128,10 @@
     min-height: 40px;
     margin-top: 0;
     padding: 12px 20px;
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-black);
     border-radius: 30px;
 
-    // Неактивний стан
-    background-color: var(--color-gray);
+    background-color: var(--color-black);
     color: var(--color-white);
 
     font-size: 14px;
@@ -143,17 +142,11 @@
     cursor: pointer;
 
     transition:
-      background-color 200ms ease,
-      color 200ms ease,
-      border-color 200ms ease;
+      transform 200ms ease,
+      box-shadow 200ms ease;
 
-    // Наведення, фокус і натискання
-    &:hover,
-    &:focus-visible,
-    &:active {
-      background-color: var(--color-black);
-      border-color: var(--color-black);
-      color: var(--color-white);
+    &:hover:not(:disabled) {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
     }
 
     &:focus-visible {
@@ -161,20 +154,28 @@
       outline-offset: 3px;
     }
 
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
     &:disabled {
       opacity: 0.6;
       cursor: wait;
     }
-  }
 
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+  
   &__follow {
     width: 100%;
     min-height: 40px;
     padding: 12px 20px;
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-black);
     border-radius: 30px;
 
-    background-color: var(--color-gray);
+    background-color: var(--color-black);
     color: var(--color-white);
 
     font-size: 14px;
@@ -184,19 +185,30 @@
 
     cursor: pointer;
 
-    transition: none;
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease;
 
-    &:not(:disabled):hover,
-    &:not(:disabled):focus-visible,
-    &:not(:disabled):active {
-      background-color: var(--color-black);
-      border-color: var(--color-black);
-      color: var(--color-white);
+    &:hover:not(:disabled) {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-black);
+      outline-offset: 3px;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(1px);
     }
 
     &:disabled {
       opacity: 0.6;
       cursor: wait;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
     }
   }
 }
@@ -208,7 +220,6 @@
 
     &__card {
       padding: 40px 80px;
-      border: 1px solid var(--color-black);
     }
 
     &__avatar-wrapper {
@@ -228,14 +239,6 @@
     &__logout,
     &__follow {
       min-height: 44px;
-    }
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .user-bar {
-    &__card {
-      border: 1px solid var(--color-light-gray);
     }
   }
 }

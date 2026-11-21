@@ -73,12 +73,10 @@ function AppRoutes() {
           {/* Private routes */}
           <Route element={<PrivateRoute />}>
             <Route path="user" element={<UserPage />} />
+            <Route path="user/:userId" element={<UserPage />} />
             <Route path="recipe/add" element={<AddRecipePage />} />
             <Route path="recipe/:recipeId/edit" element={<AddRecipePage />} />
           </Route>
-
-          {/* Public user profile */}
-          <Route path="user/:userId" element={<UserPage />} />
 
           {/* Recipes catalog */}
           <Route path="recipes" element={<CategoryPage />} />

@@ -103,7 +103,7 @@ function ProfileRecipes({ onProfileUpdate, getCachedData, setCachedData }) {
     return () => {
       isActive = false;
     };
-  }, [currentPage, refreshKey]);
+  }, [currentPage, refreshKey, getCachedData, setCachedData]);
 
   const handleDeleteRecipe = async (recipe) => {
     if (deletingRef.current) return;
