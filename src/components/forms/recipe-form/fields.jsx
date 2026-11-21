@@ -395,7 +395,7 @@ export function CookingTimeField() {
     // prevent decreasing below the minimum.
     if (delta < 0 && value <= TIME_MIN) return;
 
-    const nextValue = value + delta;
+    const nextValue = Math.max(TIME_MIN, value + delta);
 
     helpers.setValue(nextValue, true);
     helpers.setTouched(true, false);
