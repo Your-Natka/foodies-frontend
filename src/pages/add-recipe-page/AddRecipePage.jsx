@@ -10,7 +10,7 @@ function AddRecipePage() {
   const isEditMode = Boolean(recipeId);
 
   return (
-    <Section className="add-recipe-page">
+    <Section className="add-recipe-page" containerVariant="hero">
       <div className="add-recipe-page__intro">
         <nav aria-label="Breadcrumbs">
           <ol className="add-recipe-page__breadcrumbs">

@@ -14,18 +14,22 @@ function TestimonialSlider({ testimonials, interval = 5000 }) {
     }, interval);
 
     return () => clearInterval(timer);
-  }, [activeIndex, interval, testimonials.length]);
+  }, [interval, testimonials.length]);
 
   if (!testimonials.length) return null;
 
-  const activeTestimonial = testimonials[activeIndex];
-
   return (
     <div className="testimonial-slider">
-      <TestimonialCard
-        text={activeTestimonial.text}
-        name={activeTestimonial.name}
-      />
+      <div className="testimonial-slider__slides">
+        {testimonials.map((testimonial, index) => (
+          <TestimonialCard
+            key={testimonial.id}
+            text={testimonial.text}
+            name={testimonial.name}
+            isActive={index === activeIndex}
+          />
+        ))}
+      </div>
 
       <div className="testimonial-slider__pagination">
         {testimonials.map((testimonial, index) => (
