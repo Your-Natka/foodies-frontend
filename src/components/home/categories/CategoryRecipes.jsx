@@ -182,7 +182,7 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
       ref={categorySectionRef}
       data-category-recipes-section
     >
-      <div className="container">
+      <div className="hero-container">
         <CategoryInfo
           title={categoryName}
           description={categoryDescription}

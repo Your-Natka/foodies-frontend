@@ -1,44 +1,380 @@
+/* ========================================
+   PAGE
+======================================== */
+
 .page {
+  width: 100%;
   padding-top: 32px;
   padding-bottom: 64px;
 }
 
-.title {
+/* ========================================
+   BREADCRUMBS
+======================================== */
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0 0 24px;
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.15;
+  padding: 0;
+  list-style: none;
+  color: var(--color-black);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--color-black);
 }
 
-.browseLink,
-.action {
-  display: inline-flex;
+.crumbLink,
+.breadcrumbSeparator {
+  color: var(--color-gray);
+}
+
+.crumbLink {
+  transition: color 200ms ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-black);
+  }
+}
+
+/* ========================================
+   PAGE HEADER
+======================================== */
+
+.pageHeader {
+  margin-bottom: 40px;
+}
+
+.title {
+  margin: 0 0 16px;
+  color: var(--color-black);
+  font-family: var(--font-family);
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.pageDescription {
+  max-width: 600px;
+  margin: 0;
+  color: var(--color-dark);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+}
+
+/* ========================================
+   HOW IT WORKS
+======================================== */
+
+.howItWorks {
+  margin-bottom: 48px;
+}
+
+.howItWorksTitle {
+  margin: 0 0 24px;
+  color: var(--color-black);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.step {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
+  gap: 16px;
+  min-width: 0;
+  min-height: 88px;
+  padding: 20px 24px;
   border: 1px solid var(--color-gray);
   border-radius: 30px;
   background-color: var(--color-white);
+}
+
+.stepLink {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-black);
+    border-color: var(--color-black);
+    outline: none;
+
+    .stepIcon,
+    .stepTitle {
+      color: var(--color-white);
+    }
+
+    .stepArrowWrapper {
+      background-color: var(--color-white);
+      border-color: var(--color-white);
+    }
+
+    .stepArrow {
+      color: var(--color-black);
+    }
+  }
+}
+
+.stepIcon {
+  display: block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: var(--color-black);
+  --color1: var(--color-black);
+}
+
+.stepTitle {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-black);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.stepArrowWrapper {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-gray);
+  border-radius: 50%;
+}
+
+.stepArrow {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--color-black);
+  fill: none;
+  stroke: currentColor;
+  transform: rotate(180deg);
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.emptySection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.emptyHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 48px;
+}
+
+.heroPicture {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 812 / 482;
+  object-fit: cover;
+}
+
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+.emptyTitle {
+  max-width: 450px;
+  margin: 0;
+  color: var(--color-black);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.emptyDescription {
+  max-width: 440px;
+  margin: 16px 0 0;
+  color: var(--color-dark);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.browseLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 48px;
+  margin-top: 24px;
+  padding: 12px 24px;
+  border: 1px solid var(--color-dark);
+  border-radius: 30px;
+  background-color: var(--color-white);
+  color: var(--color-black);
   font: inherit;
   font-size: 12px;
   font-weight: 700;
   line-height: 18px;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--color-dark);
-  cursor: pointer;
-  transition: background-color 250ms ease, color 250ms ease,
+  text-decoration: none;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
     border-color 250ms ease;
 
-  &:hover:not(:disabled),
+  &:hover,
   &:focus-visible {
-    background-color: var(--color-dark);
-    border-color: var(--color-dark);
+    background-color: var(--color-black);
+    border-color: var(--color-black);
     color: var(--color-white);
     outline: none;
+  }
+}
+
+.browseArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 250ms ease;
+
+  .browseLink:hover &,
+  .browseLink:focus-visible & {
+    transform: translateX(4px);
+  }
+}
+
+.backIcon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  transform: rotate(180deg);
+  stroke: currentColor;
+  fill: none;
+}
+
+/* ========================================
+   SHOPPING LIST TOOLBAR
+======================================== */
+
+.shoppingSection {
+  width: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+  padding: 20px 24px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 20px;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+
+.summaryItem {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.summaryValue {
+  color: var(--color-black);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 24px;
+}
+
+.summaryLabel {
+  color: var(--color-dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.summaryDivider {
+  color: var(--color-gray);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-gray);
+  border-radius: 30px;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    background-color: var(--color-black);
+    border-color: var(--color-black);
+    color: var(--color-white);
   }
 
   &:disabled {
@@ -47,81 +383,149 @@
   }
 }
 
-.browseLink {
-  margin-top: 24px;
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
-.summary {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--color-gray);
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+/* ========================================
+   RECIPE GROUPS
+======================================== */
 
 .groups {
-  display: grid;
-  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.groupHeader {
+.group {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 20px;
+  background-color: var(--color-white);
+}
+
+/* ========================================
+   RECIPE IMAGE AND TITLE
+======================================== */
+
+.recipeInfo {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  padding-bottom: 12px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--color-gray);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
 }
 
 .groupTitle {
+  margin: 0;
+  color: var(--color-black);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 200ms ease;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 0.65;
+    }
+  }
+}
+
+.recipeImageLink {
+  display: block;
+  width: 100%;
+  aspect-ratio: 550 / 444;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.recipeThumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========================================
+   INGREDIENTS HEADER
+======================================== */
+
+.ingredientsContent {
+  min-width: 0;
+}
+
+.ingredientsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ingredientsTitle {
+  margin: 0;
+  color: var(--color-black);
   font-size: 18px;
   font-weight: 800;
   line-height: 1.3;
   text-transform: uppercase;
-  color: var(--color-black);
-
-  &:hover,
-  &:focus-visible {
-    text-decoration: underline;
-  }
 }
+
+/* Remove entire recipe */
 
 .removeGroup {
+  display: flex;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   padding: 0;
-  border: none;
-  background: none;
-  font: inherit;
-  font-size: 14px;
-  color: var(--color-gray);
+  border: 1px solid var(--color-gray);
+  border-radius: 50%;
+  background-color: var(--color-white);
+  color: var(--color-black);
   cursor: pointer;
+  line-height: 1;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+
+  span {
+    display: block;
+    position: relative;
+    top: -1px;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+  }
 
   &:hover,
   &:focus-visible {
-    color: var(--color-dark);
-    text-decoration: underline;
+    border-color: var(--color-black);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    outline: none;
   }
 }
+
+/* ========================================
+   INGREDIENTS GRID
+======================================== */
 
 .list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 4px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -131,102 +535,506 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+  min-height: 92px;
+  padding: 8px;
+  border: 1px solid var(--color-gray);
+  border-radius: 15px;
+  background-color: var(--color-white);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+.checkbox {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-black);
+  cursor: pointer;
 }
 
 .label {
   display: flex;
   flex: 1;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
-  padding: 8px 0;
   cursor: pointer;
 }
 
-.checkbox {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  accent-color: var(--color-dark);
-  cursor: pointer;
+.imageWrapper {
+  display: flex;
+  flex: 0 0 56px;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border: 1px solid var(--color-gray);
+  border-radius: 12px;
 }
 
 .image {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  padding: 4px;
-  border: 1px solid var(--color-gray);
-  border-radius: 12px;
+  display: block;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
 
-.text {
+.ingredientInfo {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   min-width: 0;
 }
 
 .name {
-  font-size: 16px;
-  font-weight: 500;
   color: var(--color-black);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
   overflow-wrap: anywhere;
+  transition: color 200ms ease;
 }
 
 .measure {
-  font-size: 14px;
   color: var(--color-gray);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
+/* Bought ingredient */
+
 .checked {
-  .name,
-  .measure {
+  border-color: var(--color-light-gray);
+  background-color: #f7f7f7;
+
+  .name {
+    color: var(--color-gray);
     text-decoration: line-through;
-    opacity: 0.5;
+  }
+
+  .image {
+    opacity: 0.55;
   }
 }
 
+/* Remove individual ingredient */
+
 .removeItem {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border: none;
+  display: flex;
+  flex: 0 0 28px;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-light-gray);
   border-radius: 50%;
-  background: none;
-  font-size: 22px;
-  line-height: 1;
+  background-color: var(--color-white);
   color: var(--color-gray);
   cursor: pointer;
+  line-height: 1;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+
+  span {
+    display: block;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1;
+  }
 
   &:hover,
   &:focus-visible {
-    color: var(--color-dark);
+    border-color: var(--color-black);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    outline: none;
   }
 }
 
-@media screen and (min-width: 768px) {
+/* ========================================
+   TABLET
+======================================== */
+
+@media screen and (min-width: 768px) and (max-width: 1439px) {
   .page {
     padding-top: 40px;
   }
 
-  .title {
-    font-size: 40px;
+  .pageHeader {
+    margin-bottom: 32px;
+  }
+
+  .howItWorks {
+    margin-bottom: 40px;
+  }
+
+  .howItWorksTitle {
+    font-size: 32px;
+  }
+
+  .steps {
+    gap: 16px;
+  }
+
+  .step {
+    gap: 12px;
+    min-height: 84px;
+    padding: 16px;
+  }
+
+  .stepIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .stepTitle {
+    font-size: 13px;
+  }
+
+  .stepArrowWrapper {
+    width: 34px;
+    height: 34px;
+  }
+
+  .stepArrow {
+    width: 18px;
+    height: 18px;
+  }
+
+  .emptyHero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .heroImage {
+    aspect-ratio: 704 / 400;
+  }
+
+  .emptyContent {
+    max-width: 600px;
+  }
+
+  .toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .group {
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .recipeImageLink {
+    width: 110px;
+    height: 110px;
   }
 
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 32px;
+    gap: 14px;
+  }
+
+  .item {
+    min-height: 90px;
+  }
+
+  .imageWrapper {
+    flex-basis: 52px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .image {
+    width: 42px;
+    height: 42px;
   }
 }
 
-@media screen and (min-width: 1440px) {
+/* ========================================
+   MOBILE
+======================================== */
+
+@media screen and (max-width: 767px) {
   .page {
-    padding-top: 80px;
-    padding-bottom: 100px;
+    padding-top: 24px;
+    padding-bottom: 48px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 20px;
+    font-size: 11px;
+  }
+
+  .pageHeader {
+    margin-bottom: 28px;
+  }
+
+  .title {
+    margin-bottom: 12px;
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .pageDescription {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .howItWorks {
+    margin-bottom: 32px;
+  }
+
+  .howItWorksTitle {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .step {
+    min-height: 76px;
+    padding: 16px 20px;
+  }
+
+  .stepTitle {
+    font-size: 14px;
+  }
+
+  .stepIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .stepArrowWrapper {
+    width: 36px;
+    height: 36px;
+  }
+
+  .emptyHero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .heroImage {
+    aspect-ratio: 343 / 240;
+  }
+
+  .emptyContent {
+    max-width: 100%;
+  }
+
+  .emptyTitle {
+    font-size: 24px;
+  }
+
+  .emptyDescription {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .browseLink {
+    margin-top: 20px;
+  }
+
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .summary {
+    gap: 7px;
+  }
+
+  .summaryValue {
+    font-size: 15px;
+  }
+
+  .summaryLabel {
+    font-size: 11px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .action {
+    padding: 10px 8px;
+    font-size: 10px;
+  }
+
+  .action:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .groups {
+    gap: 20px;
+  }
+
+  .group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .recipeInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .groupTitle {
+    font-size: 17px;
+    line-height: 1.3;
+  }
+
+  .recipeImageLink {
+    width: 100%;
+    aspect-ratio: 550 / 444;
+    border-radius: 14px;
+  }
+
+  .ingredientsHeader {
+    margin-bottom: 16px;
+  }
+
+  .removeGroup {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .ingredientsTitle {
+    font-size: 16px;
   }
 
   .list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .item {
+    gap: 6px;
+    min-height: 82px;
+    padding: 7px;
+    border-radius: 12px;
+  }
+
+  .checkbox {
+    flex-basis: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .imageWrapper {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+  }
+
+  .image {
+    width: 34px;
+    height: 34px;
+  }
+
+  .name {
+    font-size: 11px;
+  }
+
+  .measure {
+    font-size: 10px;
+  }
+
+  .removeItem {
+    flex-basis: 22px;
+    width: 22px;
+    height: 22px;
+
+    span {
+      font-size: 18px;
+    }
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media screen and (max-width: 374px) {
+  .summary {
+    gap: 5px;
+  }
+
+  .summaryLabel {
+    font-size: 10px;
+  }
+
+  .summaryValue {
+    font-size: 13px;
+  }
+
+  .summaryDivider {
+    font-size: 12px;
+  }
+
+  .list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .item {
+    min-height: 76px;
+    padding: 9px;
+  }
+
+  .label {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .imageWrapper {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .image {
+    width: 38px;
+    height: 38px;
+  }
+
+  .name {
+    font-size: 12px;
+  }
+
+  .measure {
+    font-size: 11px;
   }
 }

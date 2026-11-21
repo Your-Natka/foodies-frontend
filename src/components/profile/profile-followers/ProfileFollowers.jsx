@@ -120,7 +120,7 @@ function ProfileFollowers({
     return () => {
       isActive = false;
     };
-  }, [type, profileUserId, page, reloadKey]);
+  }, [type, profileUserId, page, reloadKey, getCachedData, setCachedData]);
 
   const handleFollowToggle = async (userId, isFollowing) => {
     if (updatingUserId !== null) return;

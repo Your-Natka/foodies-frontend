@@ -517,7 +517,13 @@ $desktop: 1440px;
   }
 
   // ---------- Cooking time ----------
+  &__group--time {
+    position: relative;
+  }
+
   &__time {
+    position: relative;
+    overflow: visible;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -547,10 +553,21 @@ $desktop: 1440px;
     }
   }
 
+  &__time-center {
+    width: max-content;
+    min-width: 0;
+    flex: 0 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__time-value {
     @include text-main;
 
     min-width: 50px;
+    display: block;
+    width: max-content;
     padding: 4px;
     border: 0;
     background: transparent;
@@ -576,8 +593,10 @@ $desktop: 1440px;
   }
 
   &__time-edit {
-    width: 110px;
-    min-width: 0;
+    @include text-main;
+
+    width: 60px;
+    max-width: 100px;
     padding: 6px 4px;
     border: 1px solid var(--color-gray);
     border-radius: 6px;
@@ -585,7 +604,6 @@ $desktop: 1440px;
     background: var(--color-white);
     color: var(--color-black);
     font-family: inherit;
-    font-size: 14px;
     text-align: center;
 
     &:focus {
@@ -594,11 +612,27 @@ $desktop: 1440px;
   }
 
   &__time-hint {
-    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 25%;
+    transform: translateX(-50%);
+
+    width: max-content;
+    margin: 4px 0 0;
+    z-index: 2;
+
     color: var(--color-gray);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 16px;
     white-space: nowrap;
+  }
+
+  @media screen and (min-width: 768px) {
+    .recipe-form {
+      &__time-hint {
+        left: 40%;
+      }
+    }
   }
 
   // ---------- Ingredients ----------

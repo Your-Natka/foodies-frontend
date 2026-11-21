@@ -269,6 +269,7 @@ export function SearchableSelect({
         <div className="recipe-form__dropdown">
           <input
             ref={searchInputRef}
+            id={`${id}-search`}
             type="text"
             className="recipe-form__search-input"
             placeholder="Type to search..."
@@ -442,8 +443,8 @@ export function CookingTimeField() {
           <img src={minusIcon} width="24" height="24" alt="" />
         </button>
 
-        {isEditing ? (
-          <div className="recipe-form__time-edit-wrap">
+        <div className="recipe-form__time-center">
+          {isEditing ? (
             <input
               type="text"
               className="recipe-form__time-edit"
@@ -462,23 +463,21 @@ export function CookingTimeField() {
               aria-label="Enter cooking time"
               autoFocus
             />
-
-            <p className="recipe-form__time-hint">Examples: 105min or 1h 45m</p>
-          </div>
-        ) : (
-          <button
-            type="button"
-            translate="no"
-            className={`recipe-form__time-value ${
-              isPristine ? "recipe-form__time-value--placeholder" : ""
-            }`}
-            onClick={startEditing}
-            aria-label={`Edit cooking time: ${formatCookingTime(value)}`}
-            title="Click to edit cooking time"
-          >
-            {formatCookingTime(value)}
-          </button>
-        )}
+          ) : (
+            <button
+              type="button"
+              translate="no"
+              className={`recipe-form__time-value ${
+                isPristine ? "recipe-form__time-value--placeholder" : ""
+              }`}
+              onClick={startEditing}
+              aria-label={`Edit cooking time: ${formatCookingTime(value)}`}
+              title="Click to edit cooking time"
+            >
+              {formatCookingTime(value)}
+            </button>
+          )}
+        </div>
 
         <button
           type="button"
@@ -489,6 +488,10 @@ export function CookingTimeField() {
           <img src={plusIcon} width="24" height="24" alt="" />
         </button>
       </div>
+
+      {isEditing && (
+        <p className="recipe-form__time-hint">Examples: 105min or 1h 45m</p>
+      )}
 
       <FieldError name="time" />
     </div>

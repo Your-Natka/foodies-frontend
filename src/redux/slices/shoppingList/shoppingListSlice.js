@@ -15,7 +15,7 @@ const shoppingListSlice = createSlice({
     },
 
     addRecipeIngredients(state, { payload }) {
-      const { recipeId, recipeTitle, ingredients = [] } = payload;
+      const { recipeId, recipeTitle, recipeThumb, ingredients = [] } = payload;
 
       ingredients.forEach(({ id, name, img, measure }) => {
         const key = `${recipeId}-${id}`;
@@ -25,6 +25,7 @@ const shoppingListSlice = createSlice({
           key,
           recipeId,
           recipeTitle,
+          recipeThumb,
           ingredientId: id,
           name,
           img,
@@ -89,6 +90,7 @@ export const selectShoppingGroups = createSelector(
         groups.set(item.recipeId, {
           recipeId: item.recipeId,
           recipeTitle: item.recipeTitle,
+          recipeThumb: item.recipeThumb,
           items: [],
         });
       }

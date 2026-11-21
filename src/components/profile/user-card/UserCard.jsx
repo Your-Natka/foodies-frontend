@@ -73,20 +73,8 @@ function UserCard({
         className="user-card__open-profile"
         aria-label={`Open ${name}'s profile`}
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M7 17L17 7M8 7h9v9"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+        <svg width="16" height="16" aria-hidden="true">
+          <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
         </svg>
       </Link>
     </article>

@@ -1,6 +1,11 @@
-function TestimonialCard({ text, name }) {
+function TestimonialCard({ text, name, isActive }) {
   return (
-    <article className="testimonial-card">
+    <article
+      className={`testimonial-card ${
+        isActive ? "testimonial-card--active" : ""
+      }`}
+      aria-hidden={!isActive}
+    >
       <svg
         className="testimonial-card__quote"
         viewBox="0 0 39 32"

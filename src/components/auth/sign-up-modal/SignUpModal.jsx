@@ -42,6 +42,7 @@ function PasswordField({ name, placeholder, visible, onToggle }) {
         name={name}
         placeholder={placeholder}
         aria-label={placeholder}
+        autoComplete="new-password"
         className="auth-form__input"
       />
 
@@ -115,6 +116,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
                 name="name"
                 placeholder="Name*"
                 aria-label="Name"
+                autoComplete="name"
                 className="auth-form__input"
               />
 
@@ -131,6 +133,7 @@ function SignUpModal({ isOpen, onClose, onSuccess, onSwitchToSignIn }) {
                 name="email"
                 placeholder="Email*"
                 aria-label="Email"
+                autoComplete="email"
                 className="auth-form__input"
               />
 
