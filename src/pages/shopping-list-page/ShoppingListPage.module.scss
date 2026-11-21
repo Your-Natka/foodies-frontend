@@ -110,15 +110,31 @@
   color: inherit;
   text-decoration: none;
   cursor: pointer;
+
   transition:
     background-color 200ms ease,
-    border-color 200ms ease;
+    border-color 200ms ease,
+    color 200ms ease;
 
   &:hover,
   &:focus-visible {
+    background-color: var(--color-black);
     border-color: var(--color-black);
-    background-color: var(--color-light-gray);
     outline: none;
+
+    .stepIcon,
+    .stepTitle {
+      color: var(--color-white);
+    }
+
+    .stepArrowWrapper {
+      background-color: var(--color-white);
+      border-color: var(--color-white);
+    }
+
+    .stepArrow {
+      color: var(--color-black);
+    }
   }
 }
 

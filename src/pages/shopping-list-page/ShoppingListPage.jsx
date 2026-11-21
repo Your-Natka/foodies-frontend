@@ -196,6 +196,12 @@ function ShoppingListPage() {
                 </svg>
 
                 <span className={css.stepTitle}>Shop with ease</span>
+
+                <span className={css.stepArrowWrapper} aria-hidden="true">
+                  <svg className={css.stepArrow} viewBox="0 0 32 32">
+                    <use href="/images/sprite.svg#icon-arrow-back" />
+                  </svg>
+                </span>
               </div>
             </div>
           </section>
