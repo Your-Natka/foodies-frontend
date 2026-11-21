@@ -112,7 +112,12 @@
       display: block;
       width: 16px;
       height: 16px;
+      fill: none;
+      stroke: currentColor;
     }
+      &:not(&--remove) svg {
+        filter: brightness(0);
+      }
 
     &:hover:not(:disabled) {
       border-color: var(--color-black);
@@ -141,18 +146,5 @@
       width: 100px;
       height: 100px;
     }
-
-    &__button--remove {
-    color: var(--color-gray);
-  }
-  }
-}
-
-// Desktop
-@media screen and (min-width: 1440px) {
-  .recipe-list-item {
-    &__button--remove {
-    color: var(--color-black);
-  }
   }
 }

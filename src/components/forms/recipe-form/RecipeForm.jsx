@@ -40,6 +40,8 @@ import {
   getRecipeInitialValues,
 } from "./recipeSchema";
 
+import ScrollToFirstError from "./ScrollToFirstError";
+
 import "./RecipeForm.scss";
 
 const sortByName = (items = []) =>
@@ -211,6 +213,8 @@ function RecipeForm({ recipeId }) {
     >
       {({ isSubmitting, resetForm }) => (
         <Form className="recipe-form" noValidate>
+          <ScrollToFirstError />
+
           {!isEditMode && <DraftAutosave />}
 
           <PhotoField initialPhoto={recipe?.thumb} />
