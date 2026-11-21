@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 
@@ -67,10 +67,10 @@ function SharedLayout() {
     navigate,
   ]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setActiveModal(null);
     setPendingRedirect(null);
-  };
+  }, []);
 
   const handleAuthSuccess = () => {
     setActiveModal(null);
