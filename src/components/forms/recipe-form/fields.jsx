@@ -269,6 +269,7 @@ export function SearchableSelect({
         <div className="recipe-form__dropdown">
           <input
             ref={searchInputRef}
+            id={`${id}-search`}
             type="text"
             className="recipe-form__search-input"
             placeholder="Type to search..."
