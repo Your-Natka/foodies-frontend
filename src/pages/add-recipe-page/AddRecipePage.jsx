@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 
-import Container from "../../components/Container/Container";
+import Container from "../../components/common/Container/Container";
 import RecipeForm from "../../components/forms/recipe-form/RecipeForm";
 
 import "./AddRecipePage.scss";
@@ -11,7 +11,7 @@ function AddRecipePage() {
 
   return (
     <main className="add-recipe-page">
-      <Container variant="hero">
+      <Container variant="defould">
         <div className="add-recipe-page__intro">
           <nav aria-label="Breadcrumbs">
             <ol className="add-recipe-page__breadcrumbs">
