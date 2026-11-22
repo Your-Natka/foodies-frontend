@@ -95,7 +95,7 @@ img {
 
 /* Regular container — основний контент сторінок */
 .container {
-  width: calc(100% - 32px);
+  width: calc(85.714vw + 45.14px);
   max-width: 1280px;
   margin-inline: auto;
   container-type: inline-size;
@@ -112,7 +112,7 @@ img {
   }
 }
 
-/* Smooth scaling from tablet to desktop */
+/* Smooth scaling from tablet */
 @media screen and (min-width: 768px) {
   .hero-container {
     width: calc(98.81vw - 23.1px);
@@ -120,6 +120,14 @@ img {
 
   .container {
     width: calc(85.714vw + 45.14px);
+  }
+}
+
+/* Desktop — exact side spacing */
+@media screen and (min-width: 1440px) {
+  .container {
+    width: calc(100% - 160px);
+    max-width: 1280px;
   }
 }
 
