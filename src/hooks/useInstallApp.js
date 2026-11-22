@@ -16,9 +16,9 @@ export function useInstallApp() {
   const ios = isIOS();
 
   return {
-    // Show the button only when installing is actually possible.
-    canInstall: !installed && (canPrompt || ios),
-    needsManualSteps: !installed && !canPrompt && ios,
+    canInstall: !installed,
+    needsManualSteps: !canPrompt,
+    isIOS: ios,
     install: promptInstall,
   };
 }

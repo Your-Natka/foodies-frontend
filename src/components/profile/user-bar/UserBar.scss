@@ -167,15 +167,15 @@
       transition: none;
     }
   }
-  
+
   &__follow {
     width: 100%;
     min-height: 40px;
     padding: 12px 20px;
-    border: 1px solid var(--color-black);
+    border: 1px solid var(--color-gray);
     border-radius: 30px;
 
-    background-color: var(--color-black);
+    background-color: var(--color-gray);
     color: var(--color-white);
 
     font-size: 14px;
