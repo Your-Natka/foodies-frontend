@@ -1,13 +1,21 @@
-// Captures the browser's install prompt as early as possible (the event can
-// fire before React mounts) and exposes it as a tiny external store.
+// Captures the browser's install prompt as early as possible.
 
 let deferredPrompt = null;
 let installed = false;
+
 const listeners = new Set();
-let snapshot = { canPrompt: false, installed: false };
+
+let snapshot = {
+  canPrompt: false,
+  installed: false,
+};
 
 const emit = () => {
-  snapshot = { canPrompt: Boolean(deferredPrompt), installed };
+  snapshot = {
+    canPrompt: Boolean(deferredPrompt),
+    installed,
+  };
+
   listeners.forEach((listener) => listener());
 };
 
@@ -17,10 +25,13 @@ const isStandalone = () =>
 
 if (typeof window !== "undefined") {
   installed = isStandalone();
-  snapshot = { canPrompt: false, installed };
+
+  snapshot = {
+    canPrompt: false,
+    installed,
+  };
 
   window.addEventListener("beforeinstallprompt", (event) => {
-    // Keep the event so we can show the prompt from our own button.
     event.preventDefault();
     deferredPrompt = event;
     emit();
@@ -40,22 +51,26 @@ export const subscribeInstall = (listener) => {
 
 export const getInstallSnapshot = () => snapshot;
 
-// Returns "accepted", "dismissed" or "unavailable".
 export const promptInstall = async () => {
   if (!deferredPrompt) return "unavailable";
 
   const promptEvent = deferredPrompt;
   deferredPrompt = null;
+
   emit();
 
   await promptEvent.prompt();
+
   const { outcome } = await promptEvent.userChoice;
+
   return outcome;
 };
 
-// iOS/iPadOS browsers have no install prompt: users add the site manually.
 export const isIOS = () => {
+  if (typeof window === "undefined") return false;
+
   const ua = window.navigator.userAgent;
+
   return (
     /iphone|ipad|ipod/i.test(ua) ||
     (window.navigator.platform === "MacIntel" &&
