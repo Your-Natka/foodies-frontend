@@ -1,24 +1,59 @@
 .profile-followers {
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  min-width: 0;
+  display: flex;
+  justify-content: center;
+
+  &__list {
+    display: grid;
+    width: fit-content;
+    max-width: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-content: start;
+    justify-items: stretch;
+    gap: 24px;
+  }
 
   &__pagination {
     margin-top: 32px;
   }
 }
 
+/* Tablet: 3 картки в ряд */
 @media screen and (min-width: 768px) {
   .profile-followers {
+    &__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 32px;
+    }
+
     &__pagination {
       margin-top: 50px;
     }
   }
 }
 
+@media (max-width: 767px) {
+  .profile-followers__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1439px) {
+  .profile-followers__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: 4 картки в ряд */
 @media screen and (min-width: 1440px) {
   .profile-followers {
+    &__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 40px;
+    }
+
     &__pagination {
       margin-top: 60px;
     }

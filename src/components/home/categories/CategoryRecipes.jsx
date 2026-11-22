@@ -11,6 +11,7 @@ import RecipeList from "../../recipes/recipe-list/RecipeList";
 import Pagination from "../../shared/pagination/Pagination";
 import LoadingState from "../../recipes/recipe-states/LoadingState";
 import EmptyState from "../../recipes/recipe-states/EmptyState";
+import ErrorState from "../../shared/error-state/ErrorState";
 
 import { selectIngredients } from "../../../redux/slices/ingredients/ingredientsSlice";
 import { selectAreas } from "../../../redux/slices/areas/areasSlice";
@@ -206,9 +207,21 @@ const CategoryRecipes = ({ categoryName, onBack }) => {
             {status === "loading" && <LoadingState />}
 
             {status === "failed" && (
-              <p role="alert">
-                {error || "Something went wrong. Please try again."}
-              </p>
+              <ErrorState
+                title="Unable to load recipes"
+                message={error || "Please try again in a moment."}
+                onRetry={() =>
+                  dispatch(
+                    fetchRecipesThunk({
+                      page,
+                      limit,
+                      category: categoryName || undefined,
+                      ingredientId: selectedIngredient || undefined,
+                      area: selectedArea || undefined,
+                    }),
+                  )
+                }
+              />
             )}
 
             {status === "succeeded" && recipes.length === 0 && (

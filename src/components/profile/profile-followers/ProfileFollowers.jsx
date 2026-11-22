@@ -201,18 +201,20 @@ function ProfileFollowers({
         <EmptyState type={type} />
       ) : (
         <>
-          {users.map((user) => (
-            <UserCard
-              key={user.id}
-              user={user}
-              onFollowToggle={handleFollowToggle}
-              isFollowLoading={isLoading || updatingUserId === user.id}
-              showFollowButton={
-                Boolean(currentUser?.id) &&
-                String(currentUser.id) !== String(user.id)
-              }
-            />
-          ))}
+          <div className="profile-followers__list">
+            {users.map((user) => (
+              <UserCard
+                key={user.id}
+                user={user}
+                onFollowToggle={handleFollowToggle}
+                isFollowLoading={isLoading || updatingUserId === user.id}
+                showFollowButton={
+                  Boolean(currentUser?.id) &&
+                  String(currentUser.id) !== String(user.id)
+                }
+              />
+            ))}
+          </div>
 
           <div className="profile-followers__pagination">
             <Pagination

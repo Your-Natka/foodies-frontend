@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { toast } from "react-toastify";
+import ErrorState from "../../components/shared/error-state/ErrorState";
 
 import {
   clearCurrentRecipe,
@@ -140,15 +141,73 @@ const RecipePage = () => {
     const isNotFound = error?.toLowerCase().includes("recipe not found");
 
     return (
-      <main>
-        <p>
-          {isNotFound
-            ? "Recipe not found."
-            : error || "Something went wrong. Please try again."}
-        </p>
+      <main className={css.recipePage}>
+        <ErrorState
+          title={isNotFound ? "Recipe not found" : "Unable to load recipe"}
+          message={
+            isNotFound
+              ? "This recipe may have been removed or is no longer available."
+              : error || "Please try again in a moment."
+          }
+          onRetry={
+            isNotFound ? undefined : () => dispatch(fetchRecipeByIdThunk(id))
+          }
+        />
       </main>
     );
   }
+
+  if (!recipe) {
+    return (
+      <main className={css.recipePage}>
+        <ErrorState
+          title="Recipe not found"
+          message="This recipe may have been removed or is no longer available."
+        />
+      </main>
+    );
+  }
+
+  if (status === "loading" || status === "idle") {
+    return (
+      <main>
+        <LoadingState />
+      </main>
+    );
+  }
+
+  if (status === "failed") {
+    const isNotFound = error?.toLowerCase().includes("recipe not found");
+
+    return (
+      <main className={css.recipePage}>
+        <ErrorState
+          title={isNotFound ? "Recipe not found" : "Unable to load recipe"}
+          message={
+            isNotFound
+              ? "This recipe may have been removed or is no longer available."
+              : error || "Please try again in a moment."
+          }
+          onRetry={
+            isNotFound ? undefined : () => dispatch(fetchRecipeByIdThunk(id))
+          }
+        />
+      </main>
+    );
+  }
+
+  if (!recipe) {
+    return (
+      <main className={css.recipePage}>
+        <ErrorState
+          title="Recipe not found"
+          message="This recipe may have been removed or is no longer available."
+        />
+      </main>
+    );
+  }
+
+  // Далі має залишитися твій основний return зі сторінкою рецепта
 
   if (!recipe) {
     return (

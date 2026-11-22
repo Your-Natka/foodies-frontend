@@ -1,248 +1,35 @@
-.user-card {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
+.popularRecipes {
   width: 100%;
   min-width: 0;
-  padding: 16px 48px 16px 0;
-  border-bottom: 1px solid #e0e0e0;
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-
-  &__info {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    min-width: 0;
-  }
-
-  &__profile {
-    display: block;
-    min-width: 0;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  &__avatar {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    overflow: hidden;
-    border-radius: 50%;
-    background-color: #e8e8e8;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    span {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      color: inherit;
-      text-decoration: none;
-    }
-  }
-
-  &__details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    min-width: 0;
-  }
-
-  &__name {
-    margin: 0 0 4px;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.2;
-    text-transform: uppercase;
-    overflow-wrap: anywhere;
-  }
-
-  &__recipes-count {
-    margin: 0;
-    color: #b0b0b0;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  &__follow-btn {
-    max-width: 100%;
-    padding: 8px 16px;
-    border: 1px solid #d9d9d9;
-    border-radius: 30px;
-    background: #fff;
-    color: #1b1b1b;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1;
-    cursor: pointer;
-    transition:
-      border-color 200ms ease,
-      background-color 200ms ease;
-
-    &:hover:not(:disabled),
-    &:focus-visible {
-      border-color: #1b1b1b;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-
-  &__recipes {
-    display: none;
-  }
-
-  &__open-profile {
-    position: absolute;
-    top: 16px;
-    right: 0;
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 1px solid #d9d9d9;
-    border-radius: 50%;
-    color: #1b1b1b;
-    text-decoration: none;
-    transition:
-      border-color 200ms ease,
-      background-color 200ms ease;
-
-    &:hover,
-    &:focus-visible {
-      border-color: #1b1b1b;
-      background-color: #f5f5f5;
-    }
-
-    svg {
-      display: block;
-      width: 16px;
-      height: 16px;
-      filter: brightness(0);
-    }
-  }
 }
 
-/* Tablet */
+.title {
+  margin: 0 0 24px;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px 20px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Tablet: 2 картки в ряд */
 @media screen and (min-width: 768px) {
-  .user-card {
-    align-items: center;
-    justify-content: space-between;
-    gap: clamp(16px, 3.2cqw, 46px);
-    padding: 20px 0;
-
-    &__info {
-      flex: 0 1 240px;
-      align-items: flex-start;
-      gap: 16px;
-      min-width: 0;
-    }
-
-    &__avatar {
-      width: 85px;
-      height: 85px;
-    }
-
-    &__recipes {
-      display: flex;
-      flex: 1 1 0;
-      justify-content: flex-start;
-      min-width: 0;
-      gap: 12px;
-      overflow: hidden;
-    }
-
-    &__recipe {
-      flex: 0 0 100px;
-      width: 100px;
-      height: 100px;
-      overflow: hidden;
-      border-radius: 8px;
-
-      &:nth-child(n + 4) {
-        display: none;
-      }
-
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-
-    &__follow-btn {
-      padding: 10px 24px;
-    }
-
-    &__open-profile {
-      position: static;
-      width: 42px;
-      height: 42px;
-    }
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 20px;
   }
 }
 
-/* Desktop */
+/* Desktop: 4 картки в ряд */
 @media screen and (min-width: 1440px) {
-  .user-card {
-    gap: 20px;
-    padding: 24px 0;
-
-    &__info {
-      flex: 0 1 auto;
-    }
-
-    &__avatar {
-      width: 50px;
-      height: 50px;
-    }
-
-    &__recipes {
-      flex: 1 1 0;
-      overflow: hidden;
-    }
-
-    &__recipe {
-      &:nth-child(n + 4) {
-        display: block;
-      }
-
-      &:nth-child(n + 5) {
-        display: none;
-      }
-    }
-
-    &__follow-btn {
-      font-size: 16px;
-    }
+  .list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 20px;
   }
 }
