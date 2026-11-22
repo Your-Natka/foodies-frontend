@@ -3,10 +3,10 @@
   top: 0;
   z-index: 100;
   width: 100%;
+  min-width: 0;
   font-family: var(--font-family);
   color: var(--color-white);
   background-color: transparent;
-
   transition: color 250ms ease;
 
   &--dark {
@@ -20,9 +20,12 @@
   }
 
   &__surface {
-    padding: 0 60px;
+    container-type: inline-size;
     position: relative;
     width: 100%;
+    min-width: 0;
+    padding-inline: clamp(8px, 4.3cqw, 60px);
+    box-sizing: border-box;
     background-color: var(--color-black);
     color: var(--color-white);
     border-radius: 30px 30px 0 0;
@@ -36,21 +39,22 @@
 
   &__container {
     position: relative;
-    width: 100%;
-    padding-top: 20px;
-    padding-bottom: 20px;
-
-    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: clamp(8px, 2.2cqw, 32px);
+    width: 100%;
+    min-width: 0;
+    padding-block: clamp(12px, 1.43cqw, 20px);
+    margin-top: clamp(8px, 1.43cqw, 20px);
+    box-sizing: border-box;
   }
 
   &__logo {
     flex-shrink: 0;
-    font-size: 24px;
+    font-size: clamp(19px, 1.72cqw, 24px);
     font-weight: 800;
-    line-height: 28px;
+    line-height: 1.17;
     letter-spacing: -0.02em;
     text-transform: lowercase;
   }
@@ -58,7 +62,9 @@
   &__navigation {
     display: flex;
     align-items: center;
-    gap: 40px;
+    justify-content: center;
+    gap: clamp(4px, 2.85cqw, 40px);
+    min-width: 0;
   }
 
   &:has(.header__nav-link:hover) {
@@ -74,23 +80,20 @@
   }
 
   &__nav-link {
-    min-height: 46px;
-    padding: 0 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
+    min-height: clamp(38px, 3.3cqw, 46px);
+    padding-inline: clamp(4px, 0.86cqw, 12px);
     border: 1px solid transparent;
     border-radius: 30px;
-
     color: inherit;
-
     font-size: 12px;
     font-weight: 700;
     line-height: 18px;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-
+    white-space: nowrap;
     transition: border-color 250ms ease;
 
     &:hover,
@@ -102,11 +105,11 @@
   }
 
   &__auth {
-    width: 156px;
-    height: 38px;
     display: flex;
     align-items: center;
-
+    flex-shrink: 0;
+    width: clamp(148px, 14.86cqw, 208px);
+    height: clamp(38px, 3.3cqw, 46px);
     border: 1px solid var(--color-gray);
     border-radius: 30px;
     background-color: var(--color-white);
@@ -116,19 +119,15 @@
     width: 50%;
     height: 100%;
     padding: 0;
-
     border: 1px solid var(--color-white);
     border-radius: 30px;
-
     color: var(--color-black);
     background-color: var(--color-white);
-
     font-size: 12px;
     font-weight: 700;
     line-height: 18px;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-
     transition:
       color 250ms ease,
       background-color 250ms ease;
@@ -147,19 +146,18 @@
   &__user {
     position: relative;
     z-index: 101;
+    flex-shrink: 0;
   }
 
   &__user-button {
-    min-height: 46px;
-    padding: 4px 12px 4px 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-
+    gap: clamp(4px, 0.57cqw, 8px);
+    min-height: clamp(40px, 3.3cqw, 46px);
+    padding: 4px clamp(6px, 0.86cqw, 12px) 4px 4px;
     border: none;
     border-radius: 30px;
-
     color: var(--color-white);
     background-color: var(--color-dark);
     cursor: pointer;
@@ -167,8 +165,8 @@
 
   &__avatar,
   &__avatar-placeholder {
-    width: 38px;
-    height: 38px;
+    width: clamp(34px, 2.72cqw, 38px);
+    height: clamp(34px, 2.72cqw, 38px);
     flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
@@ -178,34 +176,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: var(--color-black);
     background-color: var(--color-white);
-
     font-size: 16px;
     font-weight: 700;
   }
 
   &__user-name {
-    max-width: 100px;
+    max-width: clamp(58px, 7.15cqw, 100px);
     overflow: hidden;
-
     font-size: 12px;
     font-weight: 700;
     line-height: 18px;
     letter-spacing: -0.02em;
-
     text-overflow: ellipsis;
     text-transform: uppercase;
     white-space: nowrap;
   }
 
   &__user-arrow {
-    width: 18px;
-    height: 18px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
 
     svg {
@@ -225,34 +219,29 @@
     top: calc(100% + 8px);
     right: 0;
     z-index: 102;
-    min-width: 140px;
-    padding: 8px;
     display: flex;
     flex-direction: column;
     gap: 4px;
-
+    min-width: 140px;
+    padding: 8px;
     border: 1px solid var(--color-gray);
     border-radius: 12px;
-
     color: var(--color-white);
     background-color: var(--color-dark);
   }
 
   &__dropdown-link {
-    width: 100%;
-    min-height: 40px;
-    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-
+    width: 100%;
+    min-height: 40px;
+    padding: 10px;
     border: 0;
     border-radius: 8px;
-
     color: var(--color-white);
     background: transparent;
-
     font-size: 12px;
     font-weight: 700;
     line-height: 18px;
@@ -260,7 +249,6 @@
     text-transform: uppercase;
     text-decoration: none;
     text-align: left;
-
     cursor: pointer;
 
     > svg {
@@ -272,7 +260,6 @@
       visibility: hidden;
       transform: translateX(-4px);
       color: currentColor;
-
       transition:
         opacity 200ms ease,
         transform 200ms ease,
@@ -283,8 +270,7 @@
     &:focus-visible {
       background-color: var(--color-black);
 
-      &:hover > svg,
-      &:focus-visible > svg {
+      > svg {
         opacity: 1;
         visibility: visible;
         transform: translateX(0);
@@ -301,43 +287,9 @@
   }
 }
 
-/* Tablet */
-@media screen and (min-width: 768px) and (max-width: 1439px) {
-  .header {
-    &__surface {
-      padding: 0 16px;
-    }
-    &__auth {
-      width: 160px;
-    }
-
-    &__navigation {
-      gap: 0px;
-    }
-  }
-}
-
-/* Tablet */
-@media screen and (min-width: 768px) {
-  .header {
-    &__auth {
-      width: 208px;
-      height: 46px;
-    }
-  }
-}
-
-/* Mobile */
+// Mobile: перемикання структури навігації
 @media screen and (max-width: 767px) {
   .header {
-    &__surface {
-      padding: 0 16px;
-    }
-    &__logo {
-      font-size: 20px;
-      line-height: 24px;
-    }
-
     &__navigation {
       display: none;
     }
@@ -352,30 +304,22 @@
       padding: 2px;
     }
 
-    &__avatar,
-    &__avatar-placeholder {
-      width: 34px;
-      height: 34px;
-    }
-
     &__user-name {
-      max-width: 70px;
+      max-width: clamp(58px, 18cqw, 70px);
       font-size: 10px;
     }
 
     &__burger {
-      width: 40px;
-      height: 40px;
-      padding: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 4px;
       flex-shrink: 0;
-
       border: 0;
       color: currentColor;
       background: transparent;
-
       cursor: pointer;
 
       svg {
@@ -385,6 +329,15 @@
         fill: none;
         stroke: currentColor;
       }
+    }
+
+    &__auth {
+      width: clamp(148px, 42cqw, 156px);
+      height: 38px;
+    }
+
+    &__auth-button {
+      font-size: 11px;
     }
   }
 }

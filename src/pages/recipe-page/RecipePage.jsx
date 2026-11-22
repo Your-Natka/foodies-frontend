@@ -160,7 +160,7 @@ const RecipePage = () => {
 
   return (
     <main className={css.recipePage}>
-      <div className="hero-container">
+      <div className={css.heroContainer}>
         <PathInfo title={recipe.title} category={recipe.category} />
 
         <div className={css.recipeInfoWrapper}>

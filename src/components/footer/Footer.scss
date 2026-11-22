@@ -1,14 +1,16 @@
 .footer {
+  container-type: inline-size;
+
   padding-top: var(--section-spacing);
-  padding-bottom: 72px;
+  padding-bottom: clamp(32px, 5cqw, 72px);
   background-color: var(--color-white);
 
   &__top {
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    gap: 16px;
-    padding-bottom: 40px;
+    gap: clamp(8px, 1.12cqw, 16px);
+    padding-bottom: clamp(24px, 2.78cqw, 40px);
   }
 
   &__logo {
@@ -16,9 +18,9 @@
     justify-self: start;
     color: var(--color-black);
     font-family: var(--font-family);
-    font-size: 24px;
+    font-size: clamp(19px, 1.67cqw, 24px);
     font-weight: 800;
-    line-height: 28px;
+    line-height: 1.17;
     letter-spacing: -0.02em;
     text-transform: lowercase;
     text-decoration: none;
@@ -29,6 +31,10 @@
     justify-self: center;
     display: flex;
     justify-content: center;
+
+    &:empty {
+      display: none;
+    }
   }
 
   &__social-list {
@@ -36,7 +42,7 @@
     justify-self: end;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: clamp(6px, 1.12cqw, 16px);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -46,8 +52,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: clamp(32px, 2.78cqw, 40px);
+    height: clamp(32px, 2.78cqw, 40px);
     border: 1px solid var(--color-gray);
     border-radius: 50%;
     background-color: var(--color-white);
@@ -61,8 +67,8 @@
 
   &__social-icon {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 1.39cqw, 20px);
+    height: clamp(16px, 1.39cqw, 20px);
     fill: currentColor;
     color: var(--color-black);
   }
@@ -76,84 +82,24 @@
   &__copyright {
     width: 100%;
     margin: 0;
-    padding-top: 40px;
+    padding-top: clamp(24px, 2.78cqw, 40px);
     color: var(--color-black);
     font-family: var(--font-family);
-    font-size: 16px;
+    font-size: clamp(12px, 1.12cqw, 16px);
     font-weight: 500;
-    line-height: 24px;
+    line-height: 1.5;
     letter-spacing: -0.02em;
     text-align: center;
   }
 }
-@media screen and (min-width: 768px) and (max-width: 1439px) {
-  .footer {
-    &__top {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 12px;
-    }
 
-    &__install {
-      grid-column: 2;
-      order: 0;
-      width: auto;
-      margin-top: 0;
-    }
-
-    &__logo {
-      grid-column: 1;
-      justify-self: start;
-      font-family: var(--font-family);
-      font-weight: 800;
-      font-size: 20px;
-      line-height: 24px;
-      letter-spacing: -0.02em;
-      text-transform: lowercase;
-    }
-
-    &__social-list {
-      grid-column: 3;
-      justify-self: end;
-    }
-
-    &__social-link {
-      width: 36px;
-      height: 36px;
-    }
-
-    &__copyright {
-      font-family: var(--font-family);
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      letter-spacing: -0.02em;
-      text-align: center;
-    }
-  }
-}
-
-.footer__install {
-  display: flex;
-  justify-content: center;
-
-  &:empty {
-    display: none;
-  }
-}
-
+// Mobile: змінюємо розташування елементів
 @media screen and (max-width: 767px) {
-  .container {
-    padding: 0 8px;
-  }
   .footer {
     &__top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       grid-template-rows: auto auto;
-      align-items: center;
-      gap: 20px 12px;
+      gap: clamp(12px, 4cqw, 20px) clamp(8px, 2.4cqw, 12px);
     }
 
     &__install {
@@ -167,19 +113,13 @@
     &__logo {
       grid-column: 1;
       grid-row: 2;
-      justify-self: start;
     }
 
     &__social-list {
       grid-column: 2;
       grid-row: 2;
       justify-self: end;
-      gap: 8px;
-    }
-
-    &__social-link {
-      width: 36px;
-      height: 36px;
+      gap: clamp(6px, 1.6cqw, 8px);
     }
   }
 }

@@ -150,7 +150,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--color-black);
+      outline: 2px solid var(--color-gray);
       outline-offset: 3px;
     }
 
@@ -172,10 +172,10 @@
     width: 100%;
     min-height: 40px;
     padding: 12px 20px;
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-black);
     border-radius: 30px;
 
-    background-color: var(--color-gray);
+    background-color: var(--color-black);
     color: var(--color-white);
 
     font-size: 14px;
@@ -194,7 +194,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--color-black);
+      outline: 2px solid var(--color-gray);
       outline-offset: 3px;
     }
 

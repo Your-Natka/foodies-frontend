@@ -12,10 +12,10 @@
 
 .catalog {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
-  column-gap: 40px;
+  grid-template-columns: clamp(280px, 22.857cqw, 320px) minmax(0, 1fr);
+  column-gap: clamp(24px, 2.857cqw, 40px);
   align-items: start;
-  margin-top: 40px;
+  margin-top: clamp(32px, 2.857cqw, 40px);
 }
 
 .sidebar {
@@ -25,7 +25,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: clamp(24px, 2.286cqw, 32px);
   min-width: 0;
 }
 
@@ -34,9 +34,10 @@
   .catalog {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    margin-top: 40px;
+    gap: clamp(32px, 5.435cqw, 40px);
+    margin-top: clamp(32px, 5.435cqw, 40px);
   }
+
   .sidebar {
     width: 100%;
   }

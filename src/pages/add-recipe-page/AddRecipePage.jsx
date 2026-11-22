@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 
-import Section from "../../components/common/Section/Section";
 import RecipeForm from "../../components/forms/recipe-form/RecipeForm";
 
 import "./AddRecipePage.scss";
@@ -10,7 +9,7 @@ function AddRecipePage() {
   const isEditMode = Boolean(recipeId);
 
   return (
-    <Section className="add-recipe-page" containerVariant="hero">
+    <main className="add-recipe-page" containerVariant="hero">
       <div className="add-recipe-page__intro">
         <nav aria-label="Breadcrumbs">
           <ol className="add-recipe-page__breadcrumbs">
@@ -44,7 +43,7 @@ function AddRecipePage() {
       </div>
 
       <RecipeForm recipeId={recipeId} />
-    </Section>
+    </main>
   );
 }
 

@@ -16,6 +16,7 @@
   --desktop: 1440px;
 
   --section-spacing: 32px;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -81,18 +82,42 @@ img {
   height: auto;
 }
 
-/* Hero container */
+/* Hero container — Header, Footer, Hero та великі секції */
 .hero-container {
   width: calc(100% - 16px);
-  max-width: 359px;
+  max-width: 1400px;
   margin-inline: auto;
+  container-type: inline-size;
 }
 
-/* Container for the remaining sections */
+/* Regular container — основний контент сторінок */
 .container {
   width: calc(100% - 32px);
-  max-width: 343px;
+  max-width: 1280px;
   margin-inline: auto;
+  container-type: inline-size;
+}
+
+/* Fluid scaling */
+@media screen and (min-width: 375px) {
+  .hero-container {
+    width: calc(95.93vw - 0.74px);
+  }
+
+  .container {
+    width: calc(91.86vw - 1.84px);
+  }
+}
+
+/* Smooth scaling from tablet to desktop */
+@media screen and (min-width: 768px) {
+  .hero-container {
+    width: calc(98.81vw - 23.1px);
+  }
+
+  .container {
+    width: calc(85.714vw + 45.14px);
+  }
 }
 
 .app-layout {
@@ -101,31 +126,6 @@ img {
   margin-inline: auto;
 }
 
-/* Tablet */
-@media screen and (min-width: 768px) {
-  .hero-container {
-    width: calc(100% - 32px);
-    max-width: 736px;
-  }
-
-  .container {
-    width: calc(100% - 64px);
-    max-width: 704px;
-  }
-}
-
-/* Desktop */
-@media screen and (min-width: 1440px) {
-  .hero-container {
-    width: calc(100% - 40px);
-    max-width: 1400px;
-  }
-
-  .container {
-    width: calc(100% - 160px);
-    max-width: 1280px;
-  }
-}
 /* Print: keep only the recipe itself */
 @media print {
   .header,

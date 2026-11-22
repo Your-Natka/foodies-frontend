@@ -37,7 +37,7 @@
     min-width: 0;
     height: 56px;
     padding: 16px 20px;
-    border: 1px solid var(--color-gray);
+    border: 1px solid var(--color-black);
     border-radius: 30px;
     font-family: var(--font-family);
     font-size: 14px;
@@ -51,7 +51,7 @@
   }
 
   &__confirm {
-    background: var(--color-gray);
+    background: var(--color-black);
     color: var(--color-white);
 
     &:hover,
