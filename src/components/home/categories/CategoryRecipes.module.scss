@@ -1,4 +1,6 @@
 .categorySection {
+  width: 100%;
+  min-width: 0;
   margin: 0;
   background: transparent;
   scroll-margin-top: 86px;
@@ -8,6 +10,7 @@
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+  container-type: inline-size;
 }
 
 .catalog {
@@ -43,7 +46,7 @@
   }
 }
 
-/* Mobile: до 767px */
+/* Mobile */
 @media screen and (max-width: 767px) {
   .categorySection {
     scroll-margin-top: 80px;

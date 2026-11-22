@@ -5,6 +5,22 @@
   min-width: 0;
 
   &__pagination {
-    margin-top: 40px;
+    margin-top: 32px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .profile-followers {
+    &__pagination {
+      margin-top: 50px;
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .profile-followers {
+    &__pagination {
+      margin-top: 60px;
+    }
   }
 }

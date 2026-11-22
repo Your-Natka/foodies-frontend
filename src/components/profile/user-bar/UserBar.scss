@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 343px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 343px;
 
   &__card {
     display: flex;
@@ -85,6 +85,7 @@
     letter-spacing: -0.02em;
     text-align: center;
     text-transform: uppercase;
+    overflow-wrap: anywhere;
   }
 
   &__details {
@@ -96,7 +97,6 @@
     width: fit-content;
     max-width: 100%;
     margin: 0 auto;
-    transform: translateX(-20px);
   }
 
   &__detail {
@@ -104,6 +104,7 @@
     align-items: baseline;
     gap: 4px;
     margin: 0;
+    max-width: 100%;
 
     font-size: 14px;
     line-height: 20px;
@@ -116,6 +117,7 @@
     }
 
     dd {
+      min-width: 0;
       margin: 0;
       color: var(--color-black);
       font-weight: 700;
@@ -216,7 +218,8 @@
 // Tablet and Desktop
 @media screen and (min-width: 768px) {
   .user-bar {
-    width: 394px;
+    width: 100%;
+    max-width: 394px;
 
     &__card {
       padding: 40px 80px;

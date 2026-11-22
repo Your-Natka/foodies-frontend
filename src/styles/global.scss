@@ -15,10 +15,25 @@
   --tablet: 768px;
   --desktop: 1440px;
 
-  --section-spacing: 32px;
+  /* Section spacing */
+  --section-spacing: 64px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+}
+
+/* Tablet */
+@media screen and (min-width: 768px) {
+  :root {
+    --section-spacing: 100px;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1440px) {
+  :root {
+    --section-spacing: 120px;
+  }
 }
 
 *,
@@ -41,23 +56,11 @@ body {
   background-color: var(--color-white);
 }
 
-/* Tablet */
-@media screen and (min-width: 768px) {
-  :root {
-    --section-spacing: 50px;
-  }
-}
-
-/* Desktop */
-@media screen and (min-width: 1440px) {
-  :root {
-    --section-spacing: 60px;
-  }
-}
-
 /* Unified spacing between HomePage sections */
-.home-page > * + * {
-  margin-top: var(--section-spacing);
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-spacing);
 }
 
 button,

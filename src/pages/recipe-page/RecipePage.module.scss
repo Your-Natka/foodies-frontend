@@ -1,5 +1,11 @@
 .recipePage {
-  padding: 80px 80px 80px;
+  container-type: inline-size;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: clamp(64px, calc(2.381cqw + 45.71px), 80px)
+    clamp(16px, calc(7.143cqw - 22.86px), 80px)
+    clamp(32px, calc(7.143cqw - 22.86px), 80px);
 }
 
 .heroContainer {
@@ -9,11 +15,11 @@
 }
 
 .recipeInfoWrapper {
-  margin-top: 40px;
+  margin-top: clamp(32px, 2.778cqw, 40px);
 }
 
 .popularRecipesWrapper {
-  margin-top: 120px;
+  margin-top: clamp(64px, 8.333cqw, 120px);
 }
 
 .actions {
@@ -29,7 +35,7 @@
 
   width: fit-content;
   height: fit-content;
-  padding: 16px 32px;
+  padding: clamp(14px, 1.111cqw, 16px) clamp(20px, 2.222cqw, 32px);
   flex-shrink: 0;
 
   border: 1px solid var(--color-gray);
@@ -62,26 +68,7 @@
   }
 }
 
-// Tablet: 768–1439px
-@media screen and (max-width: 1439px) {
-  .recipePage {
-    padding: 64px 32px 32px;
-  }
-
-  .recipeInfoWrapper {
-    margin-top: 40px;
-  }
-
-  .popularRecipesWrapper {
-    margin-top: 100px;
-  }
-
-  .editButton {
-    padding: 16px 32px;
-  }
-}
-
-// Mobile: до 767px
+/* Mobile */
 @media screen and (max-width: 767px) {
   .recipePage {
     padding: 64px 16px 0;

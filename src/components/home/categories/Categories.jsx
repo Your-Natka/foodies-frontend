@@ -108,7 +108,7 @@ function Categories({ onSelectCategory }) {
   return (
     <Section
       className="categories-section"
-      containerVariant="hero"
+      containerVariant="default"
       id="categories"
       data-categories-section
     >
