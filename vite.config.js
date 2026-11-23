@@ -73,12 +73,19 @@ export default defineConfig(({ mode }) => {
           runtimeCaching: [
             ...apiRuntimeCaching,
             {
+              // Only same-origin / CORS images (status 200) are cached.
+              // Opaque cross-origin responses (status 0) are counted by
+              // Chrome as ~7 MB each and quickly exceed the storage quota.
               urlPattern: ({ request }) => request.destination === "image",
               handler: "CacheFirst",
               options: {
-                cacheName: "foodies-images",
-                expiration: { maxEntries: 400, maxAgeSeconds: 30 * 24 * 60 * 60 },
-                cacheableResponse: { statuses: [0, 200] },
+                cacheName: "foodies-images-v2",
+                expiration: {
+                  maxEntries: 60,
+                  maxAgeSeconds: 7 * 24 * 60 * 60,
+                  purgeOnQuotaError: true,
+                },
+                cacheableResponse: { statuses: [200] },
               },
             },
           ],
