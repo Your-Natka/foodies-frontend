@@ -13,6 +13,7 @@ import EmptyState from "../../shared/empty-state/EmptyState";
 import UserCard from "../user-card/UserCard";
 import Pagination from "../../shared/pagination/Pagination";
 import Loader from "../../shared/Loader/Loader";
+import "./ProfileFollowers.scss";
 
 function ProfileFollowers({
   type = "followers",

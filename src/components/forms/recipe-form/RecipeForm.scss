@@ -17,18 +17,10 @@ $desktop: 1440px;
 
 .recipe-form {
   display: flex;
-  flex-direction: column;
-  gap: 40px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 80px;
   width: 100%;
-
-  @media (min-width: $tablet) {
-    gap: 80px;
-  }
-
-  @media (min-width: $desktop) {
-    flex-direction: row;
-    align-items: flex-start;
-  }
 
   .visually-hidden {
     position: absolute;
@@ -46,15 +38,11 @@ $desktop: 1440px;
   &__photo {
     position: relative;
     display: flex;
+    flex: 0 0 551px;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    width: 100%;
-
-    @media (min-width: $desktop) {
-      flex: 0 0 551px;
-      width: 551px;
-    }
+    width: 551px;
   }
 
   &__photo-input {
@@ -72,16 +60,12 @@ $desktop: 1440px;
     justify-content: center;
     gap: 16px;
     width: 100%;
-    height: 318px;
+    height: 400px;
     overflow: hidden;
     border: 1px dashed var(--color-gray);
     border-radius: 30px;
     cursor: pointer;
     transition: border-color 200ms ease;
-
-    @media (min-width: $tablet) {
-      height: 400px;
-    }
 
     &:hover {
       border-color: var(--color-black);
@@ -128,60 +112,36 @@ $desktop: 1440px;
   // ---------- Layout ----------
   &__body {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    gap: 64px;
+    gap: 80px;
     width: 100%;
+    max-width: 649px;
     min-width: 0;
-
-    @media (min-width: $tablet) {
-      gap: 80px;
-    }
-
-    @media (min-width: $desktop) {
-      flex: 1;
-      max-width: 649px;
-    }
   }
 
   &__main {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-
-    @media (min-width: $tablet) {
-      gap: 60px;
-    }
+    gap: 60px;
   }
 
   &__fields {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-
-    @media (min-width: $tablet) {
-      gap: 60px;
-    }
+    gap: 60px;
   }
 
   &__name {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-
-    @media (min-width: $tablet) {
-      gap: 40px;
-    }
+    gap: 40px;
   }
 
   &__row {
     display: flex;
-    flex-direction: column;
-    gap: 40px;
-
-    @media (min-width: $tablet) {
-      flex-direction: row;
-      gap: 20px;
-    }
+    flex-direction: row;
+    gap: 20px;
   }
 
   &__field,
@@ -203,23 +163,11 @@ $desktop: 1440px;
   &__group--category,
   &__group--ingredient,
   &__group--measure {
-    width: 100%;
-
-    @media (min-width: $tablet) {
-      width: 315px;
-    }
+    width: 315px;
   }
 
   &__group--area {
-    width: 100%;
-
-    @media (min-width: $tablet) {
-      width: 330px;
-    }
-
-    @media (min-width: $desktop) {
-      width: 345px;
-    }
+    width: 345px;
   }
 
   &__notice,
@@ -239,22 +187,14 @@ $desktop: 1440px;
   &__label {
     margin: 0;
     color: var(--color-black);
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 800;
     line-height: 24px;
     letter-spacing: -0.02em;
     text-transform: uppercase;
 
-    @media (min-width: $tablet) {
-      font-size: 20px;
-    }
-
     &--section {
-      margin-bottom: 32px;
-
-      @media (min-width: $tablet) {
-        margin-bottom: 40px;
-      }
+      margin-bottom: 40px;
     }
   }
 
@@ -265,16 +205,11 @@ $desktop: 1440px;
     outline: none;
     background: transparent;
     color: var(--color-black);
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 800;
-    line-height: 24px;
+    line-height: 28px;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-
-    @media (min-width: $tablet) {
-      font-size: 24px;
-      line-height: 28px;
-    }
 
     &::placeholder {
       color: var(--color-gray);
@@ -374,10 +309,16 @@ $desktop: 1440px;
     @include control-pill;
     @include text-main;
 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     width: 100%;
     padding: 0 48px 0 18px;
     outline: none;
     color: var(--color-dark);
+    font-family: inherit;
+    text-align: left;
     appearance: none;
     cursor: pointer;
     transition: border-color 200ms ease;
@@ -398,6 +339,12 @@ $desktop: 1440px;
       cursor: progress;
     }
 
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     option {
       color: var(--color-dark);
     }
@@ -407,32 +354,9 @@ $desktop: 1440px;
     position: absolute;
     top: 50%;
     right: 18px;
+    flex-shrink: 0;
     transform: translateY(-50%);
     pointer-events: none;
-  }
-
-  &__search-select-wrap {
-    position: relative;
-    width: 100%;
-  }
-
-  &__select {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    font-family: inherit;
-    text-align: left;
-
-    span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  &__select-icon {
-    flex-shrink: 0;
     transition: transform 200ms ease;
 
     &--open {
@@ -440,10 +364,15 @@ $desktop: 1440px;
     }
   }
 
+  &__search-select-wrap {
+    position: relative;
+    width: 100%;
+  }
+
   &__dropdown {
     position: absolute;
     top: calc(100% + 8px);
-    left: 0;
+    left: -8px;
     z-index: 50;
     width: 100%;
     padding: 12px;
@@ -523,10 +452,10 @@ $desktop: 1440px;
 
   &__time {
     position: relative;
-    overflow: visible;
     display: flex;
     align-items: center;
     gap: 16px;
+    overflow: visible;
   }
 
   &__round-button {
@@ -554,20 +483,20 @@ $desktop: 1440px;
   }
 
   &__time-center {
-    width: max-content;
-    min-width: 0;
-    flex: 0 1 auto;
     display: flex;
+    flex: 0 1 auto;
     align-items: center;
     justify-content: center;
+    width: max-content;
+    min-width: 0;
   }
 
   &__time-value {
     @include text-main;
 
-    min-width: 50px;
     display: block;
     width: max-content;
+    min-width: 50px;
     padding: 4px;
     border: 0;
     background: transparent;
@@ -614,25 +543,15 @@ $desktop: 1440px;
   &__time-hint {
     position: absolute;
     top: 100%;
-    left: 25%;
-    transform: translateX(-50%);
-
+    left: 40%;
+    z-index: 2;
     width: max-content;
     margin: 4px 0 0;
-    z-index: 2;
-
+    transform: translateX(-50%);
     color: var(--color-gray);
     font-size: 12px;
     line-height: 16px;
     white-space: nowrap;
-  }
-
-  @media screen and (min-width: 768px) {
-    .recipe-form {
-      &__time-hint {
-        left: 40%;
-      }
-    }
   }
 
   // ---------- Ingredients ----------
@@ -651,15 +570,10 @@ $desktop: 1440px;
 
   &__ingredient-row {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: clamp(16px, 2vw, 20px);
     width: 100%;
-
-    @media (min-width: $tablet) {
-      flex-direction: row;
-      align-items: flex-end;
-      gap: clamp(16px, 2vw, 20px);
-    }
   }
 
   &__group--measure {
@@ -672,12 +586,10 @@ $desktop: 1440px;
 
   // Align quantity with the select when the select has an error.
   &__ingredient-row:has(&__group--ingredient .recipe-form__error) {
-    @media (min-width: $tablet) {
-      align-items: flex-start;
+    align-items: flex-start;
 
-      .recipe-form__group--measure {
-        padding-top: 56px;
-      }
+    .recipe-form__group--measure {
+      padding-top: 56px;
     }
   }
 
@@ -717,10 +629,10 @@ $desktop: 1440px;
     }
   }
 
-  // Ingredient grid
+  // ---------- Ingredient grid ----------
   &__ingredient-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: clamp(10px, 1.5vw, 20px);
     row-gap: clamp(16px, 2vw, 24px);
     width: 100%;
@@ -728,33 +640,32 @@ $desktop: 1440px;
     margin: 0;
     padding: 0;
     list-style: none;
-
-    @media (min-width: $tablet) {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
 
   &__ingredient-card {
-    position: relative;
     display: flex;
     align-items: center;
-    gap: clamp(6px, 0.8vw, 12px);
+    gap: 12px;
+    width: 100%;
     min-width: 0;
-    max-width: 100%;
-    padding-right: clamp(18px, 1.5vw, 24px);
+    padding: 8px;
+    border: 1px solid var(--color-gray);
+    border-radius: 18px;
+    background: var(--color-white);
+    box-sizing: border-box;
   }
 
   &__ingredient-thumb {
     display: flex;
-    width: clamp(44px, 6.25vw, 72px);
-    height: clamp(44px, 6.25vw, 72px);
+    flex: 0 0 72px;
     align-items: center;
     justify-content: center;
-    width: clamp(48px, 6.25vw, 90px);
-    height: clamp(48px, 6.25vw, 90px);
+    width: 72px;
+    height: 72px;
     overflow: hidden;
     border: 1px solid var(--color-gray);
-    border-radius: clamp(10px, 1vw, 15px);
+    border-radius: 14px;
+    box-sizing: border-box;
 
     img {
       width: 70%;
@@ -767,7 +678,7 @@ $desktop: 1440px;
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     min-width: 0;
 
     p {
@@ -775,8 +686,8 @@ $desktop: 1440px;
 
       margin: 0;
       overflow-wrap: anywhere;
-      font-size: clamp(12px, 1.1vw, 16px);
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.4;
     }
   }
 
@@ -789,71 +700,195 @@ $desktop: 1440px;
   }
 
   &__ingredient-remove {
-    position: absolute;
-    top: 0;
-    right: 0;
     display: flex;
+    flex: 0 0 36px;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: 36px;
+    height: 36px;
     padding: 0;
-    border: 0;
-    background: transparent;
+    border: 1px solid var(--color-gray);
+    border-radius: 50%;
+    background: var(--color-white);
+    cursor: pointer;
+    transition:
+      border-color 200ms ease,
+      background-color 200ms ease,
+      opacity 200ms ease;
+
+    img {
+      display: block;
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+    }
 
     &:hover,
     &:focus-visible {
-      opacity: 0.6;
+      border-color: var(--color-black);
+      outline: none;
+
+      img {
+        opacity: 1;
+      }
     }
   }
+}
 
-  // ---------- Actions ----------
-  &__preparation {
-    display: flex;
-    flex-direction: column;
+// ---------- Actions ----------
+&__preparation {
+  display: flex;
+  flex-direction: column;
+}
+
+&__actions {
+  display: flex;
+  gap: 8px;
+}
+
+&__submit {
+  height: 56px;
+  padding: 0 39px;
+  border: 0;
+  border-radius: 30px;
+  background: var(--color-dark);
+  color: var(--color-white);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  transition: background-color 200ms ease;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    background: var(--color-black);
   }
 
-  &__actions {
-    display: flex;
-    gap: 8px;
+  &:disabled {
+    background: var(--color-gray);
+    cursor: not-allowed;
   }
+}
 
-  &__submit {
-    height: 56px;
-    padding: 0 39px;
-    border: 0;
-    border-radius: 30px;
-    background: var(--color-dark);
+.recipe-form__cancel {
+  @extend .recipe-form__submit;
+
+  border: 1px solid var(--color-gray);
+  background-color: var(--color-white);
+  color: var(--color-dark);
+
+  &:hover {
+    border-color: var(--color-dark);
+    background-color: var(--color-dark);
     color: var(--color-white);
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 24px;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    transition: background-color 200ms ease;
+  }
 
-    &:hover:not(:disabled),
-    &:focus-visible {
-      background: var(--color-black);
+  // ==========================================
+  // TABLET — до 1439px
+  // ==========================================
+  @media (max-width: 1439px) {
+    flex-direction: column;
+    gap: 80px;
+
+    &__photo {
+      flex: 0 0 auto;
+      width: 100%;
     }
 
-    &:disabled {
-      background: var(--color-gray);
-      cursor: not-allowed;
+    &__body {
+      flex: none;
+      width: 100%;
+      max-width: none;
     }
   }
 
-  .recipe-form__cancel {
-    @extend .recipe-form__submit;
+  // ==========================================
+  // MOBILE — до 767px
+  // ==========================================
+  @media (max-width: 767px) {
+    gap: 40px;
 
-    background-color: var(--color-white);
-    border: 1px solid var(--color-gray);
-    color: var(--color-dark);
+    &__photo-frame {
+      height: 318px;
+    }
 
-    &:hover {
-      background-color: var(--color-dark);
-      border-color: var(--color-dark);
-      color: var(--color-white);
+    &__body {
+      gap: 64px;
+    }
+
+    &__main,
+    &__fields {
+      gap: 40px;
+    }
+
+    &__name {
+      gap: 32px;
+    }
+
+    &__row {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    &__group--category,
+    &__group--ingredient,
+    &__group--measure,
+    &__group--area {
+      width: 100%;
+    }
+
+    &__label {
+      font-size: 16px;
+
+      &--section {
+        margin-bottom: 32px;
+      }
+    }
+
+    &__title-input {
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    &__time-hint {
+      left: 25%;
+    }
+
+    &__ingredient-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+
+    &__ingredient-row:has(&__group--ingredient .recipe-form__error) {
+      align-items: stretch;
+
+      .recipe-form__group--measure {
+        padding-top: 0;
+      }
+    }
+
+    &__ingredient-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__ingredient-thumb {
+      img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+
+  // ==========================================
+  // SMALL MOBILE — до 374px
+  // ==========================================
+  @media (max-width: 374px) {
+    gap: 32px;
+
+    &__ingredient-list {
+      grid-template-columns: 1fr;
     }
   }
 }
