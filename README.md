@@ -1,4 +1,4 @@
-# 🍲 Foodies — Frontend
+# Foodies Frontend
 
 > A recipe-sharing web app: discover dishes by category, cuisine and ingredients, save favorites, follow other cooks, publish your own recipes and cook them step by step.
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 📑 Table of contents
+## Table of contents
 
 - [About](#-about)
 - [Links](#-links)
@@ -26,12 +26,11 @@
 - [Project structure](#-project-structure)
 - [State management & API](#-state-management--api)
 - [Offline & PWA](#-offline--pwa)
-- [Contributing](#-contributing)
 - [Team](#-team)
 
 ---
 
-## 📖 About
+## About
 
 **Foodies** is a single-page application built with React and Vite. It talks to the [Foodies REST API](https://github.com/Your-Natka/foodies-backend).
 
@@ -65,7 +64,7 @@
 
 ---
 
-## 🛠 Tech stack
+## Tech stack
 
 | Area | Tools |
 | --- | --- |
@@ -83,7 +82,7 @@
 
 ---
 
-## 🚀 Getting started
+## Getting started
 
 ### Prerequisites
 
@@ -116,11 +115,9 @@ The app runs at **http://localhost:5174**. The port is pinned (`strictPort`) for
 | --- | --- | --- |
 | `VITE_API_URL` | Base URL of the Foodies REST API. Also read at build time to set up the service worker's API cache. | `http://localhost:3000` |
 
-> ⚠️ Never commit real `.env` values. `.env` is listed in `.gitignore`.
-
 ---
 
-## 📜 Scripts
+## Scripts
 
 | Command | Description |
 | --- | --- |
@@ -131,7 +128,7 @@ The app runs at **http://localhost:5174**. The port is pinned (`strictPort`) for
 
 ---
 
-## 🗺 Routes
+## Routes
 
 Defined in [`src/routes/AppRoutes.jsx`](src/routes/AppRoutes.jsx). All pages are lazy-loaded and rendered inside `SharedLayout` (header + footer).
 
@@ -152,7 +149,7 @@ Private routes are guarded by [`PrivateRoute`](src/routes/PrivateRoute.jsx). It 
 
 ---
 
-## 📁 Project structure
+## Project structure
 
 ```text
 foodies-frontend/
@@ -201,7 +198,7 @@ foodies-frontend/
 
 ---
 
-## 🧠 State management & API
+## State management & API
 
 ### Redux store
 
@@ -243,9 +240,11 @@ On app start, `restoreSessionThunk` restores the session and the saved shopping 
 
 Full API documentation (Swagger) lives in the [backend repository](https://github.com/Your-Natka/foodies-backend).
 
+[Swagger](https://foodies-backend-57rm.onrender.com/docs/)
+
 ---
 
-## 📲 Offline & PWA
+## Offline & PWA
 
 Configured in [`vite.config.js`](vite.config.js) with `vite-plugin-pwa`:
 
@@ -260,20 +259,9 @@ Only `200` responses are cached. Opaque cross-origin images are skipped on purpo
 
 ---
 
-## 🤝 Contributing
-
-1. Create a branch from `main`: `git checkout -b feature/<short-description>` (or `fix/...`, `docs/...`)
-2. Keep components grouped by feature, one folder per component with its own `.jsx` + `.module.scss`.
-3. Run `npm run lint` and `npm run build` before pushing.
-4. Open a Pull Request into `main` and request a review from a teammate.
-
----
-
-## 👥 Team
+## Team
 
 Built by the Foodies team as part of a full-stack course project.
-
-See all contributors on the [GitHub contributors page](https://github.com/Your-Natka/foodies-frontend/graphs/contributors).
 
 ---
 
