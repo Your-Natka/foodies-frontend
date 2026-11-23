@@ -6,18 +6,22 @@
   min-width: 0;
   font-family: var(--font-family);
   color: var(--color-white);
-  background-color: transparent;
-  transition: color 250ms ease;
+  background-color: var(--color-black);
+  transition:
+    color 250ms ease,
+    background-color 250ms ease;
   padding-top: 20px;
 
   &--dark {
     color: var(--color-white);
     --nav-border-color: var(--color-white);
+    background-color: var(--color-white);
   }
 
   &--light {
     color: var(--color-black);
     --nav-border-color: var(--color-black);
+    background-color: var(--color-white);
   }
 
   &__surface {

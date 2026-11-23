@@ -19,11 +19,11 @@ const ScrollUp = () => {
 
   const handleClick = () => {
     const target =
-      document.querySelector("[data-categories-section]") ||
-      document.querySelector("[data-category-recipes-section]");
+      document.querySelector("[data-category-recipes-section]") ||
+      document.querySelector("[data-categories-section]");
 
     if (target) {
-      const top = target.getBoundingClientRect().top + window.scrollY - 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - 130;
 
       window.scrollTo({
         top,
