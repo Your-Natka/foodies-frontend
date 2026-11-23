@@ -6,7 +6,7 @@
   min-width: 0;
   font-family: var(--font-family);
   color: var(--color-white);
-  background-color: var(--color-black);
+  background-color: transparent;
   transition:
     color 250ms ease,
     background-color 250ms ease;
@@ -24,12 +24,17 @@
     background-color: var(--color-white);
   }
 
+  &--light &__surface {
+    background-color: var(--color-white);
+    color: var(--color-black);
+  }
+
   &__surface {
     container-type: inline-size;
     position: relative;
     width: 100%;
     min-width: 0;
-    padding-inline: clamp(8px, calc(50cqw - 640px), 60px);
+    padding-inline: clamp(32px, calc(50cqw - 640px), 60px);
     box-sizing: border-box;
     background-color: var(--color-black);
     color: var(--color-white);
@@ -294,6 +299,10 @@
 // Mobile: перемикання структури навігації
 @media screen and (max-width: 767px) {
   .header {
+    &__surface {
+      padding-inline: clamp(16px, calc(50cqw - 640px), 60px);
+    }
+
     &__navigation {
       display: none;
     }

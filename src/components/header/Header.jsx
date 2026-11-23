@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Container from "../common/Container/Container";
@@ -19,9 +19,27 @@ function Header({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const userMenuRef = useRef(null);
+
   const location = useLocation();
   const shoppingCount = useSelector(selectShoppingCount);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside);
+    };
+  }, []);
+
+  // Закриваємо меню при переході на іншу сторінку
   useEffect(() => {
     setIsUserMenuOpen(false);
     setIsMenuOpen(false);
@@ -110,7 +128,7 @@ function Header({
                   </button>
                 </div>
               ) : (
-                <div className="header__user">
+                <div className="header__user" ref={userMenuRef}>
                   <button
                     type="button"
                     className="header__user-button"
