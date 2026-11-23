@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 import trashIcon from "../../../assets/icons/add-recipe/trash.svg";
 
+import Loader from "../../shared/Loader/Loader";
 import { getCategories } from "../../../services/api/categoriesApi";
 import { getAreas } from "../../../services/api/areasApi";
 import { getIngredients } from "../../../services/api/ingredientsApi";
@@ -189,7 +190,7 @@ function RecipeForm({ recipeId }) {
   };
 
   if (isEditMode && isRecipeLoading) {
-    return <p className="recipe-form__notice">Loading recipe...</p>;
+    return <Loader text="Loading recipe..." />;
   }
 
   if (isEditMode && (recipeError || !recipe)) {
@@ -220,13 +221,6 @@ function RecipeForm({ recipeId }) {
           <PhotoField initialPhoto={recipe?.thumb} />
 
           <div className="recipe-form__body">
-            {isError && (
-              <p className="recipe-form__notice" role="alert">
-                Failed to load categories, areas or ingredients. Refresh the
-                page to try again.
-              </p>
-            )}
-
             <div className="recipe-form__main">
               <div className="recipe-form__fields">
                 <div className="recipe-form__name">

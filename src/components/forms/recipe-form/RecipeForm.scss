@@ -640,19 +640,12 @@ $desktop: 1440px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 32px;
+    gap: clamp(24px, 3vw, 40px);
+    width: 100%;
+    min-width: 0;
 
-    @media (min-width: $tablet) {
-      gap: 40px;
-    }
-
-    // Keep the list-level error close to the button/cards above it.
     > .recipe-form__error {
-      margin-top: -24px;
-
-      @media (min-width: $tablet) {
-        margin-top: -32px;
-      }
+      margin-top: clamp(-32px, -2vw, -24px);
     }
   }
 
@@ -665,7 +658,7 @@ $desktop: 1440px;
     @media (min-width: $tablet) {
       flex-direction: row;
       align-items: flex-end;
-      gap: 20px;
+      gap: clamp(16px, 2vw, 20px);
     }
   }
 
@@ -677,7 +670,7 @@ $desktop: 1440px;
     }
   }
 
-  // Keep the quantity line aligned with the select when only the select has an error.
+  // Align quantity with the select when the select has an error.
   &__ingredient-row:has(&__group--ingredient .recipe-form__error) {
     @media (min-width: $tablet) {
       align-items: flex-start;
@@ -724,46 +717,55 @@ $desktop: 1440px;
     }
   }
 
+  // Ingredient grid
   &__ingredient-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px 28px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(10px, 1.5vw, 20px);
+    row-gap: clamp(16px, 2vw, 24px);
     width: 100%;
+    min-width: 0;
     margin: 0;
     padding: 0;
     list-style: none;
+
+    @media (min-width: $tablet) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   &__ingredient-card {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 14px;
-    min-width: 178px;
+    gap: clamp(6px, 0.8vw, 12px);
+    min-width: 0;
     max-width: 100%;
-    padding-right: 24px;
+    padding-right: clamp(18px, 1.5vw, 24px);
   }
 
   &__ingredient-thumb {
     display: flex;
-    flex-shrink: 0;
+    width: clamp(44px, 6.25vw, 72px);
+    height: clamp(44px, 6.25vw, 72px);
     align-items: center;
     justify-content: center;
-    width: 90px;
-    height: 90px;
+    width: clamp(48px, 6.25vw, 90px);
+    height: clamp(48px, 6.25vw, 90px);
     overflow: hidden;
     border: 1px solid var(--color-gray);
-    border-radius: 15px;
+    border-radius: clamp(10px, 1vw, 15px);
 
     img {
-      width: 60px;
-      height: 60px;
+      width: 70%;
+      height: 70%;
       object-fit: contain;
     }
   }
 
   &__ingredient-text {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 4px;
     min-width: 0;
@@ -773,6 +775,8 @@ $desktop: 1440px;
 
       margin: 0;
       overflow-wrap: anywhere;
+      font-size: clamp(12px, 1.1vw, 16px);
+      line-height: 1.5;
     }
   }
 
