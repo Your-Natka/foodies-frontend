@@ -7,6 +7,7 @@ import { getFavoriteRecipes } from "../../../services/api/favoritesApi";
 import RecipeListItem from "../list-items/RecipeListItem";
 import Pagination from "../../shared/pagination/Pagination";
 import EmptyState from "../../shared/empty-state/EmptyState";
+import Loader from "../../shared/Loader/Loader";
 
 const RECIPES_PER_PAGE = 9;
 
@@ -140,7 +141,7 @@ function ProfileFavourites({ onProfileUpdate, getCachedData, setCachedData }) {
   return (
     <section className="user-page__section">
       {isLoading ? (
-        <p className="user-page__message">Loading favourites...</p>
+        <Loader text="Loading favourites..." />
       ) : error ? (
         <p className="user-page__message" role="alert">
           {error}
