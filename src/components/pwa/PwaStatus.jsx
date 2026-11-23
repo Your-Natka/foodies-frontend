@@ -4,6 +4,7 @@ import { useRegisterSW } from "virtual:pwa-register/react";
 
 const UPDATE_TOAST_ID = "pwa-update";
 const OFFLINE_TOAST_ID = "pwa-offline";
+const LEGACY_IMAGE_CACHE = "foodies-images";
 
 function UpdateMessage({ onReload }) {
   return (
@@ -27,6 +28,13 @@ function PwaStatus() {
       console.error("Service worker registration failed:", error);
     },
   });
+
+  // Drop the old image cache that filled the storage quota with opaque responses.
+  useEffect(() => {
+    if (!("caches" in window)) return;
+
+    caches.delete(LEGACY_IMAGE_CACHE).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!offlineReady) return;
