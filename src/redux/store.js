@@ -14,7 +14,11 @@ import authReducer, {
   clearCredentials,
 } from "./slices/auth/authSlice";
 
-import { configureApiAuth } from "../services/api";
+import {
+  configureApiAuth,
+  scheduleTokenRefresh,
+  cancelTokenRefresh,
+} from "../services/api";
 import { removeKey, saveJSON } from "../utils/storage";
 
 const appReducer = combineReducers({
@@ -38,11 +42,14 @@ export const store = configureStore({
   reducer: rootReducer,
 });
 
-// Persist the shopping list locally whenever it changes.
+// persist the shopping list and schedule token refresh when needed
 let lastShoppingList = store.getState().shoppingList;
+let lastAccessToken = store.getState().auth.accessToken;
 
 store.subscribe(() => {
-  const { shoppingList } = store.getState();
+  const state = store.getState();
+  const { shoppingList } = state;
+  const accessToken = state.auth.accessToken;
 
   if (shoppingList !== lastShoppingList) {
     lastShoppingList = shoppingList;
@@ -53,7 +60,18 @@ store.subscribe(() => {
       saveJSON(SHOPPING_LIST_STORAGE_KEY, shoppingList);
     }
   }
+
+  if (accessToken !== lastAccessToken) {
+    lastAccessToken = accessToken;
+
+    if (accessToken) {
+      scheduleTokenRefresh(accessToken);
+    } else {
+      cancelTokenRefresh();
+    }
+  }
 });
+
 
 configureApiAuth({
   getToken: () => store.getState().auth.accessToken,

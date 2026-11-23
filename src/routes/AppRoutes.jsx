@@ -16,6 +16,7 @@ import {
 
 import { hasStoredSession } from "../services/authStorage";
 import { loadJSON, removeKey } from "../utils/storage";
+import { getIngredients } from "../services/api/ingredientsApi";
 
 const UserPage = lazy(() => import("../pages/user-page/UserPage"));
 
@@ -39,23 +40,45 @@ function AppRoutes() {
   const location = useLocation();
 
   useEffect(() => {
-    if (hasStoredSession()) {
-      dispatch(restoreSessionThunk())
-        .unwrap()
-        .then(() => {
+    const restoreUserData = async () => {
+      if (hasStoredSession()) {
+        try {
+          await dispatch(restoreSessionThunk()).unwrap();
+
           const savedShoppingList = loadJSON(SHOPPING_LIST_STORAGE_KEY, {
             items: [],
           });
 
-          dispatch(restoreShoppingList(savedShoppingList));
-        })
-        .catch(() => {
+          try {
+            const ingredients = await getIngredients();
+
+            const ingredientsMap = new Map(
+              ingredients.map((ingredient) => [ingredient.id, ingredient.img]),
+            );
+
+            const updatedShoppingList = {
+              ...savedShoppingList,
+              items: (savedShoppingList.items || []).map((item) => ({
+                ...item,
+                img: ingredientsMap.get(item.ingredientId) || null,
+              })),
+            };
+
+            dispatch(restoreShoppingList(updatedShoppingList));
+          } catch (error) {
+            console.error("Failed to update shopping list images:", error);
+            dispatch(restoreShoppingList(savedShoppingList));
+          }
+        } catch {
           removeKey(SHOPPING_LIST_STORAGE_KEY);
-        });
-    } else {
-      removeKey(SHOPPING_LIST_STORAGE_KEY);
-      dispatch(markSessionChecked());
-    }
+        }
+      } else {
+        removeKey(SHOPPING_LIST_STORAGE_KEY);
+        dispatch(markSessionChecked());
+      }
+    };
+
+    restoreUserData();
   }, [dispatch]);
 
   useEffect(() => {
