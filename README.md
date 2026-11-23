@@ -1,240 +1,137 @@
-# 🍲 Foodies — Frontend
+# Foodies Frontend
 
-> A recipe-sharing web app: discover dishes by category, cuisine and ingredients, save favorites, follow other cooks and publish your own recipes.
+Client application for **Foodies**, a recipe-sharing platform. Users can browse recipes by category, cuisine and ingredient, save favorites, follow other cooks, publish and edit their own recipes, and build a shopping list from any recipe.
 
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
-![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2-764ABC?logo=redux&logoColor=white)
-![React Router](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white)
-![Sass](https://img.shields.io/badge/Sass-SCSS-CC6699?logo=sass&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-1-5A29E4?logo=axios&logoColor=white)
+**Live:** https://foodies-frontend-jade.vercel.app
+**API:** [foodies-backend](https://github.com/Your-Natka/foodies-backend)
 
----
+## Tech stack
 
-## 📑 Table of contents
+- React 19, Vite 8
+- Redux Toolkit, React Router 7 (route-level code splitting)
+- Axios
+- Formik + Yup
+- Sass (global styles + CSS Modules), modern-normalize
+- vite-plugin-pwa (Workbox)
+- oxlint
+- Deployed on Vercel
 
-- [About](#-about)
-- [Links](#-links)
-- [Tech stack](#-tech-stack)
-- [Getting started](#-getting-started)
-- [Scripts](#-scripts)
-- [Routes](#-routes)
-- [Project structure](#-project-structure)
-- [State management & API](#-state-management--api)
-- [Contributing](#-contributing)
-- [Team](#-team)
+## Features
 
----
+- Recipe catalog with category, ingredient and area filters and server-side pagination
+- Recipe details with ingredients, instructions, author and popular recipes
+- Favorites, user profiles, followers / following
+- Create, edit and delete recipes, with photo upload
+- Form drafts autosave to `localStorage` and survive a reload
+- Shopping list built from recipe ingredients, available to guests, with copy-to-clipboard
+- Cooking mode: step-by-step view, ingredient checklist, step timers, Screen Wake Lock
+- Native share (with clipboard fallback) and a print stylesheet
+- Installable PWA with offline support for previously visited pages and an update prompt
 
-## 📖 About
+## Getting started
 
-**Foodies** is a single-page application built with React and Vite that talks to the Foodies REST API.
-
-### Features
-
-- 🏠 **Home page** — hero section, recipe categories and user testimonials slider
-- 🔎 **Recipe catalog** — browse recipes by category with filters by **ingredient** and **area (cuisine)**, plus pagination
-- 📄 **Recipe details** — ingredients, preparation steps, author info and **popular recipes**
-- ❤️ **Favorites** — add / remove recipes from your favorites
-- 🔐 **Authentication** — sign up, sign in and logout modals, JWT access token + refresh flow, session restore on page load
-- 👤 **User profiles** — own recipes, favorites, followers & following tabs, follow / unfollow, avatar upload
-- ➕ **Add recipe** — Formik + Yup form with dynamic ingredients list (private route)
-- 📱 **Responsive layout** — mobile menu, mobile / tablet / desktop breakpoints, retina-ready AVIF images
-- 🛒 **Shopping list** — add a recipe's ingredients in one click, tick off bought items, copy the list as text (stored on the device)
-- 👩‍🍳 **Cooking mode** — full-screen step-by-step view with ingredient checklist, keep-screen-awake and step timers
-- 🔗 **Share & print** — native share sheet (or copy link) and print-friendly recipe layout
-- 📝 **Recipe drafts** — the add-recipe form autosaves and restores after reload
-- 📲 **PWA** — installable app, works offline for previously opened pages, update prompt
-- 🔔 **Toast notifications** via `react-toastify`
-
----
-
-## 🔗 Links
-
-| Resource | Link |
-| --- | --- |
-| 🎨 Figma design | [Foodies mockup](https://www.figma.com/file/tkl7kdnvwtz62rsuwnnq5e/foodies?type=design&node-id=127-2517&mode=design&t=uejayjajevvrig5e-0) |
-| 📋 Task board | [Google Sheets](https://docs.google.com/spreadsheets/d/1RQo9l60o5jiArDLVl9Gl7Gjq2kNolByJQ6-ERVR0Q8w/edit#gid=1850255900) |
-| ⚙️ Backend API | configured via the `VITE_API_URL` environment variable |
-
----
-
-## 🛠 Tech stack
-
-| Area | Tools |
-| --- | --- |
-| UI | [React 19](https://react.dev/) |
-| Build tool / dev server | [Vite 8](https://vite.dev/) |
-| State management | [Redux Toolkit](https://redux-toolkit.js.org/) + `react-redux` |
-| Routing | [React Router 7](https://reactrouter.com/) (lazy-loaded pages) |
-| HTTP | [Axios](https://axios-http.com/) with auth interceptors |
-| Forms & validation | [Formik](https://formik.org/) + [Yup](https://github.com/jquense/yup) |
-| Styling | [Sass](https://sass-lang.com/) (global SCSS + CSS Modules), `modern-normalize` |
-| Notifications | [react-toastify](https://fkhadra.github.io/react-toastify/) |
-| Linting | [oxlint](https://oxc.rs/docs/guide/usage/linter) |
-
----
-
-## 🚀 Getting started
-
-### Prerequisites
-
-- **Node.js** 20+ (LTS recommended)
-- **npm**
-- A running instance of the Foodies backend API
-
-### Installation
+Requirements: Node.js 20+ and a running instance of the [backend](https://github.com/Your-Natka/foodies-backend).
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/Your-Natka/foodies-frontend.git
 cd foodies-frontend
-
-# 2. Install dependencies
 npm install
-
-# 3. Create an .env file in the project root
-echo "VITE_API_URL=http://localhost:3000" > .env
-
-# 4. Start the dev server
+cp .env.template .env
 npm run dev
 ```
 
-The app will be available at **http://localhost:5174** (the port is fixed with `strictPort` in `vite.config.js`).
+The dev server runs on `http://localhost:5174`. The port is pinned (`strictPort`) for both `dev` and `preview` so it matches the backend's CORS allow-list. Add this origin to `ALLOWED_ORIGINS` on the backend if it isn't there already.
 
 ### Environment variables
 
-| Variable | Description | Example |
-| --- | --- | --- |
-| `VITE_API_URL` | Base URL of the Foodies REST API | `http://localhost:3000` |
+| Variable       | Description                  | Example                 |
+| -------------- | ---------------------------- | ----------------------- |
+| `VITE_API_URL` | Base URL of the Foodies API  | `http://localhost:3000` |
 
-> ⚠️ Never commit real `.env` values — `.env` is listed in `.gitignore`.
+`VITE_API_URL` is also read at build time to configure the service worker's API cache. If it is missing, API responses are not cached offline.
 
----
+### Scripts
 
-## 📜 Scripts
+| Command           | Description                         |
+| ----------------- | ----------------------------------- |
+| `npm run dev`     | Start the dev server with HMR       |
+| `npm run build`   | Production build to `dist/`         |
+| `npm run preview` | Serve the production build locally  |
+| `npm run lint`    | Run oxlint                          |
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the Vite dev server with HMR on port `5174` |
-| `npm run build` | Create a production build in `dist/` |
-| `npm run preview` | Preview the production build locally |
-| `npm run lint` | Lint the project with oxlint |
+## Routes
 
----
+All pages are lazy-loaded and rendered inside `SharedLayout`. See [`src/routes/AppRoutes.jsx`](src/routes/AppRoutes.jsx).
 
-## 🗺 Routes
+| Path                     | Page                  | Access  |
+| ------------------------ | --------------------- | ------- |
+| `/`                      | Home                  | Public  |
+| `/recipes`               | Recipe catalog        | Public  |
+| `/recipes/:category`     | Catalog by category   | Public  |
+| `/recipe/:id`            | Recipe details        | Public  |
+| `/shopping-list`         | Shopping list         | Public  |
+| `/user`                  | Current user profile  | Private |
+| `/user/:userId`          | User profile          | Private |
+| `/recipe/add`            | Add recipe            | Private |
+| `/recipe/:recipeId/edit` | Edit recipe           | Private |
 
-Defined in [`src/routes/AppRoutes.jsx`](src/routes/AppRoutes.jsx). All pages are lazy-loaded and rendered inside `SharedLayout` (header + footer).
+Private routes go through [`PrivateRoute`](src/routes/PrivateRoute.jsx). It waits for the session check to finish before deciding, so a page reload on a private route doesn't redirect a logged-in user.
 
-| Path | Page | Access |
-| --- | --- | --- |
-| `/` | Home | Public |
-| `/recipes` | Recipe catalog | Public |
-| `/recipes/:category` | Recipes of a category | Public |
-| `/recipe/:id` | Recipe details | Public |
-| `/user/:userId` | Public user profile | Public |
-| `/user` | Current user profile | 🔒 Private |
-| `/recipe/add` | Add a new recipe | 🔒 Private |
-| `*` | 404 Not Found | Public |
+## Architecture
 
-Private routes are guarded by [`PrivateRoute`](src/routes/PrivateRoute.jsx).
+### State
 
----
+Redux store ([`src/redux/store.js`](src/redux/store.js)) with the slices `auth`, `recipes`, `ingredients`, `areas`, `favorites` and `shoppingList`. Async logic lives in `*Operations.js` thunks next to each slice. A `resetSession` action clears the whole store on logout.
 
-## 📁 Project structure
+A single store subscription handles side effects that don't belong in reducers: it persists the shopping list to `localStorage` and schedules access-token refreshes when the token changes.
+
+### Authentication
+
+The backend issues a short-lived JWT access token in the response body and a refresh token in an HTTP-only cookie. The access token is kept in memory only. A `localStorage` flag records that a session might exist, so guests don't make a refresh call on page load.
+
+[`src/services/api.js`](src/services/api.js) handles the token lifecycle:
+
+- Attaches the `Authorization` header to every request.
+- Refreshes proactively 60 s before the token expires (read from the JWT `exp` claim), and again when the tab regains focus or becomes visible.
+- On a `401`, refreshes once and replays the original request. Concurrent requests share one in-flight refresh promise.
+- A `401`/`403` from the refresh endpoint logs the user out. Network errors are retried every 30 s instead, so a flaky connection doesn't end the session.
+
+### Offline / PWA
+
+Configured in [`vite.config.js`](vite.config.js):
+
+- The app shell is precached. Navigation falls back to `index.html`.
+- API `GET` requests (except `/auth/*`) use `NetworkFirst` with a 5 s timeout, then fall back to cache.
+- Images use `CacheFirst`, limited to 60 entries, with `purgeOnQuotaError`. Only `200` responses are cached. Opaque cross-origin responses are excluded because Chrome counts each one as several MB against the storage quota.
+- `registerType: "prompt"`: users are asked before a new version replaces the running one.
+
+## Project structure
 
 ```text
-foodies-frontend/
-├── docs/
-│   └── api/seed-data/        # Sample API data for reference
-├── public/
-│   └── images/               # Category & hero images (AVIF, @1x/@2x)
-├── src/
-│   ├── components/
-│   │   ├── auth/             # Sign in / sign up / logout modals
-│   │   ├── common/           # Container, Section
-│   │   ├── footer/           # Footer, logo, social links
-│   │   ├── forms/            # Add-recipe form (Formik + Yup)
-│   │   ├── header/           # Site header
-│   │   ├── home/             # Hero, categories, testimonials
-│   │   ├── profile/          # User bar, tabs, recipes, favorites, followers
-│   │   ├── recipe-details/   # Recipe info, ingredients, preparation, favorite button
-│   │   ├── recipes/          # Recipe cards, list, filters, popular recipes
-│   │   ├── shared/           # Modal, pagination, mobile menu, empty state
-│   │   └── shared-layout/    # Layout wrapper with <Outlet />
-│   ├── hooks/                # useUserProfile, useCurrentUserProfile
-│   ├── pages/                # Route-level pages
-│   ├── redux/
-│   │   ├── slices/           # auth, recipes, ingredients, areas, favorites
-│   │   └── store.js
-│   ├── routes/               # AppRoutes, PrivateRoute
-│   ├── services/
-│   │   ├── api.js            # Axios instance + auth interceptors
-│   │   └── api/              # Endpoint modules per resource
-│   ├── styles/global.scss    # CSS variables & global styles
-│   ├── App.jsx
-│   └── main.jsx              # Entry: Redux Provider, Router, ToastContainer
-├── index.html
-└── vite.config.js
+src/
+├── components/     # UI, grouped by feature (auth, home, recipes, recipe-details, profile, forms, shared, pwa)
+├── pages/          # Route-level components
+├── routes/         # AppRoutes, PrivateRoute
+├── redux/          # Store, slices and thunks
+├── services/
+│   ├── api.js      # Axios instance, interceptors, token refresh
+│   └── api/        # One module per API resource
+├── hooks/          # Profile data, PWA install
+├── utils/          # localStorage helpers, instruction parsing
+├── constants/
+└── styles/         # Global SCSS and design tokens
 ```
 
----
+Each component lives in its own folder with its stylesheet (`*.module.scss`).
 
-## 🧠 State management & API
+## Contributing
 
-### Redux store
+1. Branch off `main` (`feature/...` or `fix/...`).
+2. Run `npm run lint` and `npm run build` before pushing.
+3. Open a pull request into `main` and get a review from a teammate.
 
-The store ([`src/redux/store.js`](src/redux/store.js)) combines the following slices:
+## Links
 
-| Slice | Responsibility |
-| --- | --- |
-| `auth` | Current user, access token, auth status |
-| `recipes` | Recipe lists, details, filters |
-| `ingredients` | Ingredients list for filters & forms |
-| `areas` | Cuisines (areas) list |
-| `favorites` | User's favorite recipes |
-
-Async logic lives in `*Operations.js` files (thunks) next to each slice.
-
-### Authentication flow
-
-The shared Axios instance in [`src/services/api.js`](src/services/api.js):
-
-1. Sends requests with `withCredentials: true` (refresh token in an HTTP-only cookie).
-2. Attaches `Authorization: Bearer <accessToken>` taken from the Redux store.
-3. On a `401`, calls `POST /auth/refresh` **once** (concurrent requests share the same refresh promise), saves the new token and retries the original request.
-4. If refreshing fails, the credentials are cleared and the user is logged out.
-
-On app start, `restoreSessionThunk` tries to restore the session automatically.
-
-### API endpoints used
-
-| Resource | Endpoints |
-| --- | --- |
-| Auth | `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `POST /auth/refresh` |
-| Recipes | `GET /recipes`, `GET /recipes/popular`, `GET /recipes/own`, `GET /recipes/:id`, `POST /recipes`, `DELETE /recipes/:id` |
-| Favorites | `GET /recipes/favorites`, `PUT /recipes/:id/favorite`, `DELETE /recipes/:id/favorite` |
-| Users | `GET /users/current`, `PATCH /users/current/avatar`, `GET /users/:id`, `GET /users/:id/followers`, `GET /users/following`, `PUT /users/:id/follow`, `DELETE /users/:id/follow` |
-| Reference data | `GET /categories`, `GET /areas`, `GET /ingredients`, `GET /testimonials` |
-
----
-
-## 🤝 Contributing
-
-1. Create a feature branch from `main`: `git checkout -b feature/<short-description>`
-2. Keep components grouped by feature, one folder per component with its own `.jsx` + `.scss` / `.module.scss`.
-3. Run `npm run lint` and `npm run build` before pushing.
-4. Open a Pull Request into `main` and request a review from a teammate.
-
----
-
-## 👥 Team
-
-Built by the Foodies team as part of a full-stack course project.
-
-See all contributors on the [GitHub contributors page](https://github.com/Your-Natka/foodies-frontend/graphs/contributors).
-
----
-
-<p align="center">Made with ❤️ and 🍳 by the Foodies team</p>
+- [Figma design](https://www.figma.com/file/tkl7kdnvwtz62rsuwnnq5e/foodies?type=design&node-id=127-2517&mode=design&t=uejayjajevvrig5e-0)
+- [Task board](https://docs.google.com/spreadsheets/d/1RQo9l60o5jiArDLVl9Gl7Gjq2kNolByJQ6-ERVR0Q8w/edit#gid=1850255900)
+- [Contributors](https://github.com/Your-Natka/foodies-frontend/graphs/contributors)
