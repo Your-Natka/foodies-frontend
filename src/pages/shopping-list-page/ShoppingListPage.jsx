@@ -176,7 +176,7 @@ function ShoppingListPage() {
                 </span>
               </Link>
 
-              <div className={css.step}>
+              {/* <div className={css.step}>
                 <svg className={css.stepIcon} aria-hidden="true">
                   <use href="/images/sprite.svg#icon-plus18x18-food" />
                 </svg>
@@ -188,9 +188,9 @@ function ShoppingListPage() {
                     <use href="/images/sprite.svg#icon-arrow-back" />
                   </svg>
                 </span>
-              </div>
+              </div> */}
 
-              <div className={css.step}>
+              {/* <div className={css.step}>
                 <svg className={css.stepIcon} aria-hidden="true">
                   <use href="/images/sprite.svg#icon-basket" />
                 </svg>
@@ -202,7 +202,7 @@ function ShoppingListPage() {
                     <use href="/images/sprite.svg#icon-arrow-back" />
                   </svg>
                 </span>
-              </div>
+              </div> */}
             </div>
           </section>
         )}
