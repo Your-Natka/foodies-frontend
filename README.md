@@ -94,7 +94,7 @@ cd foodies-frontend
 npm install
 
 # 3. Create an .env file in the project root
-echo "VITE_API_URL=http://localhost:3000/api" > .env
+echo "VITE_API_URL=http://localhost:3000" > .env
 
 # 4. Start the dev server
 npm run dev
@@ -106,7 +106,7 @@ The app will be available at **http://localhost:5174** (the port is fixed with `
 
 | Variable | Description | Example |
 | --- | --- | --- |
-| `VITE_API_URL` | Base URL of the Foodies REST API | `http://localhost:3000/api` |
+| `VITE_API_URL` | Base URL of the Foodies REST API | `http://localhost:3000` |
 
 > ⚠️ Never commit real `.env` values — `.env` is listed in `.gitignore`.
 
