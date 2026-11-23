@@ -3,6 +3,7 @@ import { Navigate, useOutletContext, useParams } from "react-router-dom";
 
 import UserBar from "../../components/profile/user-bar/UserBar";
 import TabsList from "../../components/profile/tabs-list/TabsList";
+import Loader from "../../components/shared/Loader/Loader";
 
 import {
   selectUser,
@@ -56,7 +57,7 @@ function UserPage() {
     : refreshOwnProfile;
 
   if (authStatus === "loading" && !isPublicProfile) {
-    return <p className="user-page__message">Loading profile...</p>;
+    return <Loader text="Loading profile..." />;
   }
 
   if (!isPublicProfile && (!isAuthenticated || !user)) {
@@ -64,7 +65,7 @@ function UserPage() {
   }
 
   if (isLoading && !profile) {
-    return <p className="user-page__message">Loading user information...</p>;
+    return <Loader text="Loading user information..." />;
   }
 
   if (error && !profile) {

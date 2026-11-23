@@ -5,6 +5,7 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Loader from "../components/shared/Loader/Loader";
 
 import {
   selectIsAuthenticated,
@@ -19,7 +20,7 @@ function PrivateRoute() {
   const outletContext = useOutletContext();
 
   if (!isSessionChecked) {
-    return <p>Loading...</p>;
+    return <Loader text="Checking session..." />;
   }
 
   if (!isAuthenticated) {

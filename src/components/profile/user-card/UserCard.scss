@@ -17,17 +17,17 @@
   }
 
   &__info {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  min-width: 0;
-}
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+  }
 
   &__profile {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
 
   &__avatar {
     display: flex;
@@ -63,12 +63,12 @@
   }
 
   &__details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  min-width: 0;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+  }
 
   &__name {
     margin: 0 0 4px;
@@ -87,6 +87,11 @@
   }
 
   &__follow-btn {
+    width: 120px;
+    min-width: 120px;
+    min-height: 36px;
+    white-space: nowrap;
+    flex-shrink: 0;
     padding: 8px 16px;
     border: 1px solid #d9d9d9;
     border-radius: 30px;
@@ -139,10 +144,10 @@
     }
 
     svg {
-    display: block;
-    width: 16px;
-    height: 16px;
-    filter: brightness(0);
+      display: block;
+      width: 16px;
+      height: 16px;
+      filter: brightness(0);
     }
 
     &:hover,
@@ -178,6 +183,7 @@
     &__recipes {
       display: flex;
       justify-content: flex-start;
+      align-items: flex-start;
       flex: 1;
       min-width: 0;
       gap: 12px;
@@ -185,21 +191,22 @@
     }
 
     &__recipe {
+      display: block;
       flex: 0 0 100px;
       width: 100px;
       height: 100px;
       overflow: hidden;
       border-radius: 8px;
 
-      &:nth-child(n + 4) {
-        display: none;
-      }
-
       img {
         display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+
+      &:nth-child(n + 4) {
+        display: none;
       }
     }
 
@@ -216,7 +223,7 @@
     padding: 24px 0;
 
     &__info {
-      flex: 0 0 auto;
+      flex: 0 0 240px;
     }
 
     &__avatar {
@@ -229,13 +236,18 @@
     }
 
     &__recipes {
-      flex: 0 0 auto;
+      display: flex;
+      flex: 1;
+      min-width: 0;
       justify-content: flex-start;
+      align-items: flex-start;
       gap: 12px;
-      overflow: visible;
+      overflow: hidden;
     }
 
     &__recipe {
+      flex: 0 0 100px;
+
       &:nth-child(n + 4) {
         display: block;
       }
@@ -246,7 +258,7 @@
     }
   }
 
- &:first-of-type {
+  &:first-of-type {
     padding-top: 0;
   }
 

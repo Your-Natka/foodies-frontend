@@ -8,6 +8,7 @@
   color: var(--color-white);
   background-color: transparent;
   transition: color 250ms ease;
+  padding-top: 20px;
 
   &--dark {
     color: var(--color-white);
@@ -24,7 +25,7 @@
     position: relative;
     width: 100%;
     min-width: 0;
-    padding-inline: clamp(8px, 4.3cqw, 60px);
+    padding-inline: clamp(8px, calc(50cqw - 640px), 60px);
     box-sizing: border-box;
     background-color: var(--color-black);
     color: var(--color-white);
@@ -46,7 +47,6 @@
     width: 100%;
     min-width: 0;
     padding-block: clamp(12px, 1.43cqw, 20px);
-    margin-top: clamp(8px, 1.43cqw, 20px);
     box-sizing: border-box;
   }
 

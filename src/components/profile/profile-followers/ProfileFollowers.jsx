@@ -12,6 +12,7 @@ import {
 import EmptyState from "../../shared/empty-state/EmptyState";
 import UserCard from "../user-card/UserCard";
 import Pagination from "../../shared/pagination/Pagination";
+import Loader from "../../shared/Loader/Loader";
 
 function ProfileFollowers({
   type = "followers",
@@ -83,7 +84,6 @@ function ProfileFollowers({
         if (!isActive) return;
 
         const nextUsers = Array.isArray(response.data) ? response.data : [];
-
         const nextTotalPages = response.pagination?.totalPages ?? 1;
 
         if (page > nextTotalPages) {
@@ -177,10 +177,12 @@ function ProfileFollowers({
     }
   };
 
+  // Loading state
   if (isLoading && users.length === 0) {
-    return <p className="user-page__message">Loading users...</p>;
+    return <Loader text="Loading users..." />;
   }
 
+  // Error state
   if (error) {
     return (
       <p className="user-page__message" role="alert">

@@ -219,7 +219,7 @@ const RecipePage = () => {
 
   return (
     <main className={css.recipePage}>
-      <div className={css.heroContainer}>
+      <div>
         <PathInfo title={recipe.title} category={recipe.category} />
 
         <div className={css.recipeInfoWrapper}>

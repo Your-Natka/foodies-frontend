@@ -1,17 +1,12 @@
 .recipePage {
-  container-type: inline-size;
   width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
   box-sizing: border-box;
 
   padding: clamp(64px, calc(2.381cqw + 45.71px), 80px)
     clamp(16px, calc(7.143cqw - 22.86px), 80px)
     clamp(32px, calc(7.143cqw - 22.86px), 80px);
-}
-
-.heroContainer {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
 }
 
 .recipeInfoWrapper {

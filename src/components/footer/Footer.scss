@@ -3,6 +3,7 @@
 
   padding-top: var(--section-spacing);
   padding-bottom: clamp(32px, 5cqw, 72px);
+
   background-color: var(--color-white);
 
   &__top {
@@ -93,7 +94,14 @@
   }
 }
 
-// Mobile: змінюємо розташування елементів
+// Desktop
+@media screen and (min-width: 1440px) {
+  .footer {
+    padding-inline: 80px;
+  }
+}
+
+// Mobile
 @media screen and (max-width: 767px) {
   .footer {
     &__top {

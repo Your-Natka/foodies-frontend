@@ -56,6 +56,10 @@ export function useCurrentUserProfile(isAuthenticated, userId) {
         return null;
       }
 
+      console.error("Failed to load current user profile:", err);
+      console.error("API response:", err.response?.data);
+      console.error("HTTP status:", err.response?.status);
+
       setError(
         err.response?.data?.message ||
           err.response?.data?.error ||
