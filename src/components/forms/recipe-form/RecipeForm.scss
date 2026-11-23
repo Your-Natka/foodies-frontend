@@ -733,55 +733,55 @@ $desktop: 1440px;
       }
     }
   }
-}
 
-// ---------- Actions ----------
-&__preparation {
-  display: flex;
-  flex-direction: column;
-}
-
-&__actions {
-  display: flex;
-  gap: 8px;
-}
-
-&__submit {
-  height: 56px;
-  padding: 0 39px;
-  border: 0;
-  border-radius: 30px;
-  background: var(--color-dark);
-  color: var(--color-white);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  transition: background-color 200ms ease;
-
-  &:hover:not(:disabled),
-  &:focus-visible {
-    background: var(--color-black);
+  // ---------- Actions ----------
+  &__preparation {
+    display: flex;
+    flex-direction: column;
   }
 
-  &:disabled {
-    background: var(--color-gray);
-    cursor: not-allowed;
+  &__actions {
+    display: flex;
+    gap: 8px;
   }
-}
 
-.recipe-form__cancel {
-  @extend .recipe-form__submit;
-
-  border: 1px solid var(--color-gray);
-  background-color: var(--color-white);
-  color: var(--color-dark);
-
-  &:hover {
-    border-color: var(--color-dark);
-    background-color: var(--color-dark);
+  &__submit {
+    height: 56px;
+    padding: 0 39px;
+    border: 0;
+    border-radius: 30px;
+    background: var(--color-dark);
     color: var(--color-white);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    transition: background-color 200ms ease;
+
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background: var(--color-black);
+    }
+
+    &:disabled {
+      background: var(--color-gray);
+      cursor: not-allowed;
+    }
+  }
+
+  .recipe-form__cancel {
+    @extend .recipe-form__submit;
+
+    border: 1px solid var(--color-gray);
+    background-color: var(--color-white);
+    color: var(--color-dark);
+
+    &:hover {
+      border-color: var(--color-dark);
+      background-color: var(--color-dark);
+      color: var(--color-white);
+    }
   }
 
   // ==========================================
