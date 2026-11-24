@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { findStepMinutes, splitInstructions } from "../../../utils/instructions";
+import {
+  findStepMinutes,
+  splitInstructions,
+} from "../../../utils/instructions";
 
 import css from "./CookingMode.module.scss";
 
@@ -153,7 +156,12 @@ function CookingMode({ recipe, onClose }) {
   const isLast = index === total - 1;
 
   return (
-    <div className={css.overlay} role="dialog" aria-modal="true" aria-label="Cooking mode">
+    <div
+      className={css.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Cooking mode"
+    >
       <div className={css.inner}>
         <header className={css.header}>
           <div>
@@ -202,7 +210,10 @@ function CookingMode({ recipe, onClose }) {
                       <span>
                         {ingredient.name}
                         {ingredient.measure && (
-                          <span className={css.measure}> — {ingredient.measure}</span>
+                          <span className={css.measure}>
+                            {" "}
+                            — {ingredient.measure}
+                          </span>
                         )}
                       </span>
                     </label>
@@ -219,8 +230,14 @@ function CookingMode({ recipe, onClose }) {
           <div className={css.timer}>
             {timer.secondsLeft !== null ? (
               <>
-                <span className={css.timerValue}>{formatTime(timer.secondsLeft)}</span>
-                <button type="button" className={css.timerButton} onClick={timer.stop}>
+                <span className={css.timerValue}>
+                  {formatTime(timer.secondsLeft)}
+                </span>
+                <button
+                  type="button"
+                  className={css.timerButton}
+                  onClick={timer.stop}
+                >
                   Stop timer
                 </button>
               </>
@@ -243,14 +260,30 @@ function CookingMode({ recipe, onClose }) {
             onClick={goPrev}
             disabled={index === 0}
           >
-            ← Back
+            <svg
+              className={css.backIcon}
+              viewBox="0 0 32 32"
+              aria-hidden="true"
+            >
+              <use href="/images/sprite.svg#icon-arrow-back" />
+            </svg>
+
+            <span>BACK</span>
           </button>
           {isLast ? (
-            <button type="button" className={css.navButtonPrimary} onClick={onClose}>
+            <button
+              type="button"
+              className={css.navButtonPrimary}
+              onClick={onClose}
+            >
               Done 🎉
             </button>
           ) : (
-            <button type="button" className={css.navButtonPrimary} onClick={goNext}>
+            <button
+              type="button"
+              className={css.navButtonPrimary}
+              onClick={goNext}
+            >
               {isChecklist ? "Start cooking →" : "Next →"}
             </button>
           )}
