@@ -2,21 +2,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 10px 20px;
+  gap: clamp(6px, 0.55vw, 8px);
+  min-height: clamp(40px, 3.2vw, 46px);
+  padding: clamp(8px, 0.7vw, 10px) clamp(12px, 1.4vw, 20px);
   border: 1px solid currentColor;
   border-radius: 30px;
   background: transparent;
   font: inherit;
-  font-size: 12px;
+  font-size: clamp(10px, 0.84vw, 12px);
   font-weight: 700;
-  line-height: 18px;
+  line-height: 1.5;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: inherit;
   cursor: pointer;
-  transition: background-color 250ms ease, color 250ms ease;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease;
 
   &:hover,
   &:focus-visible {
@@ -25,6 +27,19 @@
     color: var(--color-white);
     outline: none;
   }
+}
+
+.install-app-button__icon {
+  display: block;
+  flex-shrink: 0;
+  width: clamp(16px, 1.25vw, 18px);
+  height: clamp(16px, 1.25vw, 18px);
+  fill: none;
+  stroke: currentColor;
+}
+
+.install-app-button__text {
+  white-space: nowrap;
 }
 
 .install-help__steps {
@@ -41,4 +56,15 @@
   font-size: 14px;
   line-height: 1.5;
   color: var(--color-gray);
+}
+
+@media screen and (max-width: 374px) {
+  .install-app-button {
+    gap: 0;
+    padding: 10px;
+  }
+
+  .install-app-button__text {
+    display: none;
+  }
 }
