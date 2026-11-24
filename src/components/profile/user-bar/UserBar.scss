@@ -1,16 +1,16 @@
 .user-bar {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: clamp(16px, 2vw, 20px);
   width: 100%;
-  max-width: 343px;
+  max-width: 394px;
 
   &__card {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 24px 20px 20px;
+    padding: clamp(24px, 4vw, 40px) clamp(20px, 5vw, 32px);
     border: 1px solid var(--color-light-gray);
     border-radius: 20px;
     background-color: var(--color-white);
@@ -18,9 +18,10 @@
 
   &__avatar-wrapper {
     position: relative;
+    flex-shrink: 0;
     width: 80px;
     height: 80px;
-    margin-bottom: 24px;
+    margin-bottom: clamp(20px, 3vw, 24px);
   }
 
   &__avatar {
@@ -31,6 +32,7 @@
     background-color: #e8e8e8;
 
     img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -39,24 +41,23 @@
 
   &__avatar-button {
     position: absolute;
-    left: 50%;
+    z-index: 2;
     bottom: -12px;
-    transform: translateX(-50%);
-
+    left: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     padding: 0;
+    transform: translateX(-50%);
     border: none;
     border-radius: 50%;
-
     background-color: var(--color-black);
     color: var(--color-white);
-    font-size: 24px;
+    font-size: 16px;
     line-height: 1;
+    cursor: pointer;
 
     &:disabled {
       cursor: wait;
@@ -66,8 +67,13 @@
     &:hover,
     &:focus-visible,
     &:active {
-      background: var(--color-dark);
+      background-color: var(--color-dark);
       color: var(--color-white);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-gray);
+      outline-offset: 3px;
     }
   }
 
@@ -76,12 +82,13 @@
   }
 
   &__name {
-    margin: 0 0 16px;
+    max-width: 100%;
+    margin: 0 0 clamp(12px, 2vw, 20px);
     color: var(--color-black);
     font-family: var(--font-family);
-    font-size: 20px;
+    font-size: clamp(18px, 2vw, 20px);
     font-weight: 800;
-    line-height: 24px;
+    line-height: 1.2;
     letter-spacing: -0.02em;
     text-align: center;
     text-transform: uppercase;
@@ -92,8 +99,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
-
+    gap: clamp(6px, 1vw, 8px);
     width: fit-content;
     max-width: 100%;
     margin: 0 auto;
@@ -103,11 +109,10 @@
     display: flex;
     align-items: baseline;
     gap: 4px;
-    margin: 0;
     max-width: 100%;
-
-    font-size: 14px;
-    line-height: 20px;
+    margin: 0;
+    font-size: clamp(12px, 1.5vw, 14px);
+    line-height: 1.45;
     letter-spacing: -0.02em;
 
     dt {
@@ -125,71 +130,24 @@
     }
   }
 
-  &__logout {
+  &__logout,
+  &__follow {
     width: 100%;
-    min-height: 40px;
-    margin-top: 0;
-    padding: 12px 20px;
+    min-height: clamp(40px, 4vw, 44px);
+    padding: 10px 20px;
     border: 1px solid var(--color-black);
     border-radius: 30px;
-
     background-color: var(--color-black);
     color: var(--color-white);
-
     font-size: 14px;
     font-weight: 800;
     line-height: 20px;
     letter-spacing: -0.02em;
-
     cursor: pointer;
 
     transition:
       transform 200ms ease,
       box-shadow 200ms ease;
-
-    &:hover:not(:disabled) {
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-gray);
-      outline-offset: 3px;
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(1px);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  &__follow {
-    width: 100%;
-    min-height: 40px;
-    padding: 12px 20px;
-    border: 1px solid var(--color-black);
-    border-radius: 30px;
-
-    background-color: var(--color-black);
-    color: var(--color-white);
-
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 20px;
-    letter-spacing: -0.02em;
-
-    cursor: pointer;
-
-    transition:
-      box-shadow 200ms ease,
-      transform 200ms ease;
 
     &:hover:not(:disabled) {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -208,40 +166,33 @@
       opacity: 0.6;
       cursor: wait;
     }
+  }
 
-    @media (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce) {
+    &__logout,
+    &__follow {
       transition: none;
     }
   }
 }
 
-// Tablet and Desktop
+// Tablet and desktop
 @media screen and (min-width: 768px) {
   .user-bar {
-    width: 100%;
-    max-width: 394px;
-
     &__card {
-      padding: 40px 80px;
+      padding: clamp(32px, 4vw, 40px) clamp(24px, 5vw, 32px);
     }
 
     &__avatar-wrapper {
-      width: 120px;
-      height: 120px;
+      width: clamp(100px, 10vw, 120px);
+      height: clamp(100px, 10vw, 120px);
       margin-bottom: 20px;
     }
 
-    &__name {
-      margin-bottom: 20px;
-    }
-
-    &__details {
-      gap: 8px;
-    }
-
-    &__logout,
-    &__follow {
-      min-height: 44px;
+    &__avatar-button {
+      width: 38px;
+      height: 38px;
+      font-size: 18px;
     }
   }
 }
