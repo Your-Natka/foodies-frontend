@@ -29,7 +29,7 @@ const RecipeActions = ({ recipe, onStartCooking }) => {
   };
 
   return (
-    <div className={`${css.actions} no-print`}>
+    <div className={`${css.actions} recipe-actions-group no-print`}>
       <button type="button" className={css.primary} onClick={onStartCooking}>
         Start cooking
       </button>

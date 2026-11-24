@@ -3,7 +3,6 @@ import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import trashIcon from "../../../assets/icons/add-recipe/trash.svg";
 
 import Loader from "../../shared/Loader/Loader";
 import { getCategories } from "../../../services/api/categoriesApi";
@@ -303,7 +302,7 @@ function RecipeForm({ recipeId }) {
                 disabled={isSubmitting}
                 aria-label={isEditMode ? "Reset changes" : "Clear the form"}
               >
-                <img src={trashIcon} width="20" height="20" alt="" />
+                <svg width="20" height="20" aria-hidden="true"><use href="/images/sprite.svg#icon-trash20x20" /></svg>
               </button>
 
               <button

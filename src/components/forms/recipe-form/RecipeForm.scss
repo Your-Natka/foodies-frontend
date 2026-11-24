@@ -58,7 +58,7 @@ $desktop: 1440px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: 20px;
     width: 100%;
     height: 400px;
     overflow: hidden;
@@ -85,6 +85,13 @@ $desktop: 1440px;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  &__photo-placeholder {
+    display: block;
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
   }
 
   &__photo-icon {
@@ -618,7 +625,7 @@ $desktop: 1440px;
       background: var(--color-black);
       color: var(--color-white);
 
-      img {
+      svg {
         filter: invert(1);
       }
     }
@@ -643,43 +650,50 @@ $desktop: 1440px;
   }
 
   &__ingredient-card {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
     width: 100%;
     min-width: 0;
-    padding: 8px;
-    border: 1px solid var(--color-gray);
+    min-height: 90px;
+    padding: 0px;
+    border: 0;
     border-radius: 18px;
-    background: var(--color-white);
+    background: transparent;
     box-sizing: border-box;
   }
 
   &__ingredient-thumb {
     display: flex;
-    flex: 0 0 72px;
+    flex: 0 0 90px;
     align-items: center;
     justify-content: center;
-    width: 72px;
-    height: 72px;
-    overflow: hidden;
-    border: 1px solid var(--color-gray);
-    border-radius: 14px;
+    width: 90px;
+    height: 90px;
     box-sizing: border-box;
+    border: 1px solid var(--color-gray);
+    border-radius: 15px;
+
+    overflow: hidden;
 
     img {
-      width: 70%;
-      height: 70%;
+      display: block;
+      width: 60px;
+      height: 60px;
       object-fit: contain;
     }
   }
 
   &__ingredient-text {
+    position: relative;
     display: flex;
     flex: 1;
     flex-direction: column;
+    justify-content: center;
     gap: 2px;
     min-width: 0;
+    padding-top: 24px;
 
     p {
       @include text-main;
@@ -700,37 +714,36 @@ $desktop: 1440px;
   }
 
   &__ingredient-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
     display: flex;
-    flex: 0 0 36px;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 24px;
+    height: 24px;
     padding: 0;
-    border: 1px solid var(--color-gray);
+    border: 0;
     border-radius: 50%;
-    background: var(--color-white);
+    background: transparent;
     cursor: pointer;
-    transition:
-      border-color 200ms ease,
-      background-color 200ms ease,
-      opacity 200ms ease;
 
-    img {
+    svg {
       display: block;
       width: 16px;
       height: 16px;
-      opacity: 0.6;
+      opacity: 0.7;
+      transition: opacity 200ms ease;
     }
 
-    &:hover,
-    &:focus-visible {
-      border-color: var(--color-black);
-      outline: none;
+    &:hover svg,
+    &:focus-visible svg {
+      opacity: 1;
+    }
 
-      img {
-        opacity: 1;
-      }
+    &:focus-visible {
+      outline: 1px solid var(--color-black);
+      outline-offset: 2px;
     }
   }
 
@@ -796,6 +809,11 @@ $desktop: 1440px;
       width: 100%;
     }
 
+    &__photo-placeholder {
+      width: 200px;
+      height: 200px;
+    }
+
     &__body {
       flex: none;
       width: 100%;
@@ -812,6 +830,7 @@ $desktop: 1440px;
     &__photo-frame {
       height: 318px;
     }
+
 
     &__body {
       gap: 64px;
@@ -871,12 +890,32 @@ $desktop: 1440px;
 
     &__ingredient-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 12px;
+      row-gap: 16px;
+    }
+
+    &__ingredient-card {
+      min-height: 75px;
+      gap: 8px;
     }
 
     &__ingredient-thumb {
+      flex-basis: 75px;
+      width: 75px;
+      height: 75px;
+
       img {
-        width: 60px;
-        height: 60px;
+        width: 55px;
+        height: 55px;
+      }
+    }
+
+    &__ingredient-text {
+      padding-top: 20px;
+
+      p {
+        font-size: clamp(11px, 3.2vw, 14px);
+        line-height: 1.35;
       }
     }
   }
@@ -886,9 +925,5 @@ $desktop: 1440px;
   // ==========================================
   @media (max-width: 374px) {
     gap: 32px;
-
-    &__ingredient-list {
-      grid-template-columns: 1fr;
-    }
   }
 }

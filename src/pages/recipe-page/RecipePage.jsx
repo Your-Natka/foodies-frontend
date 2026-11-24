@@ -233,7 +233,7 @@ const RecipePage = () => {
 
             <RecipePreparation instructions={recipe.instructions} />
 
-            <div className={`${css.actions} no-print`}>
+            <div className={`${css.actions} no-print`} data-owner={isOwner ? "true" : "false"}>
               <RecipeFavoriteButton
                 isFavorite={isFavorite}
                 onClick={() => handleToggleFavorite(recipe.id, isFavorite)}

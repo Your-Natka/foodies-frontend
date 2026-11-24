@@ -74,7 +74,7 @@ const RecipeCard = ({
             onClick={() => onToggleFavorite?.(id, isFavorite)}
           >
             <svg className={css.icon} aria-hidden="true">
-              <use href="/icons.svg#icon-heart" />
+              <use href="/images/sprite.svg#icon-heart16x16-food" />
             </svg>
           </button>
 
@@ -88,7 +88,7 @@ const RecipeCard = ({
             aria-label={`View ${title} recipe`}
           >
             <svg className={css.icon} aria-hidden="true">
-              <use href="/icons.svg#icon-arrow-up-right" />
+              <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
             </svg>
           </Link>
         </div>

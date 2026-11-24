@@ -10,7 +10,7 @@ const CategoryInfo = ({ title, description, onBack }) => {
         aria-label="Back to categories"
       >
         <svg className={css.backIcon} viewBox="0 0 32 32" aria-hidden="true">
-          <use href="/icons.svg#icon-arrow-back" />
+          <use href="/images/sprite.svg#icon-arrow-back" />
         </svg>
 
         <span>BACK</span>
