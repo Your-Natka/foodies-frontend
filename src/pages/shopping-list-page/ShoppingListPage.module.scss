@@ -122,7 +122,16 @@
     border-color: var(--color-black);
     outline: none;
 
-    .stepIcon,
+    .stepIcon {
+      display: block;
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      color: var(--color-white);
+      fill: currentColor;
+      --color1: var(--color-white);
+    }
+
     .stepTitle {
       color: var(--color-white);
     }
@@ -135,6 +144,41 @@
     .stepArrow {
       color: var(--color-black);
     }
+  }
+}
+
+.stepButton {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.stepActive {
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+
+  .stepIcon {
+    color: var(--color-white);
+    fill: currentColor;
+    --color1: var(--color-white);
+  }
+
+  .stepTitle {
+    color: var(--color-white);
+  }
+
+  .stepArrowWrapper {
+    background-color: var(--color-white);
+    border-color: var(--color-white);
+  }
+
+  .stepArrow {
+    color: var(--color-black);
   }
 }
 
@@ -394,10 +438,9 @@
 }
 
 .group {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-  align-items: start;
-  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
   min-width: 0;
   padding: 24px;
   border: 1px solid var(--color-light-gray);
@@ -406,18 +449,19 @@
 }
 
 /* ========================================
-   RECIPE IMAGE AND TITLE
+   RECIPE GROUP HEADER
 ======================================== */
 
-.recipeInfo {
+.groupHeader {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
   min-width: 0;
 }
 
 .groupTitle {
+  min-width: 0;
   margin: 0;
   color: var(--color-black);
   font-size: 20px;
@@ -439,6 +483,73 @@
   }
 }
 
+/* Remove entire recipe */
+
+.removeGroup {
+  display: flex;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-gray);
+  border-radius: 50%;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+
+  svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-black);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    outline: none;
+  }
+}
+
+/* ========================================
+   RECIPE PHOTO + INGREDIENTS
+======================================== */
+
+.groupContent {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: start;
+  gap: clamp(20px, 3vw, 40px);
+  min-width: 0;
+}
+
+.compactGroup {
+  .groupContent {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recipeInfo {
+    display: none;
+  }
+
+  .list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.recipeInfo {
+  min-width: 0;
+}
+
 .recipeImageLink {
   display: block;
   width: 100%;
@@ -455,72 +566,12 @@
 }
 
 /* ========================================
-   INGREDIENTS HEADER
+   INGREDIENTS GRID
 ======================================== */
 
 .ingredientsContent {
   min-width: 0;
 }
-
-.ingredientsHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.ingredientsTitle {
-  margin: 0;
-  color: var(--color-black);
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-/* Remove entire recipe */
-
-.removeGroup {
-  display: flex;
-  flex: 0 0 36px;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid var(--color-gray);
-  border-radius: 50%;
-  background-color: var(--color-white);
-  color: var(--color-black);
-  cursor: pointer;
-  line-height: 1;
-  transition:
-    background-color 200ms ease,
-    border-color 200ms ease,
-    color 200ms ease;
-
-  span {
-    display: block;
-    position: relative;
-    top: -1px;
-    font-size: 26px;
-    font-weight: 400;
-    line-height: 1;
-  }
-
-  &:hover,
-  &:focus-visible {
-    border-color: var(--color-black);
-    background-color: var(--color-black);
-    color: var(--color-white);
-    outline: none;
-  }
-}
-
-/* ========================================
-   INGREDIENTS GRID
-======================================== */
 
 .list {
   display: grid;
@@ -532,18 +583,17 @@
 }
 
 .item {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(6px, 0.7vw, 10px);
   min-width: 0;
-  min-height: 92px;
-  padding: 8px;
-  border: 1px solid var(--color-gray);
-  border-radius: 15px;
-  background-color: var(--color-white);
-  transition:
-    background-color 200ms ease,
-    border-color 200ms ease;
+  min-height: 100px;
+  padding: 26px 4px 8px;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  transition: background-color 200ms ease;
 }
 
 .checkbox {
@@ -559,42 +609,43 @@
   display: flex;
   flex: 1;
   align-items: center;
-  gap: 10px;
+  gap: clamp(6px, 0.7vw, 10px);
   min-width: 0;
   cursor: pointer;
 }
 
 .imageWrapper {
   display: flex;
-  flex: 0 0 56px;
+  flex: 0 0 clamp(67px, 5vw, 72px);
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
+  width: clamp(67px, 5vw, 72px);
+  height: clamp(67px, 5vw, 72px);
   overflow: hidden;
   border: 1px solid var(--color-gray);
-  border-radius: 12px;
+  border-radius: 15px;
 }
 
 .image {
   display: block;
-  width: 44px;
-  height: 44px;
+  width: clamp(55px, 4.2vw, 60px);
+  height: clamp(55px, 4.2vw, 60px);
   object-fit: contain;
 }
 
 .ingredientInfo {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 
 .name {
   color: var(--color-black);
   font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
+  font-weight: 600;
+  line-height: 1.35;
   overflow-wrap: anywhere;
   transition: color 200ms ease;
 }
@@ -604,14 +655,12 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 /* Bought ingredient */
 
 .checked {
-  border-color: var(--color-light-gray);
-  background-color: #f7f7f7;
-
   .name {
     color: var(--color-gray);
     text-decoration: line-through;
@@ -625,29 +674,31 @@
 /* Remove individual ingredient */
 
 .removeItem {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
-  flex: 0 0 28px;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: 1px solid var(--color-light-gray);
   border-radius: 50%;
   background-color: var(--color-white);
   color: var(--color-gray);
   cursor: pointer;
-  line-height: 1;
   transition:
     background-color 200ms ease,
     border-color 200ms ease,
     color 200ms ease;
 
-  span {
+  svg {
     display: block;
-    font-size: 21px;
-    font-weight: 400;
-    line-height: 1;
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
   }
 
   &:hover,
@@ -729,34 +780,47 @@
   }
 
   .group {
-    grid-template-columns: 140px minmax(0, 1fr);
-    gap: 24px;
+    gap: 20px;
     padding: 20px;
   }
 
+  .groupContent {
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: 20px;
+  }
+
   .recipeImageLink {
-    width: 110px;
-    height: 110px;
+    aspect-ratio: 4 / 4.5;
+    border-radius: 16px;
   }
 
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
   }
 
   .item {
-    min-height: 90px;
+    gap: 6px;
+    min-height: 96px;
   }
 
   .imageWrapper {
-    flex-basis: 52px;
-    width: 52px;
-    height: 52px;
+    flex-basis: clamp(67px, 6vw, 72px);
+    width: clamp(67px, 6vw, 72px);
+    height: clamp(67px, 6vw, 72px);
   }
 
   .image {
-    width: 42px;
-    height: 42px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .name {
+    font-size: 12px;
+  }
+
+  .measure {
+    font-size: 11px;
   }
 }
 
@@ -768,6 +832,12 @@
   .page {
     padding-top: 24px;
     padding-bottom: 48px;
+  }
+
+  .compactGroup {
+    .list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .breadcrumbs {
@@ -891,16 +961,12 @@
   }
 
   .group {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    gap: 18px;
     padding: 16px;
     border-radius: 16px;
   }
 
-  .recipeInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  .groupHeader {
     gap: 12px;
   }
 
@@ -909,36 +975,37 @@
     line-height: 1.3;
   }
 
-  .recipeImageLink {
-    width: 100%;
-    aspect-ratio: 550 / 444;
-    border-radius: 14px;
-  }
-
-  .ingredientsHeader {
-    margin-bottom: 16px;
-  }
-
   .removeGroup {
     flex-basis: 32px;
     width: 32px;
     height: 32px;
   }
 
-  .ingredientsTitle {
-    font-size: 16px;
+  .removeGroup svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .groupContent {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .recipeImageLink {
+    width: 100%;
+    aspect-ratio: 550 / 444;
+    border-radius: 14px;
   }
 
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 12px 8px;
   }
 
   .item {
     gap: 6px;
-    min-height: 82px;
-    padding: 7px;
-    border-radius: 12px;
+    min-height: 94px;
+    padding: 26px 2px 6px;
   }
 
   .checkbox {
@@ -948,21 +1015,23 @@
   }
 
   .label {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 6px;
   }
 
   .imageWrapper {
-    flex-basis: 42px;
-    width: 42px;
-    height: 42px;
-    border-radius: 9px;
+    flex-basis: 62px;
+    width: 62px;
+    height: 62px;
+    border-radius: 15px;
   }
 
   .image {
-    width: 34px;
-    height: 34px;
+    width: 55px;
+    height: 55px;
+  }
+
+  .ingredientInfo {
+    gap: 2px;
   }
 
   .name {
@@ -974,13 +1043,13 @@
   }
 
   .removeItem {
-    flex-basis: 22px;
     width: 22px;
     height: 22px;
+  }
 
-    span {
-      font-size: 18px;
-    }
+  .removeItem svg {
+    width: 13px;
+    height: 13px;
   }
 }
 
@@ -1010,24 +1079,19 @@
   }
 
   .item {
-    min-height: 76px;
-    padding: 9px;
-  }
-
-  .label {
-    flex-direction: row;
-    align-items: center;
+    min-height: 94px;
+    padding: 26px 4px 8px;
   }
 
   .imageWrapper {
-    flex-basis: 48px;
-    width: 48px;
-    height: 48px;
+    flex-basis: 62px;
+    width: 62px;
+    height: 62px;
   }
 
   .image {
-    width: 38px;
-    height: 38px;
+    width: 55px;
+    height: 55px;
   }
 
   .name {
@@ -1036,5 +1100,331 @@
 
   .measure {
     font-size: 11px;
+  }
+}
+
+/* ========================================
+   SHOPPING LIST MODES
+======================================== */
+
+.modeContent {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.modeTitle {
+  margin: 0 0 10px;
+  color: var(--color-black);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.modeDescription {
+  margin: 0 0 28px;
+  color: var(--color-dark);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-black);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 250ms ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-dark);
+    outline-offset: 4px;
+  }
+}
+
+.backStepIcon {
+  display: block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+}
+
+.emptyMessage {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 16px;
+  color: var(--color-dark);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   ALL INGREDIENTS VIEW
+======================================== */
+
+.allIngredients {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* ========================================
+   SHOP WITH EASE EDITOR
+======================================== */
+
+.editorLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+}
+
+.editorCurrentList,
+.catalogPanel {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 20px;
+  background-color: var(--color-white);
+}
+
+.sectionTitle {
+  margin: 0 0 20px;
+  color: var(--color-black);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.searchInput {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-gray);
+  border-radius: 30px;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 200ms ease;
+
+  &::placeholder {
+    color: var(--color-gray);
+  }
+
+  &:focus {
+    border-color: var(--color-black);
+  }
+}
+
+.catalogList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 520px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.catalogItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 14px;
+}
+
+.catalogImage {
+  display: flex;
+  flex: 0 0 52px;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border: 1px solid var(--color-gray);
+  border-radius: 12px;
+
+  img {
+    display: block;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+  }
+}
+
+.catalogInfo {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-black);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.addIngredientButton {
+  flex-shrink: 0;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-black);
+  border-radius: 30px;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    outline: none;
+  }
+}
+
+.addedLabel {
+  flex-shrink: 0;
+  color: var(--color-gray);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.catalogStatus {
+  margin: 0;
+  padding: 16px 0;
+  color: var(--color-dark);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   MODE BUTTONS
+======================================== */
+
+.stepLink {
+  font: inherit;
+  text-align: left;
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .allIngredients {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .editorLayout {
+    gap: 20px;
+  }
+
+  .editorCurrentList,
+  .catalogPanel {
+    padding: 18px;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .allIngredients {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media screen and (max-width: 767px) {
+  .modeTitle {
+    font-size: 24px;
+  }
+
+  .modeDescription {
+    margin-bottom: 20px;
+  }
+
+  .allIngredients {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 8px;
+  }
+
+  .editorLayout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .editorCurrentList,
+  .catalogPanel {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .sectionTitle {
+    font-size: 16px;
+  }
+
+  .catalogList {
+    max-height: 420px;
+  }
+
+  .catalogItem {
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .catalogImage {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .catalogInfo {
+    font-size: 12px;
+  }
+
+  .addIngredientButton {
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 374px) {
+  .allIngredients {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

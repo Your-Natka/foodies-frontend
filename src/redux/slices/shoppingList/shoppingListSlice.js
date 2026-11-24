@@ -19,6 +19,7 @@ const shoppingListSlice = createSlice({
 
       ingredients.forEach(({ id, name, img, measure }) => {
         const key = `${recipeId}-${id}`;
+
         if (state.items.some((item) => item.key === key)) return;
 
         state.items.push({
@@ -35,8 +36,31 @@ const shoppingListSlice = createSlice({
       });
     },
 
+    addStandaloneIngredient(state, { payload }) {
+      const { id, name, img } = payload;
+
+      const alreadyExists = state.items.some(
+        (item) => String(item.ingredientId) === String(id),
+      );
+
+      if (alreadyExists) return;
+
+      state.items.push({
+        key: `manual-${id}`,
+        recipeId: null,
+        recipeTitle: "Other ingredients",
+        recipeThumb: null,
+        ingredientId: id,
+        name,
+        img: img || null,
+        measure: "",
+        checked: false,
+      });
+    },
+
     toggleItem(state, { payload: key }) {
       const item = state.items.find((entry) => entry.key === key);
+
       if (item) item.checked = !item.checked;
     },
 
@@ -65,6 +89,7 @@ const shoppingListSlice = createSlice({
 export const {
   restoreShoppingList,
   addRecipeIngredients,
+  addStandaloneIngredient,
   toggleItem,
   removeItem,
   removeRecipe,
@@ -80,12 +105,19 @@ export const selectShoppingCount = (state) =>
 export const selectIsRecipeInList = (recipeId) => (state) =>
   state.shoppingList.items.some((item) => item.recipeId === recipeId);
 
+export const selectShoppingStandaloneItems = createSelector(
+  [selectShoppingItems],
+  (items) => items.filter((item) => item.recipeId == null),
+);
+
 export const selectShoppingGroups = createSelector(
   [selectShoppingItems],
   (items) => {
     const groups = new Map();
 
     items.forEach((item) => {
+      if (item.recipeId == null) return;
+
       if (!groups.has(item.recipeId)) {
         groups.set(item.recipeId, {
           recipeId: item.recipeId,
