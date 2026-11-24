@@ -81,3 +81,166 @@
     padding: 14px 20px;
   }
 }
+
+
+/* Recipe action buttons layout */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 8px;
+}
+
+.actions :global(.recipe-actions-group) {
+  display: contents;
+}
+
+.actions > button,
+.actions :global(.recipe-actions-group) > button {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 12px 10px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.actions > button:first-child,
+.actions > button:nth-child(2) {
+  grid-column: span 6;
+}
+
+.actions :global(.recipe-actions-group) > button {
+  grid-column: span 4;
+}
+
+.actions[data-owner="false"]::after {
+  content: "";
+  grid-column: 7 / span 6;
+  grid-row: 1;
+}
+
+/* Tablet: all visible buttons in one row */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .actions {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .actions > button,
+  .actions :global(.recipe-actions-group) > button {
+    grid-column: span 1;
+  }
+
+  .actions[data-owner="false"]::after {
+    display: none;
+  }
+}
+
+/* Explicit positions for desktop and regular mobile */
+.actions > button:first-child {
+  grid-column: 1 / span 6;
+  grid-row: 1;
+}
+
+.actions > button:nth-child(2) {
+  grid-column: 7 / span 6;
+  grid-row: 1;
+}
+
+.actions :global(.recipe-actions-group) > button:nth-child(1) {
+  grid-column: 1 / span 4;
+  grid-row: 2;
+}
+
+.actions :global(.recipe-actions-group) > button:nth-child(2) {
+  grid-column: 5 / span 4;
+  grid-row: 2;
+}
+
+.actions :global(.recipe-actions-group) > button:nth-child(3) {
+  grid-column: 9 / span 4;
+  grid-row: 2;
+}
+
+/* Tablet: override desktop positions */
+@media screen and (min-width: 768px) and (max-width: 1439px) {
+  .actions > button:first-child,
+  .actions > button:nth-child(2),
+  .actions :global(.recipe-actions-group) > button:nth-child(1),
+  .actions :global(.recipe-actions-group) > button:nth-child(2),
+  .actions :global(.recipe-actions-group) > button:nth-child(3) {
+    grid-column: auto;
+    grid-row: 1;
+  }
+}
+
+
+/* Very small mobile */
+@media screen and (max-width: 374px) {
+  .actions > button:first-child {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .actions > button:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .actions :global(.recipe-actions-group) > button:nth-child(1) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  .actions :global(.recipe-actions-group) > button:nth-child(2) {
+    grid-column: 1 / span 6;
+    grid-row: 4;
+  }
+
+  .actions :global(.recipe-actions-group) > button:nth-child(3) {
+    grid-column: 7 / span 6;
+    grid-row: 4;
+  }
+}
+
+@media screen and (max-width: 374px) {
+  .actions[data-owner="false"] > button:first-child {
+    grid-row: 1;
+  }
+
+  .actions[data-owner="false"] :global(.recipe-actions-group) > button:nth-child(1) {
+    grid-row: 2;
+  }
+
+  .actions[data-owner="false"] :global(.recipe-actions-group) > button:nth-child(2) {
+    grid-row: 3;
+  }
+
+  .actions[data-owner="false"] :global(.recipe-actions-group) > button:nth-child(3) {
+    grid-row: 3;
+  }
+
+  .actions[data-owner="false"]::after {
+    display: none;
+  }
+}
+
+
+/* Responsive button dimensions */
+.actions > button,
+.actions :global(.recipe-actions-group) > button {
+  min-height: clamp(48px, calc(2.5vw + 39px), 56px);
+  padding: clamp(10px, calc(0.625vw + 7.75px), 12px)
+    clamp(8px, calc(0.625vw + 5.75px), 10px);
+  font-size: clamp(12px, calc(0.625vw + 9.75px), 14px);
+  line-height: clamp(16px, calc(0.625vw + 13.75px), 18px);
+}

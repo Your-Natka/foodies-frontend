@@ -76,7 +76,7 @@ const CustomSelect = ({ placeholder, options, value, onChange }) => {
           className={`${css.chevron} ${isOpen ? css.chevronOpen : ""}`}
           aria-hidden="true"
         >
-          <use href="/icons.svg#icon-chevron-down" />
+          <use href="/images/sprite.svg#icon-chevron-down18x18" />
         </svg>
       </button>
 

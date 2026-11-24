@@ -1,11 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { ErrorMessage, useField, useFormikContext } from "formik";
 
-import captureIcon from "../../../assets/icons/add-recipe/capture.svg";
-import cameraIcon from "../../../assets/icons/add-recipe/photo-camera.svg";
-import chevronIcon from "../../../assets/icons/add-recipe/chevron-down.svg";
-import minusIcon from "../../../assets/icons/add-recipe/minus.svg";
-import plusIcon from "../../../assets/icons/add-recipe/plus.svg";
 
 import { PHOTO_TYPES, TIME_MIN } from "./recipeSchema";
 
@@ -95,16 +90,12 @@ export function PhotoField({ initialPhoto }) {
         </>
       ) : (
         <label htmlFor={inputId} className="recipe-form__photo-frame">
-          <span className="recipe-form__photo-icon" aria-hidden="true">
-            <img src={captureIcon} width="64" height="64" alt="" />
-            <img
-              src={cameraIcon}
-              width="24"
-              height="24"
-              alt=""
-              className="recipe-form__photo-camera"
-            />
-          </span>
+          <img
+            src="/images/photo-cook.jpg"
+            alt=""
+            className="recipe-form__photo-placeholder"
+          />
+
 
           <span className="recipe-form__photo-link">Upload a photo</span>
         </label>
@@ -254,15 +245,7 @@ export function SearchableSelect({
           {isLoading ? "Loading..." : selectedOption?.label || placeholder}
         </span>
 
-        <img
-          src={chevronIcon}
-          width="18"
-          height="18"
-          alt=""
-          className={`recipe-form__select-icon ${
-            isOpen ? "recipe-form__select-icon--open" : ""
-          }`}
-        />
+        <svg width="18" height="18" aria-hidden="true" className={`recipe-form__select-icon ${isOpen ? "recipe-form__select-icon--open" : ""}`}><use href="/images/sprite.svg#icon-chevron-down-black" /></svg>
       </button>
 
       {isOpen && (
@@ -440,7 +423,7 @@ export function CookingTimeField() {
           disabled={isMinValue}
           aria-label="Decrease cooking time"
         >
-          <img src={minusIcon} width="24" height="24" alt="" />
+          <svg width="24" height="24" aria-hidden="true"><use href="/images/sprite.svg#icon-minus24x24" /></svg>
         </button>
 
         <div className="recipe-form__time-center">
@@ -485,7 +468,7 @@ export function CookingTimeField() {
           onClick={() => changeBy(5)}
           aria-label="Increase cooking time"
         >
-          <img src={plusIcon} width="24" height="24" alt="" />
+          <svg width="24" height="24" aria-hidden="true"><use href="/images/sprite.svg#icon-plus24x24" /></svg>
         </button>
       </div>
 

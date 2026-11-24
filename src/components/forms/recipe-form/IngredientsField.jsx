@@ -1,8 +1,6 @@
 import { useId, useMemo, useState } from "react";
 import { FieldArray, useFormikContext } from "formik";
 
-import plusIcon from "../../../assets/icons/add-recipe/plus-small.svg";
-import closeIcon from "../../../assets/icons/add-recipe/close.svg";
 
 import { FieldError, SearchableSelect } from "./fields";
 import { MEASURE_MAX } from "./recipeSchema";
@@ -134,7 +132,7 @@ function IngredientsField({ options = [], isLoading }) {
               disabled={isLoading}
             >
               Add ingredient
-              <img src={plusIcon} width="22" height="22" alt="" />
+              <svg width="22" height="22" aria-hidden="true"><use href="/images/sprite.svg#icon-plus22x22" /></svg>
             </button>
 
             {values.ingredients.length > 0 && (
@@ -146,27 +144,24 @@ function IngredientsField({ options = [], isLoading }) {
                   return (
                     <li key={item.id} className="recipe-form__ingredient-card">
                       <div className="recipe-form__ingredient-thumb">
-                        <FallbackImage
-                          src={ingredient?.img}
-                          alt={ingredient?.name ?? "Ingredient"}
-                        />
+                        <FallbackImage src={ingredient?.img} alt={name} />
                       </div>
 
                       <div className="recipe-form__ingredient-text">
+                        <button
+                          type="button"
+                          className="recipe-form__ingredient-remove"
+                          onClick={() => remove(index)}
+                          aria-label={`Remove ${name}`}
+                        >
+                          <svg width="16" height="16" aria-hidden="true"><use href="/images/sprite.svg#icon-close16x16" /></svg>
+                        </button>
+
                         <p className="recipe-form__ingredient-name">{name}</p>
                         <p className="recipe-form__ingredient-measure">
                           {item.measure}
                         </p>
                       </div>
-
-                      <button
-                        type="button"
-                        className="recipe-form__ingredient-remove"
-                        onClick={() => remove(index)}
-                        aria-label={`Remove ${name}`}
-                      >
-                        <img src={closeIcon} width="16" height="16" alt="" />
-                      </button>
                     </li>
                   );
                 })}

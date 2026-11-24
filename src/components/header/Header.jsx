@@ -19,8 +19,11 @@ function Header({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [heroRadiusProgress, setHeroRadiusProgress] = useState(0);
+
 
   const userMenuRef = useRef(null);
+  const headerSurfaceRef = useRef(null);
 
   const location = useLocation();
   const shoppingCount = useSelector(selectShoppingCount);
@@ -41,8 +44,33 @@ function Header({
 
   // Закриваємо меню при переході на іншу сторінку
   useEffect(() => {
-    setIsUserMenuOpen(false);
-    setIsMenuOpen(false);
+    if (location.pathname !== "/") {
+      setHeroRadiusProgress(0);
+      return;
+    }
+
+    const hero = document.querySelector(".hero");
+    const surface = headerSurfaceRef.current;
+
+    if (!hero || !surface) return;
+
+    const handleScroll = () => {
+      const heroRect = hero.getBoundingClientRect();
+      const surfaceRect = surface.getBoundingClientRect();
+
+      const progress = heroRect.top <= surfaceRect.bottom - heroRect.height / 2 ? 1 : 0;
+
+      setHeroRadiusProgress(progress);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, [location.pathname]);
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -60,12 +88,15 @@ function Header({
   return (
     <>
       <header
-        className={`header header--${theme} ${
-          isMenuOpen ? "header--menu-open" : ""
-        }`}
+        className={`header header--${theme} ${isMenuOpen ? "header--menu-open" : ""}`}
+
       >
         <Container variant="hero">
-          <div className="header__surface">
+          <div
+            className="header__surface"
+            ref={headerSurfaceRef}
+            style={{ "--hero-radius": `${heroRadiusProgress * 30}px` }}
+          >
             <div className="header__container">
               <Link
                 to="/"

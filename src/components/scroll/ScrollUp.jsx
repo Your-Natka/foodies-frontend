@@ -47,7 +47,7 @@ const ScrollUp = () => {
       onClick={handleClick}
     >
       <svg className={css.icon} aria-hidden="true">
-        <use href="/icons.svg#icon-arrow-up-right" />
+        <use href="/images/sprite.svg#icon-arrow-up-right18x18" />
       </svg>
     </button>
   );

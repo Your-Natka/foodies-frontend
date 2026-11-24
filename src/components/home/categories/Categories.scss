@@ -116,6 +116,7 @@
   }
 
   &__arrow {
+    color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,6 +238,7 @@
       }
 
       &__arrow {
+    color: var(--color-white);
         flex-basis: 44px;
         width: 44px;
         height: 44px;
