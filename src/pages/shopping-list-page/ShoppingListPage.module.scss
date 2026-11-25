@@ -75,13 +75,13 @@
 ======================================== */
 
 .howItWorks {
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 .howItWorksTitle {
-  margin: 0 0 24px;
   color: var(--color-black);
-  font-size: 28px;
+  margin-bottom: 16px;
+  font-size: 24px;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -99,8 +99,8 @@
   align-items: center;
   gap: 16px;
   min-width: 0;
-  min-height: 88px;
-  padding: 20px 24px;
+  min-height: 40px;
+  padding: 8px 16px;
   border: 1px solid var(--color-gray);
   border-radius: 30px;
   background-color: var(--color-white);
@@ -125,8 +125,8 @@
     .stepIcon {
       display: block;
       flex-shrink: 0;
-      width: 28px;
-      height: 28px;
+      width: 20px;
+      height: 20px;
       color: var(--color-white);
       fill: currentColor;
       --color1: var(--color-white);
@@ -214,8 +214,8 @@
 
 .stepArrow {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   color: var(--color-black);
   fill: none;
   stroke: currentColor;
@@ -343,6 +343,7 @@
 
 .shoppingSection {
   width: 100%;
+  margin-bottom: 24px;
 }
 
 .toolbar {
@@ -350,7 +351,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 32px;
+  // margin-bottom: 32px;
   padding: 20px 24px;
   border: 1px solid var(--color-light-gray);
   border-radius: 20px;
@@ -720,15 +721,7 @@
   }
 
   .pageHeader {
-    margin-bottom: 32px;
-  }
-
-  .howItWorks {
-    margin-bottom: 40px;
-  }
-
-  .howItWorksTitle {
-    font-size: 32px;
+    margin-bottom: 28px;
   }
 
   .steps {
@@ -737,27 +730,12 @@
 
   .step {
     gap: 12px;
-    min-height: 84px;
-    padding: 16px;
+    padding: 10px 16px;
   }
 
   .stepIcon {
     width: 24px;
     height: 24px;
-  }
-
-  .stepTitle {
-    font-size: 13px;
-  }
-
-  .stepArrowWrapper {
-    width: 34px;
-    height: 34px;
-  }
-
-  .stepArrow {
-    width: 18px;
-    height: 18px;
   }
 
   .emptyHero {
@@ -774,7 +752,7 @@
   }
 
   .toolbar {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
     gap: 16px;
   }
@@ -846,7 +824,7 @@
   }
 
   .pageHeader {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
 
   .title {
@@ -860,27 +838,9 @@
     line-height: 20px;
   }
 
-  .howItWorks {
-    margin-bottom: 32px;
-  }
-
-  .howItWorksTitle {
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-
   .steps {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
-  }
-
-  .step {
-    min-height: 76px;
-    padding: 16px 20px;
-  }
-
-  .stepTitle {
-    font-size: 14px;
   }
 
   .stepIcon {
@@ -924,7 +884,6 @@
     align-items: stretch;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 24px;
     padding: 16px;
     border-radius: 16px;
   }
