@@ -11,9 +11,7 @@ function Footer() {
       <Container>
         <div className="footer__top">
           <Logo />
-          <div className="footer__install">
-            <InstallAppButton />
-          </div>
+          <InstallAppButton className="footer__install" />
           <NetworkLinks />
         </div>
 

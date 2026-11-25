@@ -271,63 +271,22 @@ function ShoppingListPage() {
         </header>
 
         <section className={css.howItWorks}>
-          <h2 className={css.howItWorksTitle}>How it works</h2>
-
-          <div className={css.steps}>
-            <Link to="/#categories" className={`${css.step} ${css.stepLink}`}>
-              <svg className={css.stepIcon} aria-hidden="true">
-                <use href="/images/sprite.svg#icon-search" />
+          <Link to="/#categories" className={`${css.step} ${css.stepLink}`}>
+            <svg className={css.stepIcon} aria-hidden="true">
+              <use href="/images/sprite.svg#icon-search" />
+            </svg>
+            <span className={css.stepTitle}>Find a recipe</span>
+            <span className={css.stepArrowWrapper} aria-hidden="true">
+              <svg className={css.stepArrow} viewBox="0 0 32 32">
+                <use href="/images/sprite.svg#icon-arrow-back" />
               </svg>
-              <span className={css.stepTitle}>Find a recipe</span>
-              <span className={css.stepArrowWrapper} aria-hidden="true">
-                <svg className={css.stepArrow} viewBox="0 0 32 32">
-                  <use href="/images/sprite.svg#icon-arrow-back" />
-                </svg>
-              </span>
-            </Link>
-
-            <button
-              type="button"
-              className={`${css.step} ${css.stepLink} ${
-                view === "ingredients" ? css.stepActive : ""
-              }`}
-              onClick={() => setView("ingredients")}
-              aria-pressed={view === "ingredients"}
-            >
-              <svg className={css.stepIcon} aria-hidden="true">
-                <use href="/images/sprite.svg#icon-plus18x18-food" />
-              </svg>
-              <span className={css.stepTitle}>Add ingredients</span>
-              <span className={css.stepArrowWrapper} aria-hidden="true">
-                <svg className={css.stepArrow} viewBox="0 0 32 32">
-                  <use href="/images/sprite.svg#icon-arrow-back" />
-                </svg>
-              </span>
-            </button>
-
-            <button
-              type="button"
-              className={`${css.step} ${css.stepLink} ${
-                view === "editor" ? css.stepActive : ""
-              }`}
-              onClick={openEditor}
-              aria-pressed={view === "editor"}
-            >
-              <svg className={css.stepIcon} aria-hidden="true">
-                <use href="/images/sprite.svg#icon-basket" />
-              </svg>
-              <span className={css.stepTitle}>Shop with ease</span>
-              <span className={css.stepArrowWrapper} aria-hidden="true">
-                <svg className={css.stepArrow} viewBox="0 0 32 32">
-                  <use href="/images/sprite.svg#icon-arrow-back" />
-                </svg>
-              </span>
-            </button>
-          </div>
+            </span>
+          </Link>
         </section>
 
         {items.length > 0 && (
           <section className={css.shoppingSection}>
+            <h2 className={css.howItWorksTitle}>Already in your list</h2>
             <div className={css.toolbar}>
               <div className={css.summary}>
                 <div className={css.summaryItem}>

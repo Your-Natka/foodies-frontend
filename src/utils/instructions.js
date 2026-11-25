@@ -1,5 +1,5 @@
 
-const STEP_NUMBER_RE = /(?:^|\s+)(\d+)\.\s+/g;
+const STEP_NUMBER_RE = /(?:^|\s+)(\d+)[.)]\s+(?=\p{Lu})/gu;
 
 // Split instructions into readable steps.
 export const splitInstructions = (instructions = "") => {
